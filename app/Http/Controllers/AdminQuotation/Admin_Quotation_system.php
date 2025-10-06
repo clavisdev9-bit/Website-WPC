@@ -140,30 +140,12 @@ class Admin_Quotation_system extends Controller
   // ambil list countries dari API eksternal
    public function countries()
     {
-        // tanpa scahce
-        // $response = Http::get('http://political-gerard-uncertainly.ngrok-free.app/countries');
-       
-        // if ($response->failed()) {
-        //     return response()->json([
-        //         "success" => false,
-        //         "message" => "Failed to fetch countries"
-        //     ], 500);
-        // }
-
-        // // ambil semua data negara dari API
-        // $countries = $response->json('data');
-
-        // return response()->json([
-        //     "success" => true,
-        //     "data" => $countries,
-        //     "count" => count($countries)
-        // ]);
-
+        
         try {
         // Simpan cache 1 jam (3600 detik)
         $countries = Cache::remember('countries', 3600, function () {
             $response = Http::withOptions(['verify' => false]) // disable SSL kalau perlu
-                ->get('https://political-gerard-uncertainly.ngrok-free.app/countries');
+                ->get('https://discomposingly-grainless-dante.ngrok-free.app/countries');
 
             if ($response->successful()) {
                 return $response->json();
@@ -203,7 +185,7 @@ class Admin_Quotation_system extends Controller
 
         $states = Cache::remember($cacheKey, 3600, function () use ($country_id) {
             $response = Http::withOptions(['verify' => false])
-                ->get("http://political-gerard-uncertainly.ngrok-free.app/states/country/{$country_id}");
+                ->get("https://discomposingly-grainless-dante.ngrok-free.app/states/country/{$country_id}");
 
             if ($response->successful()) {
                 return $response->json();

@@ -15,11 +15,12 @@ class Qoutation extends Controller
    // app/Http/Controllers/QuotationController.php
     public function createQuotation(Request $request)
     {
-        $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/quote/create";
+        // $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/quote/create";
+        $externalUrl = "https://discomposingly-grainless-dante.ngrok-free.app/quote/create";
 
         try {
             $response = Http::withOptions([
-                'verify' => false,
+                'verify' => true,
                 'timeout' => 15
             ])->post($externalUrl, $request->all());
 

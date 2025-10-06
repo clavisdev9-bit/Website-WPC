@@ -12,7 +12,8 @@ class Master extends Controller
 
         public function countries()
         {
-            $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/countries";
+            // $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/countries";
+            $externalUrl = "https://discomposingly-grainless-dante.ngrok-free.app/countries";
 
             try {
                 // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
@@ -49,7 +50,8 @@ class Master extends Controller
 
         public function statesByCountry($countryId)
         {
-            $externalUrlState = "http://political-gerard-uncertainly.ngrok-free.app/states/country/{$countryId}";
+            // $externalUrlState = "http://political-gerard-uncertainly.ngrok-free.app/states/country/{$countryId}";
+            $externalUrlState = "https://discomposingly-grainless-dante.ngrok-free.app/states/country/{$countryId}";
 
             try {
                 // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
@@ -90,7 +92,8 @@ class Master extends Controller
             {
                 $transportation = $request->query('transportation'); 
 
-                $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/lookups/pickup-origins";
+                // $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/lookups/pickup-origins";
+                $externalUrl = "https://discomposingly-grainless-dante.ngrok-free.app/lookups/pickup-origins";
 
                 try {
                     $response = Http::withOptions([
@@ -153,7 +156,8 @@ class Master extends Controller
             ], 400);
         }
 
-        $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/lookups/pickup-destinations";
+        // $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/lookups/pickup-destinations";
+        $externalUrl = "https://discomposingly-grainless-dante.ngrok-free.app/lookups/pickup-destinations";
 
         try {
             $response = Http::withOptions([
