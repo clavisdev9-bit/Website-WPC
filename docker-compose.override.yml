@@ -1,0 +1,19 @@
+services:
+  app:
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+    volumes:
+      - .:/var/www/html
+
+  node:
+    image: node:22.12   # ⬅️ pakai Node.js 22
+    container_name: laravel_node
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "${VITE_PORT}:5173"
+    networks:
+      - laravel

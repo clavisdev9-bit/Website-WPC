@@ -1,0 +1,52 @@
+/* Bagian menu utama (Home, About, dll.) dibuat menjadi bentuk trapesium putih */
+.nav-bar {
+    background-color: #ffffff !important;
+    position: relative;
+    /* Membuat bentuk trapesium dengan sisi kiri miring dan sisi kanan vertikal */
+    -webkit-clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%) !important;
+    clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%) !important;
+}
+
+/* Mengatur container untuk tombol pencarian dan 'Get Quote' */
+.nav-btn {
+    /* Mengubah posisi agar bisa diletakkan di samping menu */
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    /* Memberikan latar belakang biru tua pada container */
+    background-color: #04248e;
+    /* Membuat bentuk poligon yang cocok dengan sisi kanan menu putih */
+    -webkit-clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%) !important;
+    clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%) !important;
+    z-index: 2; /* Menempatkan di atas menu */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Memindahkan tombol ke kanan */
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+
+/* Mengubah warna dan bentuk tombol 'Get Quote' */
+.nav-btn .btn-primary {
+    background-color: #f04d7d !important;
+    border-color: #f04d7d !important;
+    color: #fff !important;
+    /* Menggunakan clip-path untuk membuat sisi kiri tombol miring */
+    -webkit-clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%) !important;
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%) !important;
+    padding-left: 20px !important; /* Menambahkan padding untuk menjaga teks tidak terpotong */
+}
+
+/* Mengatur tampilan tombol pencarian */
+.nav-btn .btn-search {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    padding: 0 15px !important;
+}
+
+/* Menyesuaikan posisi teks menu agar tidak terpotong oleh bentuk trapesium */
+.nav-bar .navbar-nav {
+    margin-left: 10%; /* Sesuaikan margin agar teks berada di dalam area yang terlihat */
+}
