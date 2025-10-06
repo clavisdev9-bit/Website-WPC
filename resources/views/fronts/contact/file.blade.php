@@ -80,7 +80,7 @@
                                     <div class="p-4 pe-0">
                                         <h4 class="display-5 mb-0">collaborate with our company</h4>
                                         <div class="d-flex align-items-center">
-                                            <a href="/wpc-esys/form-qoutation" class="h5 mb-0 me-3">visit our Qoute</a>
+                                            <a href="/wpc-esys/qoutation-request" class="h5 mb-0 me-3">visit our Qoute</a>
                                             <a class="text-primary py-3" href=""><i class="fas fa-file-import me-2"></i></a>
                                         </div>
                                     </div>

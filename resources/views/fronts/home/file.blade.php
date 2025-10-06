@@ -276,7 +276,7 @@
                     </div>
 
                     <!-- Button to Quotation Form -->
-                    <a href="/wpc-esys/form-qoutation" 
+                    <a href="/wpc-esys/qoutation-request" 
                        class="btn btn-info px-5 py-3 fw-bold text-white" 
                        style="background-color:#0d3b66; transition:0.3s; border-radius: 12px; border: none;"">
                         GO TO QUOTATION FORM

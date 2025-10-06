@@ -99,31 +99,31 @@
         </div>
     </div>
 
-    <a href="/wpc-esys/form-qoutation" 
-       class="nav-item nav-link {{ request()->is('wpc-esys/form-qoutation') ? 'active' : '' }}">
-       Get Quote
-    </a>
+                                <a href="/wpc-esys/qoutation-request" 
+                                class="nav-item nav-link {{ request()->is('wpc-esys/qoutation-request') ? 'active' : '' }}">
+                                Get Quote
+                                </a>
 
-    <a href="{{ route('users.news') }}" 
-       class="nav-item nav-link {{ request()->routeIs('users.news') ? 'active' : '' }}">
-       News
-    </a>
+                                <a href="{{ route('users.news') }}" 
+                                class="nav-item nav-link {{ request()->routeIs('users.news') ? 'active' : '' }}">
+                                News
+                                </a>
 
-    <a href="/wpc-esys/network" 
-       class="nav-item nav-link {{ request()->is('wpc-esys/network') ? 'active' : '' }}">
-       Network
-    </a>
+                                <a href="/wpc-esys/network" 
+                                class="nav-item nav-link {{ request()->is('wpc-esys/network') ? 'active' : '' }}">
+                                Network
+                                </a>
 
-    <a href="{{ route('users.contact') }}" 
-       class="nav-item nav-link {{ request()->routeIs('users.contact') ? 'active' : '' }}">
-       Contact
-    </a>
+                                <a href="{{ route('users.contact') }}" 
+                                class="nav-item nav-link {{ request()->routeIs('users.contact') ? 'active' : '' }}">
+                                Contact
+                                </a>
 
 
                                     <div class="nav-btn ps-3">
                                         {{-- <button class="btn-search btn btn-light btn-md-square mt-2 mt-lg-0 mb-4 mb-lg-0 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button> --}}
                                         {{-- <a href="{{ route('users.qoute') }}" class="btn btn-light py-2 px-4 ms-0 ms-lg-3"> <span>Karier</span></a> --}}
-                                    <a href="/wpc-esys/form-qoutation" class="btn btn-white py-2 px-4 ms-0 ms-lg-3">
+                                    <a href="/wpc-esys/qoutation-request" class="btn btn-white py-2 px-4 ms-0 ms-lg-3">
                                     <span>Get Quote</span>
                                     </a>
                                         <a href="" class="btn btn-white py-2 px-4 ms-0 ms-lg-3">
