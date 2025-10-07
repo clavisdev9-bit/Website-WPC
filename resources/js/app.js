@@ -5,8 +5,12 @@ import '../css/app.css'
 import $ from 'jquery'
 window.$ = $;
 window.jQuery = $;
-import 'datatables.net-dt'
-import 'datatables.net-dt/css/dataTables.dataTables.css'
+// import 'datatables.net-dt'
+// import 'datatables.net-dt/css/dataTables.dataTables.css'
+import 'datatables.net-bs5'
+import 'datatables.net-responsive-bs5'
+import 'datatables.net-bs5/css/dataTables.bootstrap5.css'
+import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.css'
 
 // ini untuk js blade
 import './costums/blogs';
@@ -19,6 +23,8 @@ import './costums/role'
 import './costums/accessMenu'
 import './costums/users'
 import './costums/accessSubMenu'
+import './costums/requestContact'
+
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
 

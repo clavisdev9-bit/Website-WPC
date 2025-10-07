@@ -9,15 +9,19 @@ use App\Models\Blogs;
 use App\Models\CategoryModelsBlogs;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ValidationFormQuotation;
+use App\Models\ContactMessage;
+use App\Http\Requests\FormMessagesContactValidation;
 
 
 class Users extends Controller
 {
     protected $Blogs;
     protected $CategoryModelsBlogs;
-    public function __construct(Blogs $Blogs, CategoryModelsBlogs $CategoryModelsBlogs) {
+    protected $ContactMessage;
+    public function __construct(Blogs $Blogs, CategoryModelsBlogs $CategoryModelsBlogs, ContactMessage $ContactMessage) {
         $this->Blogs = $Blogs;
         $this->CategoryModelsBlogs = $CategoryModelsBlogs;
+        $this->ContactMessage = $ContactMessage;
     }
     public function index()  {
          $query = $this->Blogs
@@ -496,4 +500,23 @@ class Users extends Controller
     }
 
     
+
+
+    public function Contact_messages_store(FormMessagesContactValidation $request) {
+        try {
+        $this->ContactMessage->create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'interested_in' => $request->input('interested_in'),
+            'subject' => $request->input('subject'),
+            'message' => $request->input('message'),
+            'agree_privacy' => $request->input('agree_privacy'),
+        ]);
+        
+       return redirect()->route('users.contact')->with('success','Your contact request form has been successfully submitted. We will contact you soon.');
+       } catch (\Throwable $th) {
+           return redirect()->route('users.contact')->with('error','Failed to create data. Please try again.');
+       }
+    }
 }

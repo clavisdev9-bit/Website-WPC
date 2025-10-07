@@ -15,6 +15,8 @@
         </div>
         <!-- Header End -->
 
+               
+
 
          <!-- Contact Start -->
         <div class="container-fluid contact py-5">
@@ -92,56 +94,94 @@
                          <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.4s">
             <div class="form-section bg-dark p-5 h-100">
                 <h1 class="display-4 text-white mb-4">Contact Form</h1>
-                <form action="" method="POST">
+                {{-- ALERT SUCCESS --}}
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                            <strong>Success!</strong> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    {{-- ALERT ERROR --}}
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            <strong>Error!</strong> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+
+                <form action="{{ route('users.contact.form.store') }}" method="POST">
                     @csrf
                     <div class="row g-4">
                         <div class="col-lg-12 col-xl-6">
                                 <label for="name">Your Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name">
+                                <input type="text" class="form-control" value="{{ old('name') }}" id="name" name="name" placeholder="Your Name">
+                                @error('name')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                         </div>
 
                         <div class="col-lg-12 col-xl-6">
                                 <label for="email">Your Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Your Email">
+                                <input type="email" class="form-control" value="{{ old('email') }}" id="email" name="email" placeholder="Your Email">
+                                @error('email')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                         </div>
 
                         <div class="col-lg-12 col-xl-6">
                             <label for="phone">Your Phone</label>
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone">
+                            <input type="text" class="form-control" value="{{ old('phone') }}" id="phone" name="phone" placeholder="Phone">
+                            @error('phone')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-lg-12 col-xl-6">
-                            <label for="phone">I Am Interested In</label>
-                            <select name="" id="" class="form-control">
+                            <label for="interested_in">I Am Interested In</label>
+                            <select name="interested_in" id="interested_in" class="form-control" style="width: 100%; height: 38px">
                                 <option value="">Chose One Field</option>
-                                <option value="Request To Join Network">Request To Join Network</option>
-                                <option value="Request To Become Member">Request To Become Member</option>
-                                <option value="Logistics">Logistics</option>
-                                <option value="Transportation">Transportation</option>
-                                <option value="Warehousing">Warehousing</option>
+                                <option value="Request To Join Network" {{ old('interested_in') == 'Request To Join Network' ? 'selected' : '' }}>Request To Join Network</option>
+                                <option value="Request To Become Member"  {{ old('interested_in') == 'Request To Become Member' ? 'selected' : '' }}>Request To Become Member</option>
+                                <option value="Logistics" {{ old('interested_in') == 'Logistics' ? 'selected' : '' }}>Logistics</option>
+                                <option value="Transportation" {{ old('interested_in') == 'Transportation' ? 'selected' : '' }}>Transportation</option>
+                                <option value="Warehousing" {{ old('interested_in') == 'Warehousing' ? 'selected' : '' }}>Warehousing</option>
                             </select>
+                        @error('interested_in')
+                                <div class="text-danger">{{ $message }}</div>
+                        @enderror
                         </div>
 
                         <div class="col-12">
                             <label for="subject">Subject</label>
-                            <input type="text text-bold" class="form-control" id="subject" name="subject" placeholder="Subject">
+                            <input type="text text-bold" value="{{ old('subject') }}" class="form-control" id="subject" name="subject" placeholder="Subject">
+                        @error('subject')
+                                <div class="text-danger">{{ $message }}</div>
+                        @enderror
                         </div>
 
                         <div class="col-12">
                                 <label for="message">Message</label>
-                                <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 160px;"></textarea>
+                                <textarea class="form-control" placeholder="Leave a message here" id="message" name="message" style="height: 160px;">{{ old('message') }}</textarea>
+                        @error('message')
+                                <div class="text-danger">{{ $message }}</div>
+                        @enderror
                         </div>
 
-                        <div class="col-12 mt-3">
+                        {{-- <div class="col-12 mt-3">
                             <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-12">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" id="flexCheck" required>
+                                <input class="form-check-input" name="agree_privacy" type="checkbox" value="1" id="flexCheck">
                                 <label class="form-check-label" for="flexCheck">
                                     I agree with the site privacy policy
                                 </label>
+                                @error('agree_privacy')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
 
@@ -152,14 +192,15 @@
                 </form>
             </div>
         </div>
+                </div>
     
 
         <!-- Google reCAPTCHA script -->
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        {{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --}}
 
                                 </div>
                             </div>
-                            <div class="col-12 wow fadeInUp" data-wow-delay="0.2s">
+        {{-- <div class="col-12 wow fadeInUp" data-wow-delay="0.2s">
             <div class="h-100 overflow-hidden">
                 <iframe class="w-100" style="height: 400px;" 
                     src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3966.442191261933!2d106.815447!3d-6.176994!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f35b8a5e3b57%3A0x2b9f1f1f1f1f1f1f!2sJl.%20Taman%20Tanah%20Abang%20III%2054%2C%20Petojo%20Sel.%2C%20Kec.%20Gambir%2C%20Kota%20Jakarta%20Pusat%2C%20DKI%20Jakarta%2010160!5e0!3m2!1sen!2sid" 
@@ -167,8 +208,29 @@
                 </iframe>
             </div>
             </div>
-        </div>
+        </div> --}}
         <!-- Contact End -->
+        
 
+
+<script type="text/javascript">
+    // assetCode
+    $(document).ready(function() {
+        $("#interested_in").select2({
+          placeholder: "SELECT ONE FIELD",
+           allowClear: true,
+           theme: 'bootstrap4',
+        });
+
+
+        setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+        }
+    }, 9000); // 4 detik
+    });
+</script>
 
 @endsection

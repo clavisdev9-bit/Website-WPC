@@ -34,7 +34,7 @@ class Admin_Quotation_system extends Controller
    
     if ($request->ajax()) {
         // Ambil data API
-        $response = Http::withoutVerifying()->get('http://political-gerard-uncertainly.ngrok-free.app/quotes');
+        $response = Http::withoutVerifying()->get('https://discomposingly-grainless-dante.ngrok-free.app/quotes');
         $result = $response->json();
 
         $data = $result['data'] ?? [];

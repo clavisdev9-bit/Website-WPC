@@ -22,7 +22,7 @@
                                       <p class="lead text-light animate__animated animate__fadeIn">
                                             Experience That Delivers Your <span class="fw-bold text-primary">Satisfaction</span>
                                           </p>
-                                          <a href="/wpc-esys/form-qoutation" class="btn btn-gradient px-4 py-2 mt-2">
+                                          <a href="/wpc-esys/qoutation-request" class="btn btn-gradient px-4 py-2 mt-2">
                                             Get Quote
                                           </a>
                                           {{-- <a href="" class="btn btn-gradient px-4 py-2 mt-2">
@@ -72,7 +72,7 @@
                                         <p class="lead text-light animate__animated animate__fadeIn">
                                              Quality service is our focus<span class="fw-bold text-primary"> focus</span>
                                             </p>
-                                            <a href="/wpc-esys/form-qoutation" class="btn btn-gradient px-4 py-2 mt-2">
+                                            <a href="/wpc-esys/qoutation-request" class="btn btn-gradient px-4 py-2 mt-2">
                                               Get Quote
                                             </a>
 

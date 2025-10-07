@@ -81,6 +81,11 @@ Route::get('/Warehouse/dedicated-warehouse',[Users::class,'dedicated_warehouse']
 Route::get('/Warehouse/public-warehouse',[Users::class,'public_warehouse'])->name('users.public.warehouse');
 Route::get('/Warehouse/warehouse-management-system',[Users::class,'warehouse_management_system'])->name('users.warehouse.management.system');
 
+// Contact Form route(public)
+// Route::post('Contact/contact-form-store', [Users::class, 'Contact_messages_store'])->name('users.contact.form.store');
+Route::post('Contact/contact-form-store', [Users::class, 'Contact_messages_store'])
+    ->name('users.contact.form.store')
+    ->middleware('throttle:contact_form'); // Maksimal 5 request per 1 menit per IP
 
 
 
@@ -170,6 +175,9 @@ Route::get('/blogs/{filename}', function ($filename) {
     return response($file, 200)->header("Content-Type", $type);
 })->name('blogs.image.show');
 
+
+
+// Admin web route
 Route::get('Admins/List-blogs-company',[Admins::class,'News_Company'])->name('Admins.landing.page');
 Route::get('Admins/Get-blogs', [Admins::class, 'Get_Blogs'])->name('get.blogs');
 Route::get('Admins/add-content-blogs', [Admins::class, 'Form_add_Blogs'])->name('form.add.blogs');
@@ -177,6 +185,11 @@ Route::post('Admins/store-content-blogs', [Admins::class, 'Store_add_Blogs'])->n
 Route::delete('Admins/delete-content-blogs/{id}', [Admins::class, 'destroyContent'])->name('Admins.delete.blogs');
 Route::get('Admins/Get-blogs-update/{id}', [Admins::class, 'Get_Blogs_Update_view'])->name('get.blogs.update');
 Route::put('Admins/store-update-blogs', [Admins::class, 'UpdateBlog'])->name('Admins.update.blogs');
+
+Route::get('Admins/List-contact-request',[Admins::class,'getDataContactRequest'])->name('Admins.List.contact.request');
+Route::get('Admins/Get-List-contact-request', [Admins::class, 'get_data_request_file'])->name('get.data.request');
+Route::delete('Admins/Contact-form-delete/{id}', [Admins::class, 'Contact_messages_delete'])->name('Admins.users.contact.form.delete');
+
 
 // Admin Quotation system
 Route::get('Admin_Quotation_system/Home', [Admin_Quotation_system::class, 'Home'])->name('Request.Quotation.Dashboard');
@@ -198,3 +211,4 @@ Route::get('Setting_General/Change-password', [Setting_General::class, 'ChangePa
 Route::post('Setting_General/Change-password-user', [Setting_General::class, 'ChangePasswordUser'])->name('Setting_General.change.password.user');
 Route::get('Setting_General/Change-profile', [Setting_General::class, 'ChangeProfile'])->name('Setting_General.change.profile');
 Route::put('Setting_General/Change-profile-user', [Setting_General::class, 'ChangeProfileUser'])->name('Setting_General.change.profile.user');
+

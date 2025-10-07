@@ -495,7 +495,13 @@ const validateField = (name) => {
       else errors.value.email = '';
       break;
     case 'phone':
-      errors.value.phone = phone.value ? '' : 'Phone number is required';
+      if (!phone.value) {
+        errors.value.phone = 'Phone number is required';
+      } else if (!/^\+?\d{9,15}$/.test(phone.value)) {
+        errors.value.phone = 'Invalid phone number format';
+      } else {
+        errors.value.phone = '';
+      }
       break;
     case 'selectedBusinessType':
       errors.value.selectedBusinessType = selectedBusinessType.value ? '' : 'Select Who Are You';
@@ -506,8 +512,19 @@ const validateField = (name) => {
     case 'selectedState':
       errors.value.selectedState = selectedState.value ? '' : 'State is required';
       break;
+    // case 'termsCondition':
+    //   errors.value.termsCondition = termsCondition.value ? '' : 'Please fill in the terms';
+    //   break;
     case 'termsCondition':
-      errors.value.termsCondition = termsCondition.value ? '' : 'Please fill in the terms';
+      if (!termsCondition.value || termsCondition.value.trim() === '') {
+        errors.value.termsCondition = 'Terms & Conditions cannot be empty';
+      } else if (termsCondition.value.trim().length < 10) {
+        errors.value.termsCondition = 'Please enter at least 10 characters';
+      } else if (termsCondition.value.trim().length > 800) {
+        errors.value.termsCondition = 'Too long, maximum 800 characters allowed';
+      } else {
+        errors.value.termsCondition = '';
+      }
       break;
     case 'selectedTransportation1':
       errors.value.selectedTransportation1 = selectedTransportation1.value ? '' : 'Required';

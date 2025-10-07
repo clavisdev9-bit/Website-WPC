@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminWebsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -14,14 +15,17 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Blogs;
 use App\Models\CategoryModelsBlogs;
 use App\Http\Requests\validationContentAdd;
+use App\Models\ContactMessage;
 
 class Admins extends Controller
 {
     protected $Blogs;
     protected $CategoryModelsBlogs;
-  public function __construct(Blogs $Blogs, CategoryModelsBlogs $CategoryModelsBlogs) {
+    protected $ContactMessage;
+  public function __construct(Blogs $Blogs, CategoryModelsBlogs $CategoryModelsBlogs, ContactMessage $ContactMessage) {
     $this->Blogs = $Blogs;
     $this->CategoryModelsBlogs = $CategoryModelsBlogs;
+    $this->ContactMessage = $ContactMessage;
   }
 
     public function Homes_Admins() {
@@ -276,4 +280,92 @@ public function UpdateBlog(validationContentAdd $request) {
                     return redirect()->route('Admins.landing.pageAdministrator.user.management')->with('error','Failed to create data. Please try again.');
                 }
       }
+
+
+
+    //   untuk contact request
+    public function getDataContactRequest(Request $request) {
+          $data = [
+                'title' => 'List Request Contact'
+          ];
+          return view('admin-website/user-request-form/data/file', $data);
+    }
+
+
+
+
+    public function get_data_request_file(Request $request) 
+    {
+           if ($request->ajax()) {
+        // Mulai query tanpa get() dulu
+        $query = $this->ContactMessage->orderBy('id', 'asc');
+        // Cek apakah ada parameter pencarian
+        if ($request->has('search') && !empty($request->input('search')['value'])) {
+            $searchTerm = $request->input('search')['value'];
+            $query->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+      
+        // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
+        return DataTables::of($query)
+            ->addIndexColumn()
+            
+            ->addColumn('details', function ($row) {
+                 $formattedDate = Carbon::parse($row->created_at)
+            ->locale('id')
+            ->translatedFormat('l, j F Y');
+                return '<a id="sets" class="btn btn-pill btn-outline-orange btn-sm" data-bs-toggle="modal" data-bs-target="#modal-large"
+                             data-nm="' . htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8') . '"
+                             data-em="' . htmlspecialchars($row->email, ENT_QUOTES, 'UTF-8') . '"
+                             data-phones="' . htmlspecialchars($row->phone, ENT_QUOTES, 'UTF-8') . '"
+                             data-crte="' . htmlspecialchars($formattedDate, ENT_QUOTES, 'UTF-8') . '"
+                             data-sub="' . htmlspecialchars($row->subject, ENT_QUOTES, 'UTF-8') . '"
+                             data-masage="' . htmlspecialchars($row->message, ENT_QUOTES, 'UTF-8') . '"
+                            >
+                            <i class="fa fa-sticky-note"> </i> Details
+                        </a>';
+            })
+
+
+
+            ->addColumn('action', function ($row) {
+                $idRoleCrypt = Crypt::encrypt($row->id);
+                $deleteRUrl = route('Admins.users.contact.form.delete', $idRoleCrypt);
+                        $btn = '';
+                        $btn .= '<form action="' . $deleteRUrl . '" method="POST" class="d-inline">
+                        '.csrf_field().'
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" 
+                            onclick="confirmDelete(this)"
+                            class="btn btn-pill btn-outline-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>';
+                return $btn;
+            })
+            ->rawColumns(['action','details'])
+            ->make(true);
+    }
+
+    }
+
+
+    public function Contact_messages_delete($id)  {
+        try {
+        $idCmdDecrypted = Crypt::decrypt($id);
+        $cmdData = ContactMessage::find($idCmdDecrypted);
+
+        if (!$cmdData) {
+            return redirect()->route('Admins.List.contact.request')
+                ->with('error', 'Data ID Not Found!');
+        }
+        $cmdData->delete();
+        return redirect()->route('Admins.List.contact.request')->with('success', 'Success delete');
+    } catch (DecryptException $e) {
+        return redirect()->route('Admins.List.contact.request')
+            ->with('error', 'Invalid menu ID!');
+    } catch (\Throwable $th) {
+        return redirect()->route('Admins.List.contact.request')
+            ->with('error', 'Failed to delete data. Please try again.');
+    }
+    }
 }

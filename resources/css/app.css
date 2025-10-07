@@ -5,3 +5,25 @@
 @import url('../vendor/dist/css/tabler-vendors.min.css');
 @import url('../vendor/dist/css/tabler-marketing.min.css');
 @import url('../vendor/dist/css/demo.min.css');
+
+
+
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 5px 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  color: #495057 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: #ff6b00 !important;
+  color: #fff !important;
+}
+
+
+
