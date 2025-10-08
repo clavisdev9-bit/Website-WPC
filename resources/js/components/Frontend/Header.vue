@@ -18,16 +18,20 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <!-- END NAVBAR TOGGLER -->
-          <!-- BEGIN NAVBAR LOGO -->
-          <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href="." aria-label="Tabler">
-               <img :src="LogoCompany"  class="navbar-brand-image" viewBox="0 0 232 68" alt="">
-            </a>
-            <div class="navbar-brand d-flex flex-column align-items-start">
-            <span class="fw-bold text-capitalize text-light">WPC Logistic</span>
-            <small class="text-light">Experience That Delivers</small>
-          </div>
-          </div>
+        
+       <div class="navbar-brand d-flex align-items-center">
+  <img :src="LogoCompany" class="navbar-brand-image logo-large me-2" alt="WPC Logo">
+
+  <div class="d-flex flex-column align-items-start brand-text">
+    <small class="brand-subtitle main-tagline">Driven by Reliability</small>
+    <small class="brand-subtitle sub-tagline">Fast. Safe. On Time.</small>
+  </div>
+</div>
+
+
+
+
+
           <!-- END NAVBAR LOGO -->
           <div class="navbar-nav flex-row order-md-last">
             <div class="nav-item d-none d-md-flex me-3">
@@ -217,7 +221,7 @@
 </template>
 
 <script setup>
-const LogoCompany = '/images/logo.png'
+const LogoCompany = '/images/logox.png'
 const profileStatic = '/images/profile.png'
 </script>
 
@@ -354,8 +358,45 @@ const profileStatic = '/images/profile.png'
   0% { background-position: 0 0; }
   100% { background-position: 200% 0; }
 }
+/* 🔹 Logo styling */
+.navbar-brand-image {
+  object-fit: contain;
+  height: 55px;
+  width: auto;
+}
 
+.logo-large {
+  height: 58px !important;
+  margin-right: 6px; /* lebih dekat ke teks, tapi tetap lega */
+}
 
+/* 🔹 Container teks */
+.brand-text {
+  line-height: 1.1;
+}
 
+/* 🔹 Tagline utama */
+.main-tagline {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+/* 🔹 Tagline kedua */
+.sub-tagline {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #bfbfbf;
+  letter-spacing: 0.3px;
+}
+
+/* 🔹 General subtitle fallback */
+.brand-subtitle {
+  margin: 0;
+}
 
 </style>

@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
        <div class="navbar-brand d-flex align-items-center">
-   <img src="{{ asset('images/logo.png') }}" alt="Logo" class="navbar-brand-image me-2" />
+   <img src="{{ asset('images/logox.png') }}" alt="Logo" class="navbar-brand-image me-2" />
     <span class="fw-bold text-capitalize mt-2">  WPC Logistic</span>
 </div>
         <hr class="my-2 border-light">

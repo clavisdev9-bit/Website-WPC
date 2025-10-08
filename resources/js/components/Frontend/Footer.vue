@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-const LogoCompany = '/images/logo.png'
+const LogoCompany = '/images/logox.png'
 const marker = '/images/footer_works.jpg'
 const logoCertifikat = '/images/certification-logo.png'
 </script>

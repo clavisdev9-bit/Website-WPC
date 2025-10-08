@@ -21,7 +21,7 @@
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item">
                         <a href="{{ url('/') }}">
-                            <img src="{{ asset('/images/logo.png') }}" 
+                            <img src="{{ asset('/images/logox.png') }}" 
                                 alt="Logo" 
                                 class="d-inline-block align-text-top mb-2"
                                 style="height:125px; width:auto;">

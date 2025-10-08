@@ -14,10 +14,10 @@
                     <a href="#" class="navbar-brand" style="height: 125px;">
                         {{-- <h1 class="text-white mb-0">WPC Logistic</h1> --}}
                        {{-- <img src="{{ asset('assets/frontend/img/logo.png') }}" alt="Logo">  --}}
-                       <img src="/images/logo.png" 
+                       <img src="/images/logox.png" 
                         alt="Logo" 
                         class="img-fluid d-inline-block align-text-top mb-2" 
-                        style="max-height:80px; width:auto;"> 
+                        style="max-height:100px; width:auto;"> 
                        
                     </a>
                   
@@ -144,7 +144,7 @@
         <!-- Navbar & Hero End -->
 
         <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        {{-- <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content rounded-0">
                     <div class="modal-header">
@@ -159,6 +159,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- Modal Search End -->
 
