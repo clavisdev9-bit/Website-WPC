@@ -31,7 +31,7 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label class="form-label">Fullname <small class="text-danger">*</small></label>
-                                <input type="text" class="form-control" name="id_user" value="{{ $id }}" placeholder="id">
+                                <input type="hidden" class="form-control" name="id_user" value="{{ $id }}" placeholder="id">
                                 <input type="text" class="form-control @error('fullname') is-invalid @enderror" name="fullname" value="{{ old('fullname', $row->fullname) }}" placeholder="Fullname">
                                 @error('fullname')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
