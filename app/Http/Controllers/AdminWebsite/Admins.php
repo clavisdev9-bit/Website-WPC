@@ -16,6 +16,7 @@ use App\Models\Blogs;
 use App\Models\CategoryModelsBlogs;
 use App\Http\Requests\validationContentAdd;
 use App\Models\ContactMessage;
+use App\Http\Requests\CategoryBlogValidation;
 
 class Admins extends Controller
 {
@@ -36,6 +37,7 @@ class Admins extends Controller
     }
 
 
+     // code blog/news company
    public function News_Company()  {
     
            $data = [
@@ -219,7 +221,7 @@ public function Get_Blogs_Update_view($id)  {
 }
 
 
-
+   
 public function UpdateBlog(validationContentAdd $request) {
     $user = getUserData();
     try {
@@ -283,7 +285,8 @@ public function UpdateBlog(validationContentAdd $request) {
 
 
 
-    //   untuk contact request
+
+    //   code contact request
     public function getDataContactRequest(Request $request) {
           $data = [
                 'title' => 'List Request Contact'
@@ -368,4 +371,148 @@ public function UpdateBlog(validationContentAdd $request) {
             ->with('error', 'Failed to delete data. Please try again.');
     }
     }
+
+
+    // code category blog
+    public function Category_Blog()  {
+         $data = [
+             'title' => 'Data Category Blog Company'
+        ];
+        return view('admin-website/category/data/file', $data);
+    }
+
+
+    public function Get_Category_Blog(Request $request) {
+        if ($request->ajax()) {
+        // Mulai query tanpa get() dulu
+        $query = $this->CategoryModelsBlogs->orderBy('name', 'asc');
+        // Cek apakah ada parameter pencarian
+        if ($request->has('search') && !empty($request->input('search')['value'])) {
+            $searchTerm = $request->input('search')['value'];
+            $query->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+        // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('description', function($row){
+                return '<textarea class="form-control"  rows="2" cols="2" readonly>'.$row->description.'</textarea>';
+            })
+            ->addColumn('action', function ($row) {
+
+                $idCatBlogCrypt = Crypt::encrypt($row->id);
+                $updateCatBlog =  route('get.blogs.category.update',$idCatBlogCrypt);
+                $deleteCatBlog = route('Admins.delete.category.blogs', ['id' => $idCatBlogCrypt]);
+
+                        $btn = '<a href="'.$updateCatBlog.'" class="btn btn-pill btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>';
+                        $btn .= '<form action="'. $deleteCatBlog .'" method="POST" class="d-inline">
+                        '.csrf_field().'
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" 
+                            onclick="confirmDelete(this)"
+                            class="btn btn-pill btn-outline-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>';
+
+                    
+                return $btn;
+            })
+            ->rawColumns(['action','description'])
+            ->make(true);
+    }
+    }
+
+
+    public function Form_Add_Category_Blogs()  {
+       $data = [
+             'title' => 'Form Add Category Blog Company'
+        ];
+        return view('admin-website/category/form/created', $data);
+    }
+
+    public function store_category_blogs(CategoryBlogValidation $request) {
+     
+  try {
+      //   cek name already exist
+      if (CategoryModelsBlogs::isNameExistsAdd($request->input('name'))) {
+          return redirect()->route('Admins.List.category.blog')
+              ->with('error', 'Name Already Exist.');
+      }
+
+      $this->CategoryModelsBlogs->create([
+          'name' => $request->input('name'),
+          'description' => $request->input('description'),
+          'slug' => Str::slug($request->input('name')),
+      ]);
+      
+  
+     return redirect()->route('Admins.List.category.blog')->with('success','success save');
+     } catch (\Throwable $th) {
+         return redirect()->route('Admins.List.category.blog')->with('error','Failed to create data. Please try again.');
+     }
+}
+
+
+public function Get_blogs_category_update_view($id) {
+     $idDecy = Crypt::decrypt($id);
+     $getCatBlog = $this->CategoryModelsBlogs->findOrFail($idDecy);
+     $data = [
+             'title' => 'Form Update Category Blog Company',
+             'row' => $getCatBlog,
+             'idCatBlog' => $id
+        ];
+        return view('admin-website/category/form/updated', $data);
+}
+
+public function update_category_blogs(Request $request) {
+    try {
+        try {
+            $BlogCatid = $request->input('id');
+            $idCatBlogDecrypted = Crypt::decrypt($BlogCatid);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return redirect()->route('Admins.List.category.blog')
+                ->with('error', 'Invalid menu ID!');
+        }
+    
+          $CatBlogData = $this->CategoryModelsBlogs->findOrFail($idCatBlogDecrypted);
+    
+        //   cek name already exist
+          if (CategoryModelsBlogs::isNameExists($request->input('name'), $idCatBlogDecrypted)) {
+            return redirect()->route('Admins.List.category.blog')
+                ->with('error', 'name already exists!');
+          }
+    
+          $CatBlogData->update([
+           'name' => $request->input('name'),
+          'description' => $request->input('description'),
+          'slug' => Str::slug($request->input('name')),
+        ]);
+    
+        return redirect()->route('Admins.List.category.blog')->with('success','update success');
+    } catch (\Throwable $th) {
+        return redirect()->route('Admins.List.category.blog')->with('error','Failed to update data. Please try again.');
+    }
+}
+
+public function destroy_category_blogs($id) {
+     try {
+        $idCatBlogDecrypted = Crypt::decrypt($id);
+        $CatBlogData = CategoryModelsBlogs::find($idCatBlogDecrypted);
+
+        if (!$CatBlogData) {
+            return redirect()->route('Admins.List.category.blog')
+                ->with('error', 'Data ID Not Found!');
+        }
+
+        $CatBlogData->delete();
+        
+        return redirect()->route('Admins.List.category.blog')->with('success', 'Success delete');
+    } catch (DecryptException $e) {
+        return redirect()->route('Admins.List.category.blog')
+            ->with('error', 'Invalid Blog Cat ID!');
+    } catch (\Throwable $th) {
+        return redirect()->route('Admins.List.category.blog')
+            ->with('error', 'Failed to delete data. Please try again.');
+    }
+}
 }

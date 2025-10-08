@@ -1,36 +1,36 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let metaTag = document.querySelector('meta[name="route-get-data-request"]');
-    let requestUrlrequestContact = metaTag ? metaTag.content : null;
 
-    if (!requestUrlrequestContact) {
+
+document.addEventListener("DOMContentLoaded", function () {
+    let metaTag = document.querySelector('meta[name="route-get-category-blogs"]');
+    let requestUrlCategoryBlogsTable = metaTag ? metaTag.content : null;
+
+    if (!requestUrlCategoryBlogsTable) {
         // console.error("Meta tag Route Not found.");
-        return;
+        return; // Hentikan eksekusi jika tidak ada URL
     }
 
-    let requestContactTable = document.getElementById("requestContactTable");
-    if (!requestContactTable) {
+    let CategoryBlogsTable = document.getElementById("CategoryBlogsTable");
+    if (!CategoryBlogsTable) {
         // console.error("Table tidak ditemukan di halaman ini.");
         return;
     }
 
-    $("#requestContactTable").DataTable({
+    $("#CategoryBlogsTable").DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: requestUrlrequestContact,
+            url: requestUrlCategoryBlogsTable,
             type: "GET",
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
+                'X-Requested-With': 'XMLHttpRequest', // **Pastikan ini ada**
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         },
         columns: [
             { data: "DT_RowIndex", name: "DT_RowIndex", orderable: false, searchable: false },
             { data: "name", name: "name" },
-            { data: "email", name: "email" },
-            { data: "phone", name: "phone" },
-            { data: "interested_in", name: "interested_in" },
-            { data: "details", name: "details" },
+            { data: "slug", name: "slug" },
+            { data: "description", name: "description" },
             { data: "action", name: "action", orderable: false, searchable: true },
         ],
         responsive: true,
@@ -53,26 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
-       $(document).on('click', '#sets', function() {
-       var nm = $(this).data('nm');
-       var em = $(this).data('em');
-       var phones = $(this).data('phones');
-       var crte = $(this).data('crte');
-       var sub = $(this).data('sub');
-       var masage = $(this).data('masage');
-      
     
-
-      
-      $('#nm').text(nm);  
-      $('#em').text(em);  
-      $('#phones').text(phones);  
-      $('#crte').text(crte);  
-      $('#sub').text(sub);  
-      $('#masage').text(masage);  
-     
-      
-    })
-
 });
+

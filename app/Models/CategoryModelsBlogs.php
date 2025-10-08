@@ -12,10 +12,24 @@ class CategoryModelsBlogs extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
+      protected $fillable = ['name', 'slug', 'description'];
 
     public function blogs()
     {
         return $this->hasMany(Blogs::class, 'category_id'); 
-        // relasi: 1 kategori punya banyak blog
+
+    }
+
+
+    public static function isNameExistsAdd($name)
+    {
+        return self::where('name', $name)->exists();
+    }
+
+    public static function isNameExists($name, $excludeId = null)
+    {
+        return self::where('name', $name)
+            ->where('id', '!=', $excludeId)
+            ->exists();
     }
 }

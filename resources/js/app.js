@@ -24,6 +24,7 @@ import './costums/accessMenu'
 import './costums/users'
 import './costums/accessSubMenu'
 import './costums/requestContact'
+import './costums/CategoryBlogs'
 
 
 import '@fortawesome/fontawesome-free/css/all.min.css'

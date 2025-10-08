@@ -11,12 +11,16 @@ use App\Http\Controllers\AdminQuotation\Admin_Quotation_system;
 use App\Http\Controllers\Setting\Setting_General;
 use App\Http\Controllers\Costumers\Costumers;
 
-// untuk handle semua route app vue dan blade logic
+
+
+
+// untuk handle semua route app vue dan blade logic (memisahkan route logic laravel-vue)
 Route::get('/wpc-esys/{any?}', function () {
     return view('app'); // Vue SPA
 })->where('any', '.*');
 
 
+// ini semua route handle App untuk laravel not vue
 // Handle error 
 Route::fallback(function () {
     return response()->view('errors.404', ['title'=>'404'], 404);
@@ -177,7 +181,8 @@ Route::get('/blogs/{filename}', function ($filename) {
 
 
 
-// Admin web route
+// Admin-Web route
+// route blog admin
 Route::get('Admins/List-blogs-company',[Admins::class,'News_Company'])->name('Admins.landing.page');
 Route::get('Admins/Get-blogs', [Admins::class, 'Get_Blogs'])->name('get.blogs');
 Route::get('Admins/add-content-blogs', [Admins::class, 'Form_add_Blogs'])->name('form.add.blogs');
@@ -186,6 +191,17 @@ Route::delete('Admins/delete-content-blogs/{id}', [Admins::class, 'destroyConten
 Route::get('Admins/Get-blogs-update/{id}', [Admins::class, 'Get_Blogs_Update_view'])->name('get.blogs.update');
 Route::put('Admins/store-update-blogs', [Admins::class, 'UpdateBlog'])->name('Admins.update.blogs');
 
+// route category blog
+Route::get('Admins/Master-Category-Blogs',[Admins::class,'Category_Blog'])->name('Admins.List.category.blog');
+Route::get('Admins/Get-category-blog', [Admins::class, 'Get_Category_Blog'])->name('get.category.blogs');
+Route::get('Admins/add-category-blogs', [Admins::class, 'Form_Add_Category_Blogs'])->name('form.add.category.blogs');
+Route::post('Admins/store-category-blogs', [Admins::class, 'store_category_blogs'])->name('store.category.blogs');
+Route::get('Admins/Get-blogs-category-update/{id}', [Admins::class, 'Get_blogs_category_update_view'])->name('get.blogs.category.update');
+Route::put('Admins/store-update-category-blogs', [Admins::class, 'update_category_blogs'])->name('Admins.update.category.blogs');
+Route::delete('Admins/delete-category-blogs/{id}', [Admins::class, 'destroy_category_blogs'])->name('Admins.delete.category.blogs');
+
+
+// route contact request
 Route::get('Admins/List-contact-request',[Admins::class,'getDataContactRequest'])->name('Admins.List.contact.request');
 Route::get('Admins/Get-List-contact-request', [Admins::class, 'get_data_request_file'])->name('get.data.request');
 Route::delete('Admins/Contact-form-delete/{id}', [Admins::class, 'Contact_messages_delete'])->name('Admins.users.contact.form.delete');
