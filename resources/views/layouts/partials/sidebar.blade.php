@@ -172,7 +172,7 @@
                 </li>
             @else
                 
-                <li class="nav-item dropdown {{ $isActiveParent ? 'show' : '' }}">
+                {{-- <li class="nav-item dropdown {{ $isActiveParent ? 'show' : '' }}">
                     <a class="nav-link dropdown-toggle {{ $isActiveParent ? 'show' : '' }}" href="#" id="submenu-{{ $sm->id_submenu }}" role="button" data-bs-toggle="dropdown" aria-expanded="{{ $isActiveParent ? 'true' : 'false' }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="{{ $sm->icon }}"></i>
@@ -193,7 +193,36 @@
                             </li>
                         @endforeach
                     </ul>
+                </li> --}}
+
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" 
+                    data-bs-toggle="collapse" 
+                    href="#submenu-{{ $sm->id_submenu }}" 
+                    role="button" 
+                    aria-expanded="{{ $isActiveParent ? 'true' : 'false' }}" 
+                    aria-controls="submenu-{{ $sm->id_submenu }}">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="{{ $sm->icon }}"></i>
+                    </span>
+                    <span class="nav-link-title">{{ $sm->title }}</span>
+                    <i class="ti ti-chevron-down ms-auto"></i>
+                </a>
+
+                <div class="collapse {{ $isActiveParent ? 'show' : '' }}" id="submenu-{{ $sm->id_submenu }}">
+                    <ul class="nav nav-pills flex-column ms-3">
+                    @foreach ($groupedChildren[$sm->id_submenu] as $child)
+                        <li class="nav-item">
+                        <a class="nav-link {{ Request::is(trim($child->url, '/')) ? 'active' : '' }}" href="{{ url($child->url) }}">
+                            <i class="{{ $child->icon }}"></i>
+                            <span>{{ $child->title }}</span>
+                        </a>
+                        </li>
+                    @endforeach
+                    </ul>
+                </div>
                 </li>
+
                 
             @endif
         @endif
