@@ -20,7 +20,7 @@
                                             WPC Logistic
                                         </h1>
                                       <p class="lead text-light animate__animated animate__fadeIn">
-                                            Experience That Delivers Your <span class="fw-bold text-primary">Satisfaction</span>
+                                            Driven by Reliability <span class="fw-bold text-light">Fast. Safe. On Time.</span>
                                           </p>
                                           <a href="/wpc-esys/qoutation-request" class="btn btn-gradient px-4 py-2 mt-2">
                                             Get Quote
@@ -70,7 +70,7 @@
                                               Global Freight, Warehousing and Logistics Services
                                           </h1>
                                         <p class="lead text-light animate__animated animate__fadeIn">
-                                             Quality service is our focus<span class="fw-bold text-primary"> focus</span>
+                                               Driven by Reliability <span class="fw-bold text-light">Fast. Safe. On Time.</span>
                                             </p>
                                             <a href="/wpc-esys/qoutation-request" class="btn btn-gradient px-4 py-2 mt-2">
                                               Get Quote

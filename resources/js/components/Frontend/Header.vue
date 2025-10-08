@@ -358,7 +358,10 @@ const profileStatic = '/images/profile.png'
   0% { background-position: 0 0; }
   100% { background-position: 200% 0; }
 }
-/* 🔹 Logo styling */
+
+
+
+/*  Logo styling */
 .navbar-brand-image {
   object-fit: contain;
   height: 55px;

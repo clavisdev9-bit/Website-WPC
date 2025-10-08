@@ -4,10 +4,18 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-       <div class="navbar-brand d-flex align-items-center">
-   <img src="{{ asset('images/logox.png') }}" alt="Logo" class="navbar-brand-image me-2" />
-    <span class="fw-bold text-capitalize mt-2">  WPC Logistic</span>
+
+<div class="navbar-brand d-flex flex-column align-items-center"
+     style="margin-bottom: 0; padding-bottom: 0; line-height: 1;">
+  <img src="{{ asset('images/logox.png') }}" 
+       alt="Logo"
+       class="navbar-brand-image"
+       style="height: 65px; width: auto; object-fit: contain; margin-bottom: 0;" />
 </div>
+
+
+
+
         <hr class="my-2 border-light">
 
          @php
