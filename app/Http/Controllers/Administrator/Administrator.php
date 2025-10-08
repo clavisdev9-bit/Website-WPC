@@ -409,10 +409,6 @@ public function storeSubMenu(submenuValidation $request)  {
 
 
 
-
-
-
-
    public function RoleManagement()  {
     $data = [
         'title' =>  'Data Role'
@@ -433,8 +429,6 @@ public function storeSubMenu(submenuValidation $request)  {
         // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
         return DataTables::of($query)
             ->addIndexColumn()
-
-
 
             ->addColumn('access', function($row) {
                 $urlAccess = route('Administrator.role.access.menu', Crypt::encrypt($row->id_role));

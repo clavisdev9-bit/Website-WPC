@@ -7,9 +7,6 @@ $(document).ready(function () {
     $('.form-check-input').on('click', function () {
         const submenu = $(this).data('submenu');
             const userId = $(this).data('user');
-
-      
-
             $.ajax({
                 url: routeChange, // Laravel route
                 type: "POST",
