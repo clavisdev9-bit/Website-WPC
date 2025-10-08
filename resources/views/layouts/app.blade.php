@@ -31,7 +31,6 @@
 <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
 <meta name="theme-color" content="#ffffff">
 
-
 	<!-- CSS files -->
 <link href="{{ asset('assets/backend/dist/css/tabler.min.css?1738096685') }}" rel="stylesheet"/>
 	<link href="{{ asset('assets/backend/dist/css/tabler-flags.min.css?1738096685') }}." rel="stylesheet"/>

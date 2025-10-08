@@ -53,7 +53,7 @@
 @if ($user)
 
     <div class="nav-item dropdown">
-        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu"  style="cursor:pointer;">
             <img src="{{ $imageUrl }}?v={{ $version }}" 
             class="avatar avatar-sm rounded-circle"
             alt="{{ $row->fullname ?? 'User' }} profile"
@@ -236,26 +236,26 @@
                 </div>
             </div>
               @if ($user)
-    <div class="nav-item dropdown">
-        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-            <img src="{{ $imageUrl }}?v={{ $version }}" 
-            class="avatar avatar-sm rounded-circle"
-            alt="{{ $row->fullname ?? 'User' }} profile"
-            loading="lazy"
-            onerror="this.src='{{ asset('storage/profile/'.$defaultImg) }}'">
-       {{-- <span class="avatar avatar-sm" style="background-image: ></span> --}}
-            <div class="d-none d-xl-block ps-2">
-                <div>{{ $user->fullname }}</div>
-                <div class="mt-1 small text-secondary">{{$user->email }}</div>
+      <div class="nav-item dropdown">
+                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu"  style="cursor:pointer;">
+                    <img src="{{ $imageUrl }}?v={{ $version }}" 
+                    class="avatar avatar-sm rounded-circle"
+                    alt="{{ $row->fullname ?? 'User' }} profile"
+                    loading="lazy"
+                    onerror="this.src='{{ asset('storage/profile/'.$defaultImg) }}'">
+            {{-- <span class="avatar avatar-sm" style="background-image: ></span> --}}
+                    <div class="d-none d-xl-block ps-2">
+                        <div>{{ $user->fullname }}</div>
+                        <div class="mt-1 small text-secondary">{{$user->email }}</div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <a href="" class="dropdown-item">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ route('Setting_General.logout') }}" class="dropdown-item">Logout</a>
+                </div>
             </div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <a href="" class="dropdown-item">Profile</a>
-            <div class="dropdown-divider"></div>
-            <a href="{{ route('Setting_General.logout') }}" class="dropdown-item">Logout</a>
         </div>
-    </div>
-</div>
             <div class="collapse navbar-collapse" id="navbar-menu">
                     <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                   {{-- <small>this is if your add new title</small> --}}
