@@ -38,10 +38,8 @@
                             <h4 class="text-white mb-4">Quick Links</h4>
                             <a href="#"> Home</a>
                             <a href="#"> About us</a>
-                            <a href="#"> Our Courses</a>
-                            <a href="#"> Our Features</a>
-                            <a href="#"> Our Blog & news</a>
-                            <a href="#"> Testimonial</a>
+                            <a href="#"> Get Qoute</a>
+                            <a href="#"> Contact</a>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
