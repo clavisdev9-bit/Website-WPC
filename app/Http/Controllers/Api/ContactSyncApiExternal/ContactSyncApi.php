@@ -72,7 +72,7 @@ class ContactSyncApi extends Controller
                 // pastikan contact_id selalu string atau null
                 $contactId = isset($item['contact_id']) ? (string)$item['contact_id'] : null;
 
-                // 2️⃣ Insert / Update ke tabel contacts
+                // 2️ Insert / Update ke tabel contacts
                 $contact = ContactModel::updateOrCreate(
                     ['id' => $item['id']],
                     [
@@ -95,12 +95,12 @@ class ContactSyncApi extends Controller
                     ]
                 );
 
-                // 3️⃣ Hapus relasi lama
+                // 3️ Hapus relasi lama
                 ContactCountryModel::where('contact_id', $contact->id)->delete();
                 ContactStateModel::where('contact_id', $contact->id)->delete();
                 ContactTagModel::where('contact_id', $contact->id)->delete();
 
-                // 4️⃣ Simpan relasi country
+                // 4️ Simpan relasi country
                 if (!empty($item['country']) && is_array($item['country'])) {
                     foreach ($item['country'] as $country) {
                         ContactCountryModel::create([
@@ -111,7 +111,7 @@ class ContactSyncApi extends Controller
                     }
                 }
 
-                // 5️⃣ Simpan relasi state
+                // 5️ Simpan relasi state
                 if (!empty($item['state']) && is_array($item['state'])) {
                     foreach ($item['state'] as $state) {
                         ContactStateModel::create([
@@ -122,7 +122,7 @@ class ContactSyncApi extends Controller
                     }
                 }
 
-                // 6️⃣ Simpan relasi tags
+                // 6️ Simpan relasi tags
                 if (!empty($item['tags']) && is_array($item['tags'])) {
                     foreach ($item['tags'] as $tag) {
                         ContactTagModel::create([
@@ -136,7 +136,7 @@ class ContactSyncApi extends Controller
 
             DB::commit();
 
-            // 7️⃣ Simpan log sinkronisasi
+            // 7️ Simpan log sinkronisasi
             DB::table('contact_sync_logs')->insert([
                 'sync_time'     => now(),
                 'total_records' => $totalRecords,

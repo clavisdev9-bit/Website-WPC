@@ -34,9 +34,9 @@ Schedule::call(function () {
 })
 ->timezone('Asia/Jakarta')
 // ->hourly(); //untuk 1 jam sekali
-// ->dailyAt('12:00'); // jalan tiap jam 12 siang WIB 
-->everyMinute(); //untuk pengujian atau manual bisa sync setiap waktu
-// ->withoutOverlapping(); // tidak dijalankan lagi kalau masih proses
+->dailyAt('16:15'); // jalan tiap jam 12 siang WIB 
+// ->everyMinute(); //untuk pengujian atau manual bisa sync setiap waktu
+// ->withoutOverlapping(); // tidak dijalankan lagi kalau masih proses berguna untuk banyak scheduler untuk antrian
 
 
 
