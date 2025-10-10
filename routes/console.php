@@ -29,13 +29,13 @@ Schedule::call(function () {
             ]);
         }
     } catch (\Exception $e) {
-        Log::error('⚠️ Error saat sync kontak', ['message' => $e->getMessage()]);
+        Log::error('Error saat sync kontak', ['message' => $e->getMessage()]);
     }
 })
 ->timezone('Asia/Jakarta')
 // ->hourly(); //untuk 1 jam sekali
-->dailyAt('16:15'); // jalan tiap jam 12 siang WIB 
-// ->everyMinute(); //untuk pengujian atau manual bisa sync setiap waktu
+// ->dailyAt('13:20'); // jalan tiap jam 12 siang WIB 
+->everyMinute(); //untuk pengujian atau manual bisa sync setiap waktu
 // ->withoutOverlapping(); // tidak dijalankan lagi kalau masih proses berguna untuk banyak scheduler untuk antrian
 
 

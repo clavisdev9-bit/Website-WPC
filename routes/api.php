@@ -20,5 +20,5 @@ Route::get('/pickup-destinations', [Master::class, 'pickupDestinations']);
 Route::post('/quote/create', [Qoutation::class, 'createQuotation']);
 
 // route for syncron contacts Manual
-Route::get('/contacts', [ContactSyncApi::class, 'index']);
-Route::get('/contacts/sync', [ContactSyncApi::class, 'syncFromApi']);
+Route::get('/contacts', [ContactSyncApi::class, 'index'])->name('get.data.contact.fix.');
+Route::get('/contacts/sync', [ContactSyncApi::class, 'syncFromApi'])->name('sync.contact.process');

@@ -207,13 +207,17 @@ Route::get('Admins/Get-List-contact-request', [Admins::class, 'get_data_request_
 Route::delete('Admins/Contact-form-delete/{id}', [Admins::class, 'Contact_messages_delete'])->name('Admins.users.contact.form.delete');
 
 
-// Admin Quotation system
+// Admin Quotation system (qoutation)
 Route::get('Admin_Quotation_system/Home', [Admin_Quotation_system::class, 'Home'])->name('Request.Quotation.Dashboard');
 Route::get('Admin_Quotation_system/List-Request-Quotation',[Admin_Quotation_system::class,'List_Request_Quotation'])->name('List.Request.Quotation.quotation');
 Route::get('Admin_Quotation_system/Get-quotation', [Admin_Quotation_system::class, 'Get_Quotations'])->name('get.quotation');
 // Api get Country, state From Oddo (bisa di pakai untuk controller lainya)
 Route::get('/external/api/countries', [Admin_Quotation_system::class, 'countries'])->name('api.countries');
 Route::get('/external/api/states/{countryId}', [Admin_Quotation_system::class, 'states'])->name('api.states');
+
+// Admin Quotation system (Contact)
+Route::get('Admin_Quotation_system/System-contact-sync',[Admin_Quotation_system::class,'List_System_contact_sync'])->name('Admin.quotation.system.contact.sync');
+Route::get('Admin_Quotation_system/Get-contact-sync', [Admin_Quotation_system::class, 'Get_data_contact_fix_sync'])->name('Admin.quotation.get.system.contact.sync');
 
 
 // Costumers Route

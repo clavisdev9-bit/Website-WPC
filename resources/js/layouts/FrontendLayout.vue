@@ -63,9 +63,9 @@
 
 
 </div>
-
+<ChatWidget />
 </template>
-
+  
 <script setup>
 // import Navbar from '../components/Frontend/Navbar.vue';
 // import Footer from '../components/Frontend/Footer.vue';
@@ -74,7 +74,7 @@ import Header from '../components/Frontend/Header.vue';
 import Footer from '../components/Frontend/Footer.vue';
 const showComingSoon = ref(false)
 const imageCommingSoon = '/images/maintenance.png'
-
+import ChatWidget from '../components/ChatWidget.vue'
 const props = defineProps({
   fluid: {
     type: Boolean,

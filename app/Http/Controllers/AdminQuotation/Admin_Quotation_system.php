@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Cache;
+use App\Models\ContactModel;
 
 class Admin_Quotation_system extends Controller
 {
-
+    protected $ContactModel;
+    public function __construct(ContactModel $ContactModel) {
+        $this->ContactModel = $ContactModel;
+    }
 
     public function Home()  {
           $data = [
@@ -211,6 +215,64 @@ class Admin_Quotation_system extends Controller
             'success' => false,
             'message' => 'Server error: ' . $e->getMessage(),
         ]);
+    }
+}
+
+
+
+// start code get contact fix
+public function List_System_contact_sync() {
+
+    $data = [
+           'title' => 'List Contact Result Sync'
+          ];
+    return view('admin-quotation/contact-sync/file', $data);
+}
+
+public function Get_data_contact_fix_sync(Request $request)
+{
+    if ($request->ajax()) {
+        // Query dasar: ambil data dari ContactModel beserta relasinya
+        $query = ContactModel::with(['countries', 'states', 'tags'])
+            ->orderBy('id', 'desc');
+        // Filter pencarian (opsional, otomatis oleh DataTables, tapi bisa manual juga)
+        if ($request->has('search') && !empty($request->input('search')['value'])) {
+            $searchTerm = $request->input('search')['value'];
+            $query->where('name', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('phone', 'LIKE', "%{$searchTerm}%");
+        }
+        // Kembalikan data dalam format DataTables
+        return DataTables::eloquent($query)
+            ->addIndexColumn()
+            ->addColumn('country', function ($row) {
+                // Ambil nama negara dari relasi countries
+                if ($row->countries && count($row->countries) > 0) {
+                    return implode(', ', $row->countries->pluck('country_name')->toArray());
+                }
+                return '-';
+            })
+            ->addColumn('state', function ($row) {
+                if ($row->states && count($row->states) > 0) {
+                    return implode(', ', $row->states->pluck('state_name')->toArray());
+                }
+                return '-';
+            })
+            ->addColumn('tags', function ($row) {
+                if ($row->tags && count($row->tags) > 0) {
+                    return implode(', ', $row->tags->pluck('tag_name')->toArray());
+                }
+                return '-';
+            })
+            ->addColumn('details', function ($row) {
+                $btn = '<a href="#" class="btn btn-outline-warning me-1">
+                            <i class="fa fa-eye"></i>
+                        </a>';
+
+                return $btn;
+            })
+            ->rawColumns(['details'])
+            ->make(true);
     }
 }
 

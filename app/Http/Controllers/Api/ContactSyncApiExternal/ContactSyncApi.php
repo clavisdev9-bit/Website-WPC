@@ -39,7 +39,7 @@ class ContactSyncApi extends Controller
      */
    
 
-    public function syncFromApi()
+    public function syncFromApi(Request $request)
     {
         set_time_limit(300); // maksimal 5 menit
         ini_set('memory_limit', '512M'); // tambah memory jika perlu
@@ -145,6 +145,13 @@ class ContactSyncApi extends Controller
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ]);
+
+              if (!$request->ajax()) {
+                    return redirect()
+                    ->route('Admin.quotation.system.contact.sync')
+                    ->with('success', 'Sinkronisasi data kontak berhasil!');
+                }
+
 
             return response()->json([
                 'success' => true,

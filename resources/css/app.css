@@ -27,3 +27,26 @@
 
 
 
+/* 🧩 Custom styling WPC for n8n chat */
+n8n-chat .header {
+  background-color: #0b1a44 !important;
+  color: #fff !important;
+}
+
+n8n-chat .message.user {
+  background-color: #e63946 !important;
+  color: #fff !important;
+}
+
+n8n-chat .message.bot {
+  background-color: #f8f9fa !important;
+  color: #333 !important;
+}
+
+n8n-chat .toggle-button {
+  background-color: #e63946 !important;
+}
+
+n8n-chat .powered {
+  display: none !important;
+}

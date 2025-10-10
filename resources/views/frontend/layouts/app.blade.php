@@ -8,6 +8,7 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
+       <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
 
         <!-- Apple Touch Icons -->
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
@@ -53,8 +54,12 @@
 
         <!-- Template Stylesheet -->
         <link href="{{ asset('assets/frontend/css/style.css')}}" rel="stylesheet">
+         
         {{-- <link href="{{ asset('assets/frontend/css/custom.css')}}" rel="stylesheet"> --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+     
+
     </head>
 
     <body>
@@ -82,6 +87,18 @@
         <script src="{{ asset('assets/frontend/js/main.js')}}"></script>
       
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+        <script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+    
+	createChat({
+		webhookUrl: 'https://workflow-clavis-flow.vwfini.easypanel.host/webhook/9ba92abb-8cd8-42b6-a18d-1ed83952cc54/chat'
+	});
+
+	
+</script>
+
+
     </body>
 
 </html>
