@@ -8,12 +8,15 @@ use Illuminate\Support\Facades\Http;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Cache;
 use App\Models\ContactModel;
+use App\Models\ContactSyncLogModel;
 
 class Admin_Quotation_system extends Controller
 {
     protected $ContactModel;
-    public function __construct(ContactModel $ContactModel) {
+    protected $ContactSyncLogModel;
+    public function __construct(ContactModel $ContactModel, ContactSyncLogModel $ContactSyncLogModel) {
         $this->ContactModel = $ContactModel;
+        $this->ContactSyncLogModel = $ContactSyncLogModel;
     }
 
     public function Home()  {
@@ -224,7 +227,8 @@ class Admin_Quotation_system extends Controller
 public function List_System_contact_sync() {
 
     $data = [
-           'title' => 'List Contact Result Sync'
+           'title' => 'List Contact Result Sync',
+           'titles' => 'LOG Sync'
           ];
     return view('admin-quotation/contact-sync/file', $data);
 }
@@ -275,5 +279,51 @@ public function Get_data_contact_fix_sync(Request $request)
             ->make(true);
     }
 }
+
+    public function getLogSyncContact(Request $request)
+{
+    if ($request->ajax()) {
+        // Mulai query tanpa get() dulu
+        $query = $this->ContactSyncLogModel->orderBy('id', 'desc');
+        // Cek apakah ada parameter pencarian
+        if ($request->has('search') && !empty($request->input('search')['value'])) {
+            $searchTerm = $request->input('search')['value'];
+            $query->where('status', 'LIKE', "%{$searchTerm}%");
+        }
+        // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
+        return DataTables::of($query)
+            ->addIndexColumn()
+            
+            ->addColumn('sync_time', function ($row) {
+                if (!$row->sync_time) {
+                    return '-';
+                }
+                \Carbon\Carbon::setLocale('id');
+                return \Carbon\Carbon::parse($row->sync_time)
+                    ->translatedFormat('d F Y H:i:s'); // contoh: 10 Oktober 2025 14:35:22
+            })
+
+             ->addColumn('status', function ($row) {
+        $status = strtolower($row->status ?? '');
+        if ($status === 'success') {
+            return '<span class="badge bg-success-lt">Success</span>';
+        } elseif ($status === 'failed' || $status === 'error') {
+            return '<span class="badge bg-danger-lt">Failed</span>';
+        } else {
+            return '<span class="badge bg-secondary-lt">' . e($row->status ?? 'Unknown') . '</span>';
+        }
+    })
+
+            ->addColumn('message', function ($row) {
+                $msg = e($row->message ?? '');
+                return '<textarea class="form-control" rows="3" readonly>' . $msg . '</textarea>';
+            })
+            ->rawColumns(['message'])
+
+            ->rawColumns(['sync_time', 'message', 'status'])
+            ->make(true);
+    }
+}
+
 
 }

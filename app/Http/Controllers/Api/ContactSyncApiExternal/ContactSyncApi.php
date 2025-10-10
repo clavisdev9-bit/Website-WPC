@@ -135,13 +135,14 @@ class ContactSyncApi extends Controller
             }
 
             DB::commit();
+            $logMessagess = "Sinkronisasi berhasil dijalankan. Total data: {$totalRecords}. Waktu: " . now()->format('d-m-Y H:i:s');
 
             // 7️ Simpan log sinkronisasi
             DB::table('contact_sync_logs')->insert([
                 'sync_time'     => now(),
                 'total_records' => $totalRecords,
                 'status'        => 'success',
-                'message'       => $logMessage,
+                'message'       => $logMessagess,
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ]);

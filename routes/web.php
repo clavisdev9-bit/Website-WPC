@@ -218,6 +218,7 @@ Route::get('/external/api/states/{countryId}', [Admin_Quotation_system::class, '
 // Admin Quotation system (Contact)
 Route::get('Admin_Quotation_system/System-contact-sync',[Admin_Quotation_system::class,'List_System_contact_sync'])->name('Admin.quotation.system.contact.sync');
 Route::get('Admin_Quotation_system/Get-contact-sync', [Admin_Quotation_system::class, 'Get_data_contact_fix_sync'])->name('Admin.quotation.get.system.contact.sync');
+Route::get('Admin_Quotation_system/Get-contact-log-sync', [Admin_Quotation_system::class, 'getLogSyncContact'])->name('Admin.quotation.get.system.contact.sync.log');
 
 
 // Costumers Route
