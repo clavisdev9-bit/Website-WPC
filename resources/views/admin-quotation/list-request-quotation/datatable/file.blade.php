@@ -335,7 +335,7 @@
         <!-- Selected list -->
         <div class="mt-4">
           <h6>Selected Agents</h6>
-          <ul id="selected-agents-list" class="list-group small"></ul>
+          <ul id="selectedList" class="list-group small"></ul>
         </div>
       </div>
 
@@ -515,13 +515,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
-
-
-
-
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  // Set untuk menyimpan ID agent yang dipilih
+  const selectedAgents = new Set();
+
+  // Fungsi untuk render ulang daftar agent terpilih
+  function renderSelectedList() {
+    const list = document.getElementById('selectedList');
+    list.innerHTML = '';
+    selectedAgents.forEach(({ id, name }) => {
+      list.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">
+        ${name}
+        <button class="btn btn-sm btn-outline-danger btn-remove" data-id="${id}">×</button>
+      </li>`;
+    });
+
+    // Tambahkan event remove
+    document.querySelectorAll('.btn-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        selectedAgents.forEach(agent => {
+          if (agent.id == id) selectedAgents.delete(agent);
+        });
+        document.querySelector(`.card[data-id="${id}"]`)?.classList.remove('selected');
+        renderSelectedList();
+      });
+    });
+  }
+
+  // Modifikasi bagian fetch hasil pencarian kamu:
   document.getElementById('btn-search-agent').addEventListener('click', function () {
     const filters = {
       country: document.getElementById('country_destination')?.value || '',
@@ -540,41 +562,110 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       body: JSON.stringify(filters)
     })
-    .then(res => res.json())
-    .then(res => {
-      const resultsContainer = document.getElementById('agent-search-results-destination');
-      if (!resultsContainer) {
-        console.warn('❗ Elemen hasil pencarian tidak ditemukan');
-        return;
-      }
+      .then(res => res.json())
+      .then(res => {
+        const resultsContainer = document.getElementById('agent-search-results-destination');
+        resultsContainer.innerHTML = '';
 
-      console.log('Hasil dari API:', res);
-      resultsContainer.innerHTML = '';
-
-      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
-        res.data.forEach(agent => {
-          resultsContainer.innerHTML += `
-            <div class="col-md-6 mb-3">
-              <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                  <h6 class="fw-bold text-primary mb-1">${agent.name ?? '-'}</h6>
-                  <div class="small text-muted mb-1">📍 ${agent.city ?? '-'}, ${agent.street ?? '-'}</div>
-                  <div class="small text-muted mb-1">ZIP: ${agent.zip ?? '-'}</div>
-                  <div class="small mb-2"><span class="badge bg-success">${agent.company_type ?? '-'}</span></div>
-                  <div class="small">📧 ${agent.email ?? '-'}<br>☎️ ${agent.phone ?? '-'}</div>
+        if (res.success && res.data.length > 0) {
+          res.data.forEach(agent => {
+            resultsContainer.innerHTML += `
+              <div class="col-md-6 mb-3">
+                <div class="card card-sm shadow-sm h-100 selectable" data-id="${agent.id}" data-name="${agent.name ?? '-'}">
+                  <div class="card-status-top"></div>
+                  <div class="card-body">
+                    <h3 class="card-title mb-1 text-primary">${agent.name ?? '-'}</h3>
+                    <div class="small text-muted mb-2">
+                      <i class="fa fa-map-pin"></i> ${agent.city ?? '-'}, ${agent.street ?? '-'}
+                    </div>
+                    <div class="text-secondary small mb-2">
+                      <i class="fa fa-location-arrow"></i> ZIP: ${agent.zip ?? '-'}
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-3">
+                      <div class="text-muted small">
+                        <i class="fa fa-envelope"></i> ${agent.email ?? '-'}<br>
+                        <i class="fa fa-phone"></i> ${agent.phone ?? '-'}
+                      </div>
+                      <div class="text-end">
+                        <span class="badge bg-outline-primary">${agent.company_type ?? '-'}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>`;
-        });
-      } else {
-        resultsContainer.innerHTML = '<div class="text-muted text-center py-3"><em>No agents found.</em></div>';
-      }
-    })
-    .catch(err => console.error('Error searching agents:', err));
+              </div>`;
+          });
+
+          // Tambahkan event klik select card
+          document.querySelectorAll('.card.selectable').forEach(card => {
+            card.addEventListener('click', () => {
+              const id = card.dataset.id;
+              const name = card.dataset.name;
+
+              // toggle selection
+              const existing = Array.from(selectedAgents).find(a => a.id == id);
+              if (existing) {
+                selectedAgents.delete(existing);
+                card.classList.remove('selected');
+              } else {
+                selectedAgents.add({ id, name });
+                card.classList.add('selected');
+              }
+
+              renderSelectedList();
+            });
+          });
+
+        } else {
+          resultsContainer.innerHTML = `<div class="text-muted text-center py-3">No agents found.</div>`;
+        }
+      })
+      .catch(err => console.error('Error searching agents:', err));
   });
-});
+
+  // Style tambahan untuk visual selected
+ // Style tambahan untuk visual selected (versi modern)
+const style = document.createElement('style');
+style.textContent = `
+  .card.selectable {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    background-color: #fff;
+  }
+
+  .card.selectable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .card.selectable.selected {
+    border: 2px solid #2f6feb;
+    box-shadow: 0 0 20px rgba(47,111,235,0.3);
+    background-color: #f0f5ff;
+  }
+
+  .btn-remove {
+    font-weight: bold;
+    line-height: 1;
+    color: #ff4d4f;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .btn-remove:hover {
+    color: #d9363e;
+  }
+`;
+document.head.appendChild(style);
 
 </script>
+
+
+
 
 
 
