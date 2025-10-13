@@ -214,6 +214,13 @@ Route::get('Admin_Quotation_system/Get-quotation', [Admin_Quotation_system::clas
 // Api get Country, state From Oddo (bisa di pakai untuk controller lainya)
 Route::get('/external/api/countries', [Admin_Quotation_system::class, 'countries'])->name('api.countries');
 Route::get('/external/api/states/{countryId}', [Admin_Quotation_system::class, 'states'])->name('api.states');
+Route::get('/external/api/contact/city', [Admin_Quotation_system::class, 'getContactCities'])->name('api.city');
+Route::get('/external/api/contact/city/street', [Admin_Quotation_system::class, 'getContactStreets'])->name('api.city.street');
+Route::get('/external/api/contact/city/street/zip', [Admin_Quotation_system::class, 'getContactZips'])->name('api.city.street.zip');
+Route::get('/external/api/contact/tags', [Admin_Quotation_system::class, 'getContactTags'])->name('api.tags.contact');
+Route::post('/agent/search', [Admin_Quotation_system::class, 'search_contact_agent'])->name('api.agent.contact.search');
+
+
 
 // Admin Quotation system (Contact)
 Route::get('Admin_Quotation_system/System-contact-sync',[Admin_Quotation_system::class,'List_System_contact_sync'])->name('Admin.quotation.system.contact.sync');

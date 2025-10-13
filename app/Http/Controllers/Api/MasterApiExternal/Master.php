@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 class Master extends Controller
 {
    
-
+        // ambil negara
         public function countries()
         {
             // $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/countries";
@@ -47,7 +47,7 @@ class Master extends Controller
         }
 
 
-
+        // ambil state
         public function statesByCountry($countryId)
         {
             // $externalUrlState = "http://political-gerard-uncertainly.ngrok-free.app/states/country/{$countryId}";
@@ -87,7 +87,7 @@ class Master extends Controller
 
 
 
-
+        // ambil pickup origin
         public function pickupOrigins(Request $request)
             {
                 $transportation = $request->query('transportation'); 
@@ -144,7 +144,7 @@ class Master extends Controller
 
 
 
-
+    //  ambil pickup destinasi
     public function pickupDestinations(Request $request)
     {
         $transportation = $request->query('transportation');

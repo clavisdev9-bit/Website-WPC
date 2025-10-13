@@ -9,16 +9,22 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Cache;
 use App\Models\ContactModel;
 use App\Models\ContactSyncLogModel;
+use App\Models\ContactTagModel;
+
 
 class Admin_Quotation_system extends Controller
 {
     protected $ContactModel;
     protected $ContactSyncLogModel;
-    public function __construct(ContactModel $ContactModel, ContactSyncLogModel $ContactSyncLogModel) {
+    protected $ContactTagModel;
+    public function __construct(ContactModel $ContactModel, ContactSyncLogModel $ContactSyncLogModel, ContactTagModel $ContactTagModel) {
         $this->ContactModel = $ContactModel;
         $this->ContactSyncLogModel = $ContactSyncLogModel;
+        $this->ContactTagModel = $ContactTagModel;
     }
 
+
+    // code untuk home admin quotation
     public function Home()  {
           $data = [
            'title' => 'Home Request Quotation'
@@ -26,13 +32,13 @@ class Admin_Quotation_system extends Controller
             return view('admin-quotation/home/file', $data);
     }
 
+
+    // start code ambil data request list quotation
    public function List_Request_Quotation()  {
         $data = [
              'title' => 'List Request Quotation'
         ];
-        // return view('admin-quotation/list-request-quotation/file', $data);
         return view('admin-quotation/list-request-quotation/datatable/file', $data);
-        // return view('admin-quotation/list-request-quotation/file_destination', $data);
    }
 
 
@@ -91,7 +97,7 @@ class Admin_Quotation_system extends Controller
                     })
                     ->rawColumns(['transportation_method']) // penting supaya HTML tidak di-escape
 
-
+ 
                     ->addColumn('data_quotation', function ($row) {
                            $Pickuporigin = $row['pickup_origin'] ?? null;
                             $originId = $Pickuporigin[0] ?? '';
@@ -122,7 +128,7 @@ class Admin_Quotation_system extends Controller
                         return '<button type="button" 
                                     class="btn btn-outline-primary"
                                     data-bs-toggle="modal" 
-                                    data-bs-target="#modal-agent-searching-pickup"
+                                    data-bs-target="#modal-agent-searching-origin"
                                     data-origin="' . e($origin) . '">
                                     <i class="fa fa-search"> </i> Agent Pickup
                                 </button>';
@@ -143,11 +149,13 @@ class Admin_Quotation_system extends Controller
             ->make(true);
     }
 }
+ // end code ambil data request list quotation
+
+
 
   // ambil list countries dari API eksternal
    public function countries()
     {
-        
         try {
         // Simpan cache 1 jam (3600 detik)
         $countries = Cache::remember('countries', 3600, function () {
@@ -197,7 +205,6 @@ class Admin_Quotation_system extends Controller
             if ($response->successful()) {
                 return $response->json();
             }
-
             return null;
         });
 
@@ -219,7 +226,251 @@ class Admin_Quotation_system extends Controller
             'message' => 'Server error: ' . $e->getMessage(),
         ]);
     }
+
 }
+
+
+
+public function getContactCities()
+{
+    try {
+        $cities = $this->ContactModel
+            ->whereNotNull('city')
+            ->pluck('city')
+            ->filter(function ($city) {
+                // Hapus spasi di awal/akhir dan buang yang kosong
+                return trim($city) !== '';
+            })
+            ->unique()
+            ->values();
+
+        if ($cities->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No cities found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $cities
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+public function getContactStreets()
+{
+    try {
+        $streets = $this->ContactModel
+            ->whereNotNull('street')
+            ->pluck('street')
+            ->filter(function ($street) {
+                // Hilangkan spasi dan kosongkan nilai yang tidak valid
+                return trim($street) !== '';
+            })
+            ->unique()
+            ->values();
+
+        if ($streets->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No streets found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $streets
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+
+public function getContactZips()
+{
+    try {
+        $zips = $this->ContactModel
+            ->whereNotNull('zip')
+            ->pluck('zip')
+            ->filter(function ($zip) {
+                return trim($zip) !== '';
+            })
+            ->unique()
+            ->values();
+
+        if ($zips->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No ZIP numbers found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $zips
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+
+
+public function getContactTags()
+{
+    try {
+        $tags = $this->ContactTagModel
+            ->whereNotNull('tag_name')
+            ->pluck('tag_name')
+            ->filter(function ($tags) {
+                return trim($tags) !== '';
+            })
+            ->unique()
+            ->values();
+
+        if ($tags->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No Tag Name found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $tags
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+
+
+public function search_contact_agent(Request $request)
+{
+    try {
+        $query = $this->ContactModel->query();
+
+        // 🔍 Filter dinamis hanya jika field diisi
+        if ($request->filled('city')) {
+            $query->where('city', 'ILIKE', "%{$request->city}%");
+        }
+
+        if ($request->filled('street')) {
+            $query->where('street', 'ILIKE', "%{$request->street}%");
+        }
+
+        if ($request->filled('zip')) {
+            $query->where('zip', 'ILIKE', "%{$request->zip}%");
+        }
+
+        if ($request->filled('company_type')) {
+            $query->where('company_type', 'ILIKE', "%{$request->company_type}%");
+        }
+
+        // if ($request->filled('tags')) {
+        //     $query->where('tags', 'ILIKE', "%{$request->tags}%");
+        // }
+
+        // 🚀 Ambil hasil (maksimal 50 agar ringan)
+        $contacts = $query->select([
+            'id',
+            'name',
+            'email',
+            'phone',
+            'city',
+            'street',
+            'zip',
+            'company_type'
+        ])
+        ->orderBy('name', 'asc')
+        ->limit(50)
+        ->get();
+
+        // ✅ Response sukses
+        return response()->json([
+            'success' => true,
+            'data' => $contacts
+        ]);
+    } catch (\Throwable $e) {
+        // ⚠️ Tangani error agar tetap aman
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
+// public function search_contact_agent(Request $request)
+// {
+//     try {
+//         $query = $this->ContactModel->query();
+
+//         // Filter dinamis
+//         if ($request->filled('city')) {
+//             $query->where('city', 'ILIKE', "%{$request->city}%");
+//         }
+//         if ($request->filled('street')) {
+//             $query->where('street', 'ILIKE', "%{$request->street}%");
+//         }
+//         if ($request->filled('zip')) {
+//             $query->where('zip', 'ILIKE', "%{$request->zip}%");
+//         }
+//         if ($request->filled('company_type')) {
+//             $query->where('company_type', 'ILIKE', "%{$request->company_type}%");
+//         }
+
+//         $contacts = $query
+//             ->select('id', 'name', 'email', 'phone', 'city', 'street', 'zip', 'company_type')
+//             ->limit(50)
+//             ->get();
+
+
+//         return response()->json([
+//             'success' => true,
+//             'data' => $contacts
+//         ]);
+//     } catch (\Exception $e) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => $e->getMessage()
+//         ], 500);
+//     }
+// }
+
+
+
+
+
+
+
+
+
 
 
 

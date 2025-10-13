@@ -53,6 +53,9 @@ import '../vendor/dist/libs/jsvectormap/dist/maps/world-merc.js';
 import Toast, { POSITION } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
+import 'select2';
+import 'select2/dist/css/select2.css';
+
 const app = createApp(App)
 
 // Konfigurasi global toast

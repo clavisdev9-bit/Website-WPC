@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MasterApiExternal\Master;
 use App\Http\Controllers\Api\LogicApiExternal\Qoutation;
 use App\Http\Controllers\Api\ContactSyncApiExternal\ContactSyncApi;
+use App\Http\Controllers\AdminQuotation\Admin_Quotation_system;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -16,9 +17,11 @@ Route::get('/states/country/{countryId}', [Master::class, 'statesByCountry'])->n
 Route::get('/pickup-origins', [Master::class, 'pickupOrigins']);
 Route::get('/pickup-destinations', [Master::class, 'pickupDestinations']);
 
-
 Route::post('/quote/create', [Qoutation::class, 'createQuotation']);
 
 // route for syncron contacts Manual
 Route::get('/contacts', [ContactSyncApi::class, 'index'])->name('get.data.contact.fix.');
 Route::get('/contacts/sync', [ContactSyncApi::class, 'syncFromApi'])->name('sync.contact.process');
+
+
+
