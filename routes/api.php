@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\MasterApiExternal\Master;
 use App\Http\Controllers\Api\LogicApiExternal\Qoutation;
 use App\Http\Controllers\Api\ContactSyncApiExternal\ContactSyncApi;
 use App\Http\Controllers\AdminQuotation\Admin_Quotation_system;
+use App\Http\Controllers\Api\ApiInternal\NetworkAgentApi;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,5 +24,6 @@ Route::post('/quote/create', [Qoutation::class, 'createQuotation']);
 Route::get('/contacts', [ContactSyncApi::class, 'index'])->name('get.data.contact.fix.');
 Route::get('/contacts/sync', [ContactSyncApi::class, 'syncFromApi'])->name('sync.contact.process');
 
-
+// route for Agents Network
+Route::get('/Agents/Network', [NetworkAgentApi::class, 'getNetworkAgent'])->name('api.agents.network');
 
