@@ -58,6 +58,7 @@ class SubmenuSeeder extends Seeder
             ],
         ];
 
+        
         foreach ($submenus as $submenu) {
             DB::table('submenus')->insert([
                 'id_menu' => $submenu['id_menu'],

@@ -370,54 +370,112 @@ public function getContactTags()
 
 
 
+// public function search_contact_agent(Request $request)
+// {
+//     try {
+//         $query = $this->ContactModel->query();
+
+//         // 🔍 Filter dinamis hanya jika field diisi
+//         if ($request->filled('city')) {
+//             $query->where('city', 'ILIKE', "%{$request->city}%");
+//         }
+
+//         if ($request->filled('street')) {
+//             $query->where('street', 'ILIKE', "%{$request->street}%");
+//         }
+
+//         if ($request->filled('zip')) {
+//             $query->where('zip', 'ILIKE', "%{$request->zip}%");
+//         }
+
+//         if ($request->filled('company_type')) {
+//             $query->where('company_type', 'ILIKE', "%{$request->company_type}%");
+//         }
+
+//         // if ($request->filled('tags')) {
+//         //     $query->where('tags', 'ILIKE', "%{$request->tags}%");
+//         // }
+
+//         // Ambil hasil (maksimal 50 agar ringan)
+//         $contacts = $query->select([
+//             'id',
+//             'name',
+//             'email',
+//             'phone',
+//             'city',
+//             'street',
+//             'zip',
+//             'company_type'
+//         ])
+//         ->orderBy('name', 'asc')
+//         ->limit(50)
+//         ->get();
+
+//         // Response sukses
+//         return response()->json([
+//             'success' => true,
+//             'data' => $contacts
+//         ]);
+//     } catch (\Throwable $e) {
+//         // Tangani error agar tetap aman
+//         return response()->json([
+//             'success' => false,
+//             'message' => $e->getMessage()
+//         ], 500);
+//     }
+// }
+
+
+
 public function search_contact_agent(Request $request)
 {
     try {
-        $query = $this->ContactModel->query();
+        $query = $this->ContactModel->query()
+            ->leftJoin('contact_tags', 'contacts.id', '=', 'contact_tags.contact_id');
 
         // 🔍 Filter dinamis hanya jika field diisi
         if ($request->filled('city')) {
-            $query->where('city', 'ILIKE', "%{$request->city}%");
+            $query->where('contacts.city', 'ILIKE', "%{$request->city}%");
         }
 
         if ($request->filled('street')) {
-            $query->where('street', 'ILIKE', "%{$request->street}%");
+            $query->where('contacts.street', 'ILIKE', "%{$request->street}%");
         }
 
         if ($request->filled('zip')) {
-            $query->where('zip', 'ILIKE', "%{$request->zip}%");
+            $query->where('contacts.zip', 'ILIKE', "%{$request->zip}%");
         }
 
-        if ($request->filled('company_type')) {
-            $query->where('company_type', 'ILIKE', "%{$request->company_type}%");
-        }
-
-        // if ($request->filled('tags')) {
-        //     $query->where('tags', 'ILIKE', "%{$request->tags}%");
+        // if ($request->filled('company_type')) {
+        //     $query->where('contacts.company_type', 'ILIKE', "%{$request->company_type}%");
         // }
 
-        // 🚀 Ambil hasil (maksimal 50 agar ringan)
+        if ($request->filled('tags')) {
+            // Filter berdasarkan tag_id atau tag_name
+            $query->where('contact_tags.tag_name', 'ILIKE', "%{$request->tags}%");
+        }
+
+        // Ambil hasil (maksimal 50 agar ringan)
         $contacts = $query->select([
-            'id',
-            'name',
-            'email',
-            'phone',
-            'city',
-            'street',
-            'zip',
-            'company_type'
+            'contacts.id',
+            'contacts.name',
+            'contacts.email',
+            'contacts.phone',
+            'contacts.city',
+            'contacts.street',
+            'contacts.zip',
+            'contacts.company_type',
+            'contact_tags.tag_name'
         ])
-        ->orderBy('name', 'asc')
+        ->orderBy('contacts.name', 'asc')
         ->limit(50)
         ->get();
 
-        // ✅ Response sukses
         return response()->json([
             'success' => true,
             'data' => $contacts
         ]);
     } catch (\Throwable $e) {
-        // ⚠️ Tangani error agar tetap aman
         return response()->json([
             'success' => false,
             'message' => $e->getMessage()
@@ -425,43 +483,6 @@ public function search_contact_agent(Request $request)
     }
 }
 
-
-// public function search_contact_agent(Request $request)
-// {
-//     try {
-//         $query = $this->ContactModel->query();
-
-//         // Filter dinamis
-//         if ($request->filled('city')) {
-//             $query->where('city', 'ILIKE', "%{$request->city}%");
-//         }
-//         if ($request->filled('street')) {
-//             $query->where('street', 'ILIKE', "%{$request->street}%");
-//         }
-//         if ($request->filled('zip')) {
-//             $query->where('zip', 'ILIKE', "%{$request->zip}%");
-//         }
-//         if ($request->filled('company_type')) {
-//             $query->where('company_type', 'ILIKE', "%{$request->company_type}%");
-//         }
-
-//         $contacts = $query
-//             ->select('id', 'name', 'email', 'phone', 'city', 'street', 'zip', 'company_type')
-//             ->limit(50)
-//             ->get();
-
-
-//         return response()->json([
-//             'success' => true,
-//             'data' => $contacts
-//         ]);
-//     } catch (\Exception $e) {
-//         return response()->json([
-//             'success' => false,
-//             'message' => $e->getMessage()
-//         ], 500);
-//     }
-// }
 
 
 

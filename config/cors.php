@@ -24,7 +24,9 @@ return [
         'http://localhost:8000',
         'http://127.0.0.1:8000',
         'http://wpc_website.test',
+        'http://192.168.132.12:8000',
         'http://political-gerard-uncertainly.ngrok-free.app',
+        'https://discomposingly-grainless-dante.ngrok-free.app',
     ],
 
     'allowed_origins_patterns' => [],

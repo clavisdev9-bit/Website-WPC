@@ -4,7 +4,7 @@ import FrontendLayout from '../../../layouts/FrontendLayout.vue'
 import "leaflet/dist/leaflet.css"
 import { ref } from 'vue'
 
-const defaultImage = "/branch.jpg"
+const defaultImage = "/images/footer_works.jpg"
 
 // ============================
 // DATA: Negara -> Kota -> Agent
@@ -132,7 +132,7 @@ const goToAgent = (agent) => {
 
 // redirect ke quotation
 const goToQuotation = () => {
-  window.location.href = "/wpc-esys/form-qoutation";
+  window.location.href = "/wpc-esys/qoutation-request";
 }
 
 const zoomTo = (pos, zoom) => {

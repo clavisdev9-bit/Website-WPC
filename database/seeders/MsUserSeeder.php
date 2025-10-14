@@ -17,7 +17,7 @@ class MsUserSeeder extends Seeder
         $now = Carbon::now();
 
         DB::table('ms_users')->insert([
-            'fullname' => 'apregi pratayuda',
+            'fullname' => 'apregi pratayuda indo',
             'username' => 'administrator',
             'email' => 'administrator@example.com',
             'password' => Hash::make('password123'), // password default
@@ -28,6 +28,48 @@ class MsUserSeeder extends Seeder
             'is_active' => true,
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ],
+         [
+                'fullname' => 'sputnix norwey',
+                'username' => 'admincmswebsiteaccount',
+                'email' => 'admincmswebsiteaccount@example.com',
+                'password' => Hash::make('password123'),
+                'image' => 'default.png',
+                'role_id' => 2, // misalnya role berbeda
+                'group_id' => 1,
+                'divisi_id' => 1,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+
+            [
+                'fullname' => 'bortley england',
+                'username' => 'adminquotationsystemaccount',
+                'email' => 'adminquotationsystemaccount@example.com',
+                'password' => Hash::make('password123'),
+                'image' => 'default.png',
+                'role_id' => 3, // misalnya role berbeda
+                'group_id' => 1,
+                'divisi_id' => 3,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+
+            [
+                'fullname' => 'willson denmark',
+                'username' => 'costumersaccount',
+                'email' => 'costumersaccount@example.com',
+                'password' => Hash::make('password123'),
+                'image' => 'default.png',
+                'role_id' => 4, // misalnya role berbeda
+                'group_id' => 1,
+                'divisi_id' => 3,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+    );
     }
 }
