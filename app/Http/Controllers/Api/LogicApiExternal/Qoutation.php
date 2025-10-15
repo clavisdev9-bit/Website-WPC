@@ -15,9 +15,7 @@ class Qoutation extends Controller
    // app/Http/Controllers/QuotationController.php
     public function createQuotation(Request $request)
     {
-        // $externalUrl = "https://political-gerard-uncertainly.ngrok-free.app/quote/create";
-        $externalUrl = "https://discomposingly-grainless-dante.ngrok-free.app/quote/create";
-
+        $externalUrl = "https://53794bb17cf4.ngrok-free.app/quote/create";
         try {
             $response = Http::withOptions([
                 'verify' => true,

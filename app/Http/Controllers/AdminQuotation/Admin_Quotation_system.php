@@ -47,7 +47,7 @@ class Admin_Quotation_system extends Controller
    
     if ($request->ajax()) {
         // Ambil data API
-        $response = Http::withoutVerifying()->get('https://discomposingly-grainless-dante.ngrok-free.app/quotes');
+        $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/quotes');
         $result = $response->json();
 
         $data = $result['data'] ?? [];
@@ -95,7 +95,7 @@ class Admin_Quotation_system extends Controller
                                 return '<span class="text-muted">-</span>';
                         }
                     })
-                    ->rawColumns(['transportation_method']) // penting supaya HTML tidak di-escape
+                    ->rawColumns(['transportation_method']) 
 
  
                     ->addColumn('data_quotation', function ($row) {
@@ -160,7 +160,7 @@ class Admin_Quotation_system extends Controller
         // Simpan cache 1 jam (3600 detik)
         $countries = Cache::remember('countries', 3600, function () {
             $response = Http::withOptions(['verify' => false]) // disable SSL kalau perlu
-                ->get('https://discomposingly-grainless-dante.ngrok-free.app/countries');
+                ->get('https://53794bb17cf4.ngrok-free.app/countries');
 
             if ($response->successful()) {
                 return $response->json();
@@ -200,7 +200,7 @@ class Admin_Quotation_system extends Controller
 
         $states = Cache::remember($cacheKey, 3600, function () use ($country_id) {
             $response = Http::withOptions(['verify' => false])
-                ->get("https://discomposingly-grainless-dante.ngrok-free.app/states/country/{$country_id}");
+                ->get("https://53794bb17cf4.ngrok-free.app/states/country/{$country_id}");
 
             if ($response->successful()) {
                 return $response->json();
@@ -368,62 +368,6 @@ public function getContactTags()
 }
 
 
-
-
-// public function search_contact_agent(Request $request)
-// {
-//     try {
-//         $query = $this->ContactModel->query();
-
-//         // 🔍 Filter dinamis hanya jika field diisi
-//         if ($request->filled('city')) {
-//             $query->where('city', 'ILIKE', "%{$request->city}%");
-//         }
-
-//         if ($request->filled('street')) {
-//             $query->where('street', 'ILIKE', "%{$request->street}%");
-//         }
-
-//         if ($request->filled('zip')) {
-//             $query->where('zip', 'ILIKE', "%{$request->zip}%");
-//         }
-
-//         if ($request->filled('company_type')) {
-//             $query->where('company_type', 'ILIKE', "%{$request->company_type}%");
-//         }
-
-//         // if ($request->filled('tags')) {
-//         //     $query->where('tags', 'ILIKE', "%{$request->tags}%");
-//         // }
-
-//         // Ambil hasil (maksimal 50 agar ringan)
-//         $contacts = $query->select([
-//             'id',
-//             'name',
-//             'email',
-//             'phone',
-//             'city',
-//             'street',
-//             'zip',
-//             'company_type'
-//         ])
-//         ->orderBy('name', 'asc')
-//         ->limit(50)
-//         ->get();
-
-//         // Response sukses
-//         return response()->json([
-//             'success' => true,
-//             'data' => $contacts
-//         ]);
-//     } catch (\Throwable $e) {
-//         // Tangani error agar tetap aman
-//         return response()->json([
-//             'success' => false,
-//             'message' => $e->getMessage()
-//         ], 500);
-//     }
-// }
 
 
 

@@ -50,10 +50,10 @@ class ContactSyncApi extends Controller
         try {
             DB::beginTransaction();
 
-            // 1️⃣ Ambil data dari API eksternal
+            //  Ambil data dari API eksternal
             $response = Http::withoutVerifying()
                 ->timeout(120)
-                ->get('https://discomposingly-grainless-dante.ngrok-free.app/contacts');
+                ->get('https://53794bb17cf4.ngrok-free.app/contacts');
 
             $data = $response->json();
 
