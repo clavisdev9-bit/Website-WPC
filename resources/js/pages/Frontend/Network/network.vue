@@ -4,40 +4,66 @@ import axios from 'axios'
 import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet"
 import FrontendLayout from '../../../layouts/FrontendLayout.vue'
 import "leaflet/dist/leaflet.css"
+import L from "leaflet"
+import markerIcon from "leaflet/dist/images/marker-icon.png"
+import markerShadow from "leaflet/dist/images/marker-shadow.png"
+
+// ✅ Fix marker hilang
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+})
 
 const defaultImage = "/images/footer_works.jpg"
+
 
 // ============================
 // STATE
 // ============================
 const mapRef = ref(null)
+const mapInstance = ref(null)
 const zoomLevel = ref(3)
 const selectedLevel = ref("country")
 const selectedCountry = ref(null)
 const selectedCity = ref(null)
 const showModal = ref(false)
 const selectedImage = ref("")
+const activeAgent = ref(null)
 
 // ============================
-// DATA DARI API
+// ICONS
 // ============================
-const data = ref([]) // struktur: [ { country, cities: [ { city, agents: [...] } ] } ]
+const defaultIcon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+})
+
+const activeIcon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconSize: [30, 45],
+  iconAnchor: [15, 45],
+})
+
+// ============================
+// FETCH DATA
+// ============================
+const data = ref([])
 const loading = ref(true)
 const error = ref(null)
 
-// Ambil data dari API dan bentuk struktur nested
 const fetchData = async () => {
   try {
     const res = await axios.get("http://127.0.0.1:8000/api/Agents/Network")
     const agents = res.data.data.data
 
-    // Group by country -> city -> agent
+    // Group by country → city → agent
     const grouped = Object.values(
       agents.reduce((acc, item) => {
         if (!acc[item.name_country]) {
           acc[item.name_country] = {
             country: item.name_country,
-            position: [parseFloat(item.lat), parseFloat(item.lng)], // sementara ambil dari agent pertama
+            position: [parseFloat(item.lat), parseFloat(item.lng)],
             cities: {}
           }
         }
@@ -57,7 +83,9 @@ const fetchData = async () => {
           position: [parseFloat(item.lat), parseFloat(item.lng)],
           phone: item.phone,
           email: item.email,
-          image: item.image || defaultImage
+          // ✅ semua agent sementara pakai defaultImage
+          image: defaultImage,
+          city: item.name_city,
         })
 
         return acc
@@ -77,26 +105,35 @@ const fetchData = async () => {
 }
 
 // ============================
-// MAP FUNCTION
+// MAP
 // ============================
+const onMapReady = (map) => {
+  mapInstance.value = map
+  console.log("🗺️ Map ready")
+}
+
 const zoomTo = (pos, zoom) => {
-  mapRef.value?.mapObject?.setView(pos, zoom)
+  if (mapInstance.value) {
+    mapInstance.value.setView(pos, zoom)
+  }
 }
 
 const goToCountry = (country) => {
   selectedCountry.value = country
   selectedLevel.value = "city"
-  zoomTo(country.position, 5)
+  if (mapInstance.value) mapInstance.value.flyTo(country.position, 5, { duration: 1 })
 }
 
 const goToCity = (city) => {
   selectedCity.value = city
   selectedLevel.value = "agent"
-  zoomTo(city.position, 8)
+  if (mapInstance.value) mapInstance.value.flyTo(city.position, 8, { duration: 1 })
 }
 
 const goToAgent = (agent) => {
-  zoomTo(agent.position, 12)
+  activeAgent.value = agent
+  selectedLevel.value = 'agent'
+  if (mapInstance.value) mapInstance.value.flyTo(agent.position, 12, { duration: 1.2 })
 }
 
 const goToQuotation = () => {
@@ -108,109 +145,37 @@ const openImage = (img) => {
   showModal.value = true
 }
 
-
-// ==============================
-// PAGINATION UNTUK LIST AGENTS PANEL
-// ==============================
+// ============================
+// PAGINATION
+// ============================
 const agentListItemsPerPage = ref(10)
 const agentListCurrentPage = ref(1)
 
-// Negara
 const paginatedAgentCountries = computed(() => {
   if (selectedLevel.value !== 'country') return []
   const start = (agentListCurrentPage.value - 1) * agentListItemsPerPage.value
   return data.value.slice(start, start + agentListItemsPerPage.value)
 })
 
-// Kota
 const paginatedAgentCities = computed(() => {
   if (selectedLevel.value !== 'city' || !selectedCountry.value) return []
   const start = (agentListCurrentPage.value - 1) * agentListItemsPerPage.value
   return selectedCountry.value.cities.slice(start, start + agentListItemsPerPage.value)
 })
 
-// Agent
 const paginatedAgentRecords = computed(() => {
   if (selectedLevel.value !== 'agent' || !selectedCity.value) return []
   const start = (agentListCurrentPage.value - 1) * agentListItemsPerPage.value
   return selectedCity.value.agents.slice(start, start + agentListItemsPerPage.value)
 })
 
-// Pagination control
-const nextAgentListPage = () => {
-  agentListCurrentPage.value++
-}
-
-const resetAgentListPagination = () => {
-  agentListCurrentPage.value = 1
-}
-
-// Reset otomatis setiap ganti level, negara, atau kota
+const nextAgentListPage = () => agentListCurrentPage.value++
+const resetAgentListPagination = () => agentListCurrentPage.value = 1
 watch(selectedLevel, resetAgentListPagination)
 watch(selectedCountry, resetAgentListPagination)
 watch(selectedCity, resetAgentListPagination)
 
-
-
-
-
-// Fetch saat komponen siap
 onMounted(fetchData)
-
-
-
-
-
-
-
-
-
-// code list branch
-const flatAgents = computed(() => {
-  if (!data.value?.length) return []
-  return data.value.flatMap(country =>
-    country.cities.flatMap(city =>
-      city.agents.map(agent => ({
-        ...agent,
-        country: country.country,
-        city: city.city,
-      }))
-    )
-  )
-})
-
-
-// ============================
-// FILTER & PAGINATION
-// ============================
-const filterCountry = ref('')
-const itemsPerPage = ref(6)
-const currentPage = ref(1)
-
-// Filter berdasarkan country
-const filteredAgents = computed(() => {
-  if (!filterCountry.value) return flatAgents.value
-  return flatAgents.value.filter(a => a.country === filterCountry.value)
-})
-
-// Pagination (Load More)
-const paginatedAgents = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  return filteredAgents.value.slice(start, start + itemsPerPage.value)
-})
-
-const loadMore = () => {
-  if (currentPage.value * itemsPerPage.value < filteredAgents.value.length) {
-    currentPage.value++
-  }
-}
-
-// Reset page saat filter berubah
-watch(filterCountry, () => {
-  currentPage.value = 1
-})
-
-
 </script>
 
 <template>
@@ -223,13 +188,21 @@ watch(filterCountry, () => {
             <div class="card-body p-0" style="min-height:500px">
               <div v-if="loading" class="text-center py-5">Loading map data...</div>
               <div v-else>
-                <LMap ref="mapRef" style="height:500px" :zoom="zoomLevel" :center="[20,0]">
+                <LMap
+                  ref="mapRef"
+                  style="height:500px"
+                  :zoom="zoomLevel"
+                  :center="[20,0]"
+                  @ready="onMapReady"
+                >
                   <LTileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-                  <!-- Negara -->
+                  <!-- NEGARA -->
                   <template v-if="selectedLevel==='country'">
                     <LMarker 
-                      v-for="(country,i) in data" :key="i" :lat-lng="country.position" 
+                      v-for="(country,i) in data" :key="i" 
+                      :lat-lng="country.position"
+                      :icon="defaultIcon"
                       @click="goToCountry(country)">
                       <LPopup>
                         <b>{{ country.country }}</b> ({{ country.cities.length }} cities)
@@ -237,10 +210,12 @@ watch(filterCountry, () => {
                     </LMarker>
                   </template>
 
-                  <!-- Kota -->
+                  <!-- KOTA -->
                   <template v-else-if="selectedLevel==='city'">
                     <LMarker 
-                      v-for="(city,i) in selectedCountry.cities" :key="i" :lat-lng="city.position"
+                      v-for="(city,i) in selectedCountry.cities" :key="i" 
+                      :lat-lng="city.position"
+                      :icon="defaultIcon"
                       @click="goToCity(city)">
                       <LPopup>
                         <b>{{ city.city }}</b> ({{ city.agents.length }} agents)
@@ -248,21 +223,20 @@ watch(filterCountry, () => {
                     </LMarker>
                   </template>
 
-                  <!-- Agent -->
-                  <template v-else-if="selectedLevel==='agent'">
+                  <!-- AGENT -->
+                  <template v-else-if="selectedLevel==='agent' && selectedCity && selectedCity.agents">
                     <LMarker 
-                      v-for="(agent,i) in selectedCity.agents" :key="i" :lat-lng="agent.position"
-                      @click="goToAgent(agent)">
+                      v-for="(agent,i) in selectedCity.agents" :key="i"
+                      :lat-lng="agent.position"
+                      @click="goToAgent(agent)"
+                      :icon="activeAgent && activeAgent.id === agent.id ? activeIcon : defaultIcon"
+                    >
                       <LPopup>
                         <div class="text-center">
-                          <h6>{{ agent.name }}</h6>
-                          <img :src="defaultImage" class="img-fluid rounded mb-2" style="max-width:120px"
-                            @click="openImage(agent.image)" />
-                          <div>
-                            <button class="btn btn-sm btn-primary w-100" @click="goToQuotation">
-                              Get Quotation
-                            </button>
-                          </div>
+                          <!-- ✅ semua pakai defaultImage -->
+                          <img :src="defaultImage" alt="Agent" width="100" class="rounded mb-2 border">
+                          <div><b>{{ agent.name }}</b></div>
+                          <small>{{ agent.city }}</small>
                         </div>
                       </LPopup>
                     </LMarker>
@@ -280,59 +254,43 @@ watch(filterCountry, () => {
               <h5 class="mb-0 text-primary">List Agents</h5>
             </div>
             <div class="card-body">
+              <ul class="list-group">
+                <!-- NEGARA -->
+                <li v-if="selectedLevel==='country'" 
+                    v-for="(country, i) in paginatedAgentCountries" :key="`country-${i}`"
+                    class="list-group-item" 
+                    @click="goToCountry(country)" 
+                    style="cursor:pointer">
+                  {{ country.country }} ({{ country.cities.length }} cities)
+                </li>
 
+                <!-- KOTA -->
+                <li v-if="selectedLevel==='city'" 
+                    v-for="(city, i) in paginatedAgentCities" :key="`city-${i}`"
+                    class="list-group-item" 
+                    @click="goToCity(city)" 
+                    style="cursor:pointer">
+                  {{ city.city }} ({{ city.agents.length }} agents)
+                </li>
 
-             <ul class="list-group">
-  <!-- Negara -->
-  <li v-if="selectedLevel==='country'" 
-      v-for="(country, i) in paginatedAgentCountries" :key="`country-${i}`"
-      class="list-group-item" 
-      @click="goToCountry(country)" 
-      style="cursor:pointer">
-    {{ country.country }} ({{ country.cities.length }} cities)
-  </li>
+                <!-- AGENT -->
+                <li v-if="selectedLevel==='agent' && selectedCity && selectedCity.agents"
+                    v-for="(agent, i) in paginatedAgentRecords" :key="`agent-${i}`"
+                    class="list-group-item d-flex align-items-center justify-content-between">
+                  
+                  <div class="d-flex align-items-center" style="cursor:pointer" @click="goToAgent(agent)">
+                    <!-- ✅ semua pakai defaultImage -->
+                    <img :src="defaultImage" alt="" width="40" height="40" class="rounded-circle me-2 border">
+                    <span :class="{ 'text-primary fw-bold': activeAgent && activeAgent.id === agent.id }">
+                      {{ agent.name }}
+                    </span>
+                  </div>
 
-  <!-- Kota -->
-  <li v-if="selectedLevel==='city'" 
-      v-for="(city, i) in paginatedAgentCities" :key="`city-${i}`"
-      class="list-group-item" 
-      @click="goToCity(city)" 
-      style="cursor:pointer">
-    {{ city.city }} ({{ city.agents.length }} agents)
-  </li>
-
-  <!-- Agent -->
-  <li v-if="selectedLevel==='agent'" 
-      v-for="(agent, i) in paginatedAgentRecords" :key="`agent-${i}`"
-      class="list-group-item d-flex justify-content-between align-items-center">
-    <span @click="goToAgent(agent)" style="cursor:pointer">{{ agent.name }}</span>
-    <button class="btn btn-outline-primary" @click="goToQuotation">
-      Get Quote
-    </button>
-  </li>
-</ul>
-
-<!-- Tombol Load More -->
-<div v-if="selectedLevel==='country' && data.length > agentListCurrentPage * agentListItemsPerPage" class="text-center mt-3">
-  <button class="btn btn-outline-primary w-100" @click="nextAgentListPage">
-    Load More Countries
-  </button>
-</div>
-
-<div v-if="selectedLevel==='city' && selectedCountry.cities.length > agentListCurrentPage * agentListItemsPerPage" class="text-center mt-3">
-  <button class="btn btn-sm btn-outline-primary w-100" @click="nextAgentListPage" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
-    Load More Cities
-  </button>
-</div>
-
-<div v-if="selectedLevel==='agent' && selectedCity.agents.length > agentListCurrentPage * agentListItemsPerPage" class="text-center mt-3">
-  <button class="btn btn-sm btn-outline-primary w-100" @click="nextAgentListPage">
-    Load More Agents
-  </button>
-</div>
-
-
-
+                  <button class="btn btn-outline-primary btn-sm" @click="goToQuotation">
+                    Get Quote
+                  </button>
+                </li>
+              </ul>
 
               <button v-if="selectedLevel!=='country'" 
                 class="btn btn-outline-secondary mt-3"
@@ -343,115 +301,18 @@ watch(filterCountry, () => {
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal Image -->
-    <div class="modal fade" :class="{ show: showModal }" v-show="showModal">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-body p-0">
-            <img :src="selectedImage" class="img-fluid w-100"/>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" @click="showModal=false">Close</button>
+      <!-- MODAL GAMBAR -->
+      <div v-if="showModal" class="modal fade show d-block" style="background:rgba(0,0,0,0.6)" @click.self="showModal=false">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <img :src="defaultImage" class="img-fluid rounded">
           </div>
         </div>
       </div>
-      <div class="modal-backdrop fade show" @click="showModal=false"></div>
     </div>
-
-
-   <hr>
-
-
-    <!-- BEGIN PAGE BODY -->
-<div class="page-body">
-  <div class="container-xl">
-    <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div>
-        <h4 class="text-primary mb-1 fw-bold">Our Branch Gallery</h4>
-        <p class="text-secondary small mb-0">
-          Discover our global network of offices and trusted partners around the world.
-        </p>
-      </div>
-      <div>
-        <select v-model="filterCountry" class="form-select form-select shadow-sm">
-          <option value="">🌍All Countries</option>
-          <option v-for="c in data" :key="c.country" :value="c.country">
-            {{ c.country }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <!-- GRID -->
-    <div class="row row-cards">
-      <div 
-        v-for="(agent, i) in paginatedAgents" 
-        :key="i"
-        class="col-sm-6 col-lg-4"
-      >
-        <div class="card card-sm shadow-sm hover-shadow transition-all duration-200 border-0">
-          <a href="#" class="d-block position-relative" @click.prevent="openImage(agent.image)">
-            <img :src="defaultImage" class="card-img-top" style="height:200px; object-fit:cover;" />
-            <div class="position-absolute top-0 start-0 m-2 px-2 py-1 bg-primary text-white rounded-pill text-xs" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
-              {{ agent.country }}
-            </div>
-          </a>
-
-          <div class="card-body">
-            <div class="d-flex align-items-center mb-2">
-              <span class="avatar avatar-2 me-3 rounded bg-outline-primary bg-opacity-10">
-                <i class="fa-solid fa-map"></i>
-              </span>
-              <div>
-                <div class="fw-bold text-dark">{{ agent.name }}</div>
-                <div class="text-secondary small">{{ agent.city }}</div>
-              </div>
-            </div>
-
-            <div class="small text-muted mb-2">
-              <i class="fa-solid fa-location-dot me-1 text-primary"></i> {{ agent.address }}
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="text-secondary small">
-                <!-- <i class="fa-solid fa-phone me-1 text-primary"></i> {{ agent.phone }} -->
-              </div>
-              <button class="btn btn-outline-primary text-white" @click="goToQuotation"  style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
-                Get Quote
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- LOADING & EMPTY STATES -->
-      <div v-if="loading" class="text-center text-secondary py-5">Loading branch gallery...</div>
-      <div v-if="!loading && filteredAgents.length === 0" class="text-center text-secondary py-5">
-        No branches found.
-      </div>
-    </div>
-
-    <!-- LOAD MORE BUTTON -->
-    <div class="text-center mt-4">
-      <button 
-        v-if="currentPage * itemsPerPage < filteredAgents.length"
-        class="btn btn-outline-primary"
-        @click="loadMore">
-        Load More
-      </button>
-    </div>
-  </div>
-</div>
-<!-- END PAGE BODY -->
-
-
   </FrontendLayout>
-
 </template>
-
 
 <style scoped>
 .card {
