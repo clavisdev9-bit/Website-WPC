@@ -43,7 +43,7 @@
                         <th>Name Menu</th>
                         <th>Name Submenu Dan Action(add/edit/del)</th>
                         <th>Noted</th>
-                        <th style="width: 5%;">Status Submenu</th>
+                        <th style="width: 5%;">Status</th>
                         <th style="width: 5%;">Action</th>
                     </tr>
                 </thead>

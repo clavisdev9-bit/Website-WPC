@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Homes from '../pages/Frontend/Home/Homes.vue';
-import FormQoutation from '../pages/Frontend/Qoutation/form.vue';
 import Network from '../pages/Frontend/Network/network.vue';
 import Login from '../pages/Frontend/Auth/login.vue';
 import Registeration from '../pages/Frontend/Auth/registeration.vue';
@@ -12,7 +11,7 @@ import FormQout from '../pages/Frontend/Qoutations/Form.vue';
 
 const routes = [
 
-  // for dashboard admin
+  // for Auth
   { path: '/wpc-esys/login', component: Login },
   { path: '/wpc-esys/registration', component: Registeration },
 
@@ -25,11 +24,6 @@ const routes = [
     // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
   },
 
-  { 
-    path: '/wpc-esys/form-qoutation', 
-    component: FormQoutation, 
-    // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
-  },
 
    { 
     path: '/wpc-esys/network', 
@@ -56,7 +50,7 @@ const router = createRouter({
   routes,
 })
 
-// ✅ Navigation Guard
+// Navigation Guard
 // router.beforeEach((to, from, next) => {
 //   const auth = useAuthStore();
 
