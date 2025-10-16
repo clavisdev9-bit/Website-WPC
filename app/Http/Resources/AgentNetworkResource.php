@@ -14,6 +14,7 @@ class AgentNetworkResource extends JsonResource
             'name' => $this->name,
             'code' => $this->code,
             'name_country' => $this->name_country,
+            'flag_country' => $this->flag_country,
             'name_city' => $this->name_city,
             'address' => $this->address,
             'lat' => $this->lat,

@@ -4,20 +4,23 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class NetworkAgentSeeder extends Seeder
 {
     public function run(): void
     {
+        $now = Carbon::now();
+
         // ==============================
         // COUNTRIES
         // ==============================
         $countries = [
-            ['name' => 'Indonesia', 'iso_code' => 'ID'],
-            ['name' => 'Japan', 'iso_code' => 'JP'],
-            ['name' => 'France', 'iso_code' => 'FR'],
-            ['name' => 'USA', 'iso_code' => 'US'],
-            ['name' => 'South Africa', 'iso_code' => 'ZA'],
+            ['name' => 'Indonesia', 'iso_code' => 'ID', 'flag' => 'flags/id.png', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Japan', 'iso_code' => 'JP', 'flag' => 'flags/jp.png', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'France', 'iso_code' => 'FR', 'flag' => 'flags/fr.png', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'USA', 'iso_code' => 'US', 'flag' => 'flags/us.png', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'South Africa', 'iso_code' => 'ZA', 'flag' => 'flags/za.png', 'created_at' => $now, 'updated_at' => $now],
         ];
 
         DB::table('countries_network_agent')->insert($countries);
@@ -29,22 +32,13 @@ class NetworkAgentSeeder extends Seeder
         // CITIES
         // ==============================
         $cities = [
-            // Indonesia
-            ['country_id' => $countryIds['ID'], 'name' => 'Jakarta', 'lat' => -6.2088, 'lng' => 106.8456],
-            ['country_id' => $countryIds['ID'], 'name' => 'Surabaya', 'lat' => -7.2504, 'lng' => 112.7688],
-            ['country_id' => $countryIds['ID'], 'name' => 'Medan', 'lat' => 3.5952, 'lng' => 98.6722],
-
-            // Japan
-            ['country_id' => $countryIds['JP'], 'name' => 'Tokyo', 'lat' => 35.6895, 'lng' => 139.6917],
-
-            // France
-            ['country_id' => $countryIds['FR'], 'name' => 'Paris', 'lat' => 48.8566, 'lng' => 2.3522],
-
-            // USA
-            ['country_id' => $countryIds['US'], 'name' => 'New York', 'lat' => 40.7128, 'lng' => -74.0060],
-
-            // South Africa
-            ['country_id' => $countryIds['ZA'], 'name' => 'Cape Town', 'lat' => -33.9249, 'lng' => 18.4241],
+            ['country_id' => $countryIds['ID'], 'name' => 'Jakarta', 'lat' => -6.2088, 'lng' => 106.8456, 'created_at' => $now, 'updated_at' => $now],
+            ['country_id' => $countryIds['ID'], 'name' => 'Surabaya', 'lat' => -7.2504, 'lng' => 112.7688, 'created_at' => $now, 'updated_at' => $now],
+            ['country_id' => $countryIds['ID'], 'name' => 'Medan', 'lat' => 3.5952, 'lng' => 98.6722, 'created_at' => $now, 'updated_at' => $now],
+            ['country_id' => $countryIds['JP'], 'name' => 'Tokyo', 'lat' => 35.6895, 'lng' => 139.6917, 'created_at' => $now, 'updated_at' => $now],
+            ['country_id' => $countryIds['FR'], 'name' => 'Paris', 'lat' => 48.8566, 'lng' => 2.3522, 'created_at' => $now, 'updated_at' => $now],
+            ['country_id' => $countryIds['US'], 'name' => 'New York', 'lat' => 40.7128, 'lng' => -74.0060, 'created_at' => $now, 'updated_at' => $now],
+            ['country_id' => $countryIds['ZA'], 'name' => 'Cape Town', 'lat' => -33.9249, 'lng' => 18.4241, 'created_at' => $now, 'updated_at' => $now],
         ];
 
         DB::table('cities_network_agent')->insert($cities);
@@ -57,105 +51,21 @@ class NetworkAgentSeeder extends Seeder
         // ==============================
         $agents = [
             // Indonesia
-            [
-                'name' => 'Jakarta 1',
-                'code' => 'ID-JKT-001',
-                'country_id' => $countryIds['ID'],
-                'city_id' => $cityIds['Jakarta'],
-                'address' => 'Jl. Merdeka No.1, Jakarta',
-                'lat' => -6.2088,
-                'lng' => 106.8456,
-                'phone' => '+62 21 555 1111',
-                'email' => 'jakarta1@company.com',
-                'image' => '/images/branch1.jpg',
-                'status' => 'active'
-            ],
-            [
-                'name' => 'Jakarta 2',
-                'code' => 'ID-JKT-002',
-                'country_id' => $countryIds['ID'],
-                'city_id' => $cityIds['Jakarta'],
-                'address' => 'Jl. Thamrin No.5, Jakarta',
-                'lat' => -6.2170,
-                'lng' => 106.8450,
-                'phone' => '+62 21 555 2222',
-                'email' => 'jakarta2@company.com',
-                'image' => '/images/branch2.jpg',
-                'status' => 'active'
-            ],
-            [
-                'name' => 'Jakarta 3',
-                'code' => 'ID-JKT-003',
-                'country_id' => $countryIds['ID'],
-                'city_id' => $cityIds['Jakarta'],
-                'address' => 'Jl. Sudirman No.8, Jakarta',
-                'lat' => -6.2121,
-                'lng' => 106.8459,
-                'phone' => '+62 21 555 3333',
-                'email' => 'jakarta3@company.com',
-                'image' => '/images/branch3.jpg',
-                'status' => 'active'
-            ],
+            ['name' => 'Jakarta 1','code' => 'ID-JKT-001','country_id' => $countryIds['ID'],'city_id' => $cityIds['Jakarta'],'address' => 'Jl. Merdeka No.1, Jakarta','lat' => -6.2088,'lng' => 106.8456,'phone' => '+62 21 555 1111','email' => 'jakarta1@company.com','image' => '/images/branch1.jpg','status' => 'active','created_at' => $now,'updated_at' => $now],
+            ['name' => 'Jakarta 2','code' => 'ID-JKT-002','country_id' => $countryIds['ID'],'city_id' => $cityIds['Jakarta'],'address' => 'Jl. Thamrin No.5, Jakarta','lat' => -6.2170,'lng' => 106.8450,'phone' => '+62 21 555 2222','email' => 'jakarta2@company.com','image' => '/images/branch2.jpg','status' => 'active','created_at' => $now,'updated_at' => $now],
+            ['name' => 'Jakarta 3','code' => 'ID-JKT-003','country_id' => $countryIds['ID'],'city_id' => $cityIds['Jakarta'],'address' => 'Jl. Sudirman No.8, Jakarta','lat' => -6.2121,'lng' => 106.8459,'phone' => '+62 21 555 3333','email' => 'jakarta3@company.com','image' => '/images/branch3.jpg','status' => 'active','created_at' => $now,'updated_at' => $now],
 
             // Japan
-            [
-                'name' => 'Tokyo Port',
-                'code' => 'JP-TYO-001',
-                'country_id' => $countryIds['JP'],
-                'city_id' => $cityIds['Tokyo'],
-                'address' => 'Chuo-ku, Tokyo',
-                'lat' => 35.6895,
-                'lng' => 139.6917,
-                'phone' => '+81 3 5555 8888',
-                'email' => 'tokyo@company.com',
-                'image' => '/images/tokyo.jpg',
-                'status' => 'active'
-            ],
+            ['name' => 'Tokyo Port','code' => 'JP-TYO-001','country_id' => $countryIds['JP'],'city_id' => $cityIds['Tokyo'],'address' => 'Chuo-ku, Tokyo','lat' => 35.6895,'lng' => 139.6917,'phone' => '+81 3 5555 8888','email' => 'tokyo@company.com','image' => '/images/tokyo.jpg','status' => 'active','created_at' => $now,'updated_at' => $now],
 
             // France
-            [
-                'name' => 'Paris Office',
-                'code' => 'FR-PAR-001',
-                'country_id' => $countryIds['FR'],
-                'city_id' => $cityIds['Paris'],
-                'address' => 'Rue de Rivoli, Paris',
-                'lat' => 48.8566,
-                'lng' => 2.3522,
-                'phone' => '+33 1 5555 9999',
-                'email' => 'paris@company.com',
-                'image' => '/images/paris.jpg',
-                'status' => 'active'
-            ],
+            ['name' => 'Paris Office','code' => 'FR-PAR-001','country_id' => $countryIds['FR'],'city_id' => $cityIds['Paris'],'address' => 'Rue de Rivoli, Paris','lat' => 48.8566,'lng' => 2.3522,'phone' => '+33 1 5555 9999','email' => 'paris@company.com','image' => '/images/paris.jpg','status' => 'active','created_at' => $now,'updated_at' => $now],
 
             // USA
-            [
-                'name' => 'New York Branch',
-                'code' => 'US-NY-001',
-                'country_id' => $countryIds['US'],
-                'city_id' => $cityIds['New York'],
-                'address' => '5th Avenue, New York',
-                'lat' => 40.7128,
-                'lng' => -74.0060,
-                'phone' => '+1 212 555 7777',
-                'email' => 'ny@company.com',
-                'image' => '/images/ny.jpg',
-                'status' => 'active'
-            ],
+            ['name' => 'New York Branch','code' => 'US-NY-001','country_id' => $countryIds['US'],'city_id' => $cityIds['New York'],'address' => '5th Avenue, New York','lat' => 40.7128,'lng' => -74.0060,'phone' => '+1 212 555 7777','email' => 'ny@company.com','image' => '/images/ny.jpg','status' => 'active','created_at' => $now,'updated_at' => $now],
 
             // South Africa
-            [
-                'name' => 'Cape Town Port',
-                'code' => 'ZA-CT-001',
-                'country_id' => $countryIds['ZA'],
-                'city_id' => $cityIds['Cape Town'],
-                'address' => 'Dock Road, Cape Town',
-                'lat' => -33.9249,
-                'lng' => 18.4241,
-                'phone' => '+27 21 555 4444',
-                'email' => 'capetown@company.com',
-                'image' => '/images/capetown.jpg',
-                'status' => 'active'
-            ],
+            ['name' => 'Cape Town Port','code' => 'ZA-CT-001','country_id' => $countryIds['ZA'],'city_id' => $cityIds['Cape Town'],'address' => 'Dock Road, Cape Town','lat' => -33.9249,'lng' => 18.4241,'phone' => '+27 21 555 4444','email' => 'capetown@company.com','image' => '/images/capetown.jpg','status' => 'active','created_at' => $now,'updated_at' => $now],
         ];
 
         DB::table('agents_network')->insert($agents);

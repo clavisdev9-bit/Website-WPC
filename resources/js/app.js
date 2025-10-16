@@ -28,6 +28,8 @@ import './costums/requestContact'
 import './costums/CategoryBlogs'
 import './costums/syncContact.js'
 import './costums/syncContactLog.js'
+import './costums/agentCountryNetwork.js'
+import './costums/agentCityNetwork.js'
 
 
 import '@fortawesome/fontawesome-free/css/all.min.css'

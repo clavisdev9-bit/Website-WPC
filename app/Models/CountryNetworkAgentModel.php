@@ -12,4 +12,10 @@ class CountryNetworkAgentModel extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
+
+    protected $fillable = [
+        'name',
+        'iso_code',
+        'flag',
+    ];
 }

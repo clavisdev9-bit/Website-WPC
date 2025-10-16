@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('iso_code', 10)->unique();
+             $table->string('flag')->nullable(); // tambahkan kolom flag
             $table->timestamps();
         });
     }

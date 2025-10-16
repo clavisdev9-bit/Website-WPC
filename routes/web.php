@@ -12,8 +12,6 @@ use App\Http\Controllers\Setting\Setting_General;
 use App\Http\Controllers\Costumers\Costumers;
 
 
-
-
 // untuk handle semua route app vue dan blade logic (memisahkan route logic laravel-vue)
 Route::get('/wpc-esys/{any?}', function () {
     return view('app'); // Vue SPA
@@ -92,7 +90,6 @@ Route::post('Contact/contact-form-store', [Users::class, 'Contact_messages_store
     ->middleware('throttle:contact_form'); // Maksimal 5 request per 1 menit per IP
 
 
-
 // Auth Route
 Route::get('Auth/Login',[Auth::class,'login_page'])->name('Auth.login');
 Route::get('Auth/Logout',[Auth::class,'Logout'])->name('Auth.logout');
@@ -157,13 +154,40 @@ Route::get('/avatar/{filename}', function ($filename) {
 
 Route::get('Administrator/Users-management', [Administrator::class, 'UserManagement'])->name('Administrator.user.management');
 Route::get('Administrator/Get-user-management', [Administrator::class, 'getUser'])->name('Administrator.get.user.management');
-Route::get('Administratorcreate-user-management', [Administrator::class, 'createUser'])->name('Administrator.create.user.management');
+Route::get('Administrator/create-user-management', [Administrator::class, 'createUser'])->name('Administrator.create.user.management');
 Route::post('Administrator/Store-user-management', [Administrator::class, 'storeUser'])->name('Administrator.store.user.management');
 Route::get('Administrator/view-user-update/{id}', [Administrator::class, 'showUser'])->name('Administrator.user.view.update');
 Route::put('Administrator/update-user-management', [Administrator::class, 'UpdateUser'])->name('Administrator.update.user.management');
 Route::delete('Administrator/user-delete-management/{id}', [Administrator::class, 'DeleteUser'])->name('Administrator.delete.user.management');
 Route::get('Administrator/access-user-submenu/{id}', [Administrator::class, 'AccessUser'])->name('Administrator.user.access.submenu');
 Route::post('Administrator/change-access-submenu', [Administrator::class, 'ChangeAccessSubMenu'])->name('Administrator.change.access.submenu');
+
+
+Route::get('/flag/{filename}', function ($filename) {
+    $path = storage_path('app/public/flag/' . $filename);
+    if (!File::exists($path)) {
+        abort(404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    return response($file, 200)->header("Content-Type", $type);
+})->name('flag.image.show');
+
+Route::get('Administrator/Agent-network-country', [Administrator::class, 'AgentNetworkCountry'])->name('Administrator.agent.network.country');
+Route::get('Administrator/Get-agent-network-country', [Administrator::class, 'getDataAgentCountryNetwork'])->name('Administrator.get.agent.network.country');
+Route::get('Administrator/create-agent-network-country', [Administrator::class, 'createDataAgentCountryNetwork'])->name('Administrator.create.agent.network.country');
+Route::post('Administrator/Store-agent-network-country', [Administrator::class, 'storeDataAgentCountryNetwork'])->name('Administrator.store.agent.network.country');
+Route::get('Administrator/view-agent-network-country-update/{id}', [Administrator::class, 'showDataAgentCountryNetwork'])->name('Administrator.agent.network.country.view.update');
+Route::put('Administrator/update-agent-network-country', [Administrator::class, 'UpdateDataAgentCountryNetwork'])->name('Administrator.agent.network.country.view.updates');
+Route::delete('Administrator/user-delete-agent-network-country/{id}', [Administrator::class, 'DeleteDataAgentCountryNetwork'])->name('Administrator.delete.agent.network.country');
+
+Route::get('Administrator/Agent-network-city', [Administrator::class, 'AgentNetworkCity'])->name('Administrator.agent.network.city');
+Route::get('Administrator/Get-agent-network-city', [Administrator::class, 'getDataAgentCityNetwork'])->name('Administrator.get.agent.network.city');
+Route::get('Administrator/create-agent-network-city', [Administrator::class, 'createDataAgentCityNetwork'])->name('Administrator.create.agent.network.city');
+
+
+
+
 
 
 
