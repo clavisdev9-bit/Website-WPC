@@ -27,6 +27,8 @@ use App\Models\AccesssubMenuModel;
 use App\Models\CountryNetworkAgentModel;
 use App\Http\Requests\validationCountryAgentNetwork;
 use App\Models\CityNetworkAgentModel;
+use App\Http\Requests\StoreAgentCityNetworkRequest;
+use App\Models\NetworkAgentModel;
 
 
 
@@ -42,11 +44,14 @@ class Administrator extends Controller
         protected $AccesssubMenuModel;
         protected $CountryNetworkAgentModel;
         protected $CityNetworkAgentModel;
+        protected $NetworkAgentModel;
         public function __construct(usersModel $usersModel, MenuModel $MenuModel, SubmenuModel $SubmenuModel, RoleModel $RoleModel,
          AccessMenuModel $AccessMenuModel, DivisionModel $DivisionModel,
           GroupModel $GroupModel, AccesssubMenuModel $AccesssubMenuModel,
            CountryNetworkAgentModel $CountryNetworkAgentModel,
-           CityNetworkAgentModel $CityNetworkAgentModel) {
+           CityNetworkAgentModel $CityNetworkAgentModel,
+           NetworkAgentModel $NetworkAgentModel,
+           ) {
             $this->usersModel = $usersModel;
             $this->MenuModel = $MenuModel;
             $this->SubmenuModel = $SubmenuModel;
@@ -57,6 +62,7 @@ class Administrator extends Controller
             $this->AccesssubMenuModel = $AccesssubMenuModel;
             $this->CountryNetworkAgentModel = $CountryNetworkAgentModel;
             $this->CityNetworkAgentModel = $CityNetworkAgentModel;
+            $this->NetworkAgentModel = $NetworkAgentModel;
         }
 
     public function index()  {
@@ -1042,7 +1048,7 @@ public function createDataAgentCountryNetwork()
             }
 
 
-    public function UpdateDataAgentCountryNetwork(validationCountryAgentNetwork $request) {
+    public function UpdateDataAgentCountryNetwork(Request $request) {
         try {
         
         try {
@@ -1121,7 +1127,7 @@ public function createDataAgentCountryNetwork()
 
 
 
-
+    // code untuk city agent network
     public function AgentNetworkCity()  {
           $data = [
               'title' => 'Agent Network City'
@@ -1136,7 +1142,8 @@ public function createDataAgentCountryNetwork()
                 $query = $this->CityNetworkAgentModel
                     ->select(
                         'cities_network_agent.*',
-                        'countries_network_agent.name as name_country'
+                        'countries_network_agent.name as name_country',
+                        'countries_network_agent.flag as flag'
                     )
                     ->leftJoin('countries_network_agent', 'cities_network_agent.country_id', '=', 'countries_network_agent.id')
                     ->orderBy('cities_network_agent.name', 'asc');
@@ -1164,17 +1171,32 @@ public function createDataAgentCountryNetwork()
                 }
             })
                     ->addIndexColumn()
+                   ->addColumn('name_country', function($row) {
+                        // Pastikan field 'flag' dan 'name_country' tersedia dari join
+                        $imageUrl = route('flag.image.show', ['filename' => $row->flag ?? 'defaultFlag.png']);
+                        $countryName = e($row->name_country ?? '-'); // e() untuk escape XSS
+
+                        return '
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="' . $imageUrl . '" 
+                                    alt="' . $countryName . ' Flag"
+                                    class="rounded" 
+                                    style="width: 30px; height: 20px; object-fit: cover; border: 1px solid #ccc;">
+                                <span>' . $countryName . '</span>
+                            </div>
+                        ';
+                    })
                     ->addColumn('action', function ($row) {
 
-                        // $idCity = Crypt::encrypt($row->id);
-                        // $updateUrl = route('Administrator.agent.network.city.view.update', $idCity);
-                        // $deleteUrl = route('Administrator.delete.agent.network.city', ['id' => $idCity]);
+                        $idCity = Crypt::encrypt($row->id);
+                        $updateUrl = route('Administrator.agent.network.city.view.update', $idCity);
+                        $deleteUrl = route('Administrator.delete.agent.network.city', ['id' => $idCity]);
 
-                        $btn = '<a href="" class="btn btn-pill btn-outline-warning btn-sm">
+                        $btn = '<a href="' . $updateUrl . '" class="btn btn-pill btn-outline-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>';
 
-                        $btn .= '<form action="" method="POST" class="d-inline">
+                        $btn .= '<form action="' . $deleteUrl . '" method="POST" class="d-inline">
                                     '.csrf_field().'
                                     '.method_field('DELETE').'
                                     <button type="button" onclick="confirmDelete(this)" class="btn btn-pill btn-outline-danger btn-sm">
@@ -1185,7 +1207,7 @@ public function createDataAgentCountryNetwork()
                         return $btn;
                     })
 
-                    ->rawColumns(['action'])
+                    ->rawColumns(['action','name_country'])
                     ->make(true);
             }
 
@@ -1197,9 +1219,163 @@ public function createDataAgentCountryNetwork()
             $getDataCountry = $this->CountryNetworkAgentModel->all();
           
           $data = [
-              'title' => 'Agent Network City',
+              'title' => 'Form Add Agent Network City',
               'country' => $getDataCountry
          ];
          return view('administrator/agent-city/form/create',$data);
     }
+
+
+    public function storeDataAgentCityNetwork(StoreAgentCityNetworkRequest $request)  {
+         try {
+            if (CityNetworkAgentModel::isNameCityExists($request->input('name'))) {
+                return redirect()->route('Administrator.agent.network.city')
+                    ->with('error', 'City name already exists.');
+            }
+            $this->CityNetworkAgentModel->create([
+                'country_id' => $request->input('country'),
+                'name' => $request->input('name') ?: null,
+                'lat' => $request->input('lat'),
+                'lng' => $request->input('lng'),
+            ]);
+        return redirect()->route('Administrator.agent.network.city')->with('success','success save');
+        } catch (\Throwable $th) {
+            return redirect()->route('Administrator.agent.network.city')->with('error','Failed to create data. Please try again.');
+        }
+    }
+
+
+   public function showDataAgentCityNetwork($id)
+    {
+        $idDecy = Crypt::decrypt($id);
+        $getDataCountry = $this->CountryNetworkAgentModel->all();
+        $getData = $this->CityNetworkAgentModel->findOrFail($idDecy);
+        $data = [
+            'title' => 'Form Update Agent Network City',
+            'country' => $getDataCountry,
+            'row' => $getData,
+            'id' => $id,
+        ];
+        return view('administrator.agent-city.form.update', $data);
+    }
+
+
+    public function UpdateDataAgentCityNetwork(Request $request, ) {
+        try {
+        try {
+            $cityid = $request->input('id');
+            $idCityDecrypted = Crypt::decrypt($cityid);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return redirect()->route('Administrator.agent.network.city')
+                ->with('error', 'Invalid City Agent ID!');
+        }
+    
+          $CityAgentNetworkData = $this->CityNetworkAgentModel->findOrFail($idCityDecrypted);
+       
+          if (CityNetworkAgentModel::isNameCityExistsUpdate($request->input('name'), $idCityDecrypted)) {
+          return redirect()->route('Administrator.agent.network.city')
+                ->with('error', 'City name already exists!');
+        }
+
+          $CityAgentNetworkData->update([
+            'country_id' => $request->input('country'),
+            'name' => $request->input('name') ?: null,
+            'lat' => $request->input('lat'),
+            'lng' => $request->input('lng')
+        ]);
+    
+        return redirect()->route('Administrator.agent.network.city')->with('success','update success');
+    } catch (\Throwable $th) {
+        return redirect()->route('Administrator.agent.network.city')->with('error','Failed to update data. Please try again.');
+    }
+    }
+
+
+
+    public function DeleteDataAgentCityNetwork($id) {
+        try {
+        $idCityDecrypted = Crypt::decrypt($id);
+        $cityAgentData = CityNetworkAgentModel::find($idCityDecrypted);
+
+        if (!$cityAgentData) {
+            return redirect()->route('Administrator.agent.network.city')
+                ->with('error', 'Data ID Not Found!');
+        }
+        $cityAgentData->delete();
+        return redirect()->route('Administrator.agent.network.city')->with('success', 'Success delete');
+    } catch (DecryptException $e) {
+        return redirect()->route('Administrator.agent.network.city')
+            ->with('error', 'Invalid menu ID!');
+    } catch (\Throwable $th) {
+        return redirect()->route('Administrator.agent.network.city')
+            ->with('error', 'Failed to delete data. Please try again.');
+    }
+    }
+
+
+    public function AgentNetwork() {
+         $data = [
+              'title' => 'Agent Network'
+         ];
+         return view('administrator/agent-network/data/file',$data);
+    }
+
+    public function getDataAgentNetwork(Request $request) {
+          if ($request->ajax()) {
+        $query = $this->NetworkAgentModel
+            ->select(
+                'agents_network.*',
+                'countries_network_agent.name as name_country',
+                'countries_network_agent.flag as flag'
+            )
+        ->leftJoin('countries_network_agent', 'agents_network.country_id', '=', 'countries_network_agent.id')
+        ->leftJoin('cities_network_agent', 'agents_network.city_id', '=', 'cities_network_agent.id')
+        ->orderBy('agents_network.id', 'desc')
+        ->get();
+
+// Cek apakah ada parameter pencarian
+if ($request->has('search') && !empty($request->input('search')['value'])) {
+    $searchTerm = $request->input('search')['value'];
+    $query->where('agents_network.name', 'LIKE', "%{$searchTerm}%");
+}
+
+        // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
+        return DataTables::of($query)
+            ->addIndexColumn()
+
+            // ->addColumn('icon', function($row) {
+            //     return ($row->icon == null) ? 'Tidak Ada Icon Karena Bukan Submenu Utama' : $row->icon;
+            // })
+            
+
+            ->addColumn('details', function ($row) {
+                return '<a id="sets" class="btn btn-pill btn-outline-orange btn-sm" data-bs-toggle="modal" data-bs-target="#modal-large"
+                             data-menu=""
+                           
+                            >
+                            <i class="fa fa-sticky-note"> </i> Details
+                        </a>';
+            })
+
+            ->addColumn('action', function ($row) {
+                // $getIdSubmenu = Crypt::encrypt($row->id_submenu);
+                // $urlEdit = route('Administrator.submenu.view.update', $getIdSubmenu);
+                // $urlDeleteSubmenu = route('Administrator.delete.submenu.management', $getIdSubmenu);
+                        $btn = '<a href="" class="btn btn-pill btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>';
+                        $btn .= '<form action="" method="POST" class="d-inline">
+                        '.csrf_field().'
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" 
+                            onclick="confirmDelete(this)"
+                            class="btn btn-pill btn-outline-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>';
+                return $btn;
+            })
+            ->rawColumns(['action','details'])
+            ->make(true);
+    }
+    }
+
 }

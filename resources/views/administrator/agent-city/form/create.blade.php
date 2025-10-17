@@ -21,29 +21,34 @@
           <h3 class="card-title"> {{ $title }}</h3>
         </div>
         <div class="card-body">
-          <form  action="" method="POST"  enctype="multipart/form-data" class="mx-auto col-md-6">
+          <form  action="{{ route('Administrator.store.agent.network.city') }}" method="POST"
+          enctype="multipart/form-data"
+          class="mx-auto col-md-6">
           @csrf
 
             <div class="mb-1">
               <label class="form-label"> Country*</label>
-                <select name="country" id="country"  class="form-control">
-                    <option value="">-- Select Country --</option>
-                        @foreach ($country as $ct)
-                                    <option value="{{ $ct->id }}" 
-                                    {{ old('country') == $ct->id ? 'selected' : '' }}>
-                                        {{ $ct->name }}
-                                    </option>
-                        @endforeach
-                </select>
-              @error('name')
+                <select name="country" id="country" class="form-control">
+                  <option value="">-- Select Country --</option>
+                  @foreach ($country as $ct)
+                      <option 
+                          value="{{ $ct->id }}" 
+                          {{ (string) old('country') === (string) $ct->id ? 'selected' : '' }}>
+                          {{ $ct->name }}
+                      </option>
+                  @endforeach
+              </select>
+              @error('country')
               <div class="text-danger">{{ $message }}</div>
               @enderror
             </div>
 
+
             <div class="mb-1 mt-2">
               <label class="form-label"> Name City*</label>
-              <input type="text" name="iso_code" class="form-control">
-              @error('iso_code')
+              <input type="text" name="name" value="{{ old('name') }}"
+               class="form-control">
+              @error('name')
               <div class="text-danger">{{ $message }}</div>
               @enderror
             </div>
@@ -51,8 +56,10 @@
 
             <div class="mb-1 mt-2">
               <label class="form-label"> Latitude*</label>
-              <input type="text" name="iso_code" class="form-control">
-              @error('iso_code')
+              <input type="text" name="lat" value="{{ old('lat') }}"
+              placeholder="Enter latitude (e.g. -6.2000)"
+               class="form-control">
+              @error('lat')
               <div class="text-danger">{{ $message }}</div>
               @enderror
             </div>
@@ -60,8 +67,10 @@
 
              <div class="mb-1 mt-2">
               <label class="form-label"> Longitude *</label>
-              <input type="text" name="iso_code" class="form-control">
-              @error('iso_code')
+              <input type="text" name="lng" value="{{ old('lng') }}"
+              placeholder="Enter longitude (e.g. 106.8166)"
+               class="form-control">
+              @error('lng')
               <div class="text-danger">{{ $message }}</div>
               @enderror
             </div>

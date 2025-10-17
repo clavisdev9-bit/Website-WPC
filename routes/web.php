@@ -184,7 +184,13 @@ Route::delete('Administrator/user-delete-agent-network-country/{id}', [Administr
 Route::get('Administrator/Agent-network-city', [Administrator::class, 'AgentNetworkCity'])->name('Administrator.agent.network.city');
 Route::get('Administrator/Get-agent-network-city', [Administrator::class, 'getDataAgentCityNetwork'])->name('Administrator.get.agent.network.city');
 Route::get('Administrator/create-agent-network-city', [Administrator::class, 'createDataAgentCityNetwork'])->name('Administrator.create.agent.network.city');
+Route::post('Administrator/Store-agent-network-city', [Administrator::class, 'storeDataAgentCityNetwork'])->name('Administrator.store.agent.network.city');
+Route::get('Administrator/view-agent-network-city-update/{id}', [Administrator::class, 'showDataAgentCityNetwork'])->name('Administrator.agent.network.city.view.update');
+Route::put('Administrator/update-agent-network-city', [Administrator::class, 'UpdateDataAgentCityNetwork'])->name('Administrator.agent.network.city.view.updates');
+Route::delete('Administrator/user-delete-agent-network-city/{id}', [Administrator::class, 'DeleteDataAgentCityNetwork'])->name('Administrator.delete.agent.network.city');
 
+Route::get('Administrator/Master-agent-network', [Administrator::class, 'AgentNetwork'])->name('Administrator.agent.network');
+Route::get('Administrator/Get-agent-network', [Administrator::class, 'getDataAgentNetwork'])->name('Administrator.get.agent.network');
 
 
 

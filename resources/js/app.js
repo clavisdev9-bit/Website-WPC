@@ -30,6 +30,7 @@ import './costums/syncContact.js'
 import './costums/syncContactLog.js'
 import './costums/agentCountryNetwork.js'
 import './costums/agentCityNetwork.js'
+import './costums/agentNetwork.js'
 
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
