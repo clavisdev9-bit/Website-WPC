@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\usersModel;
@@ -29,7 +30,11 @@ use App\Http\Requests\validationCountryAgentNetwork;
 use App\Models\CityNetworkAgentModel;
 use App\Http\Requests\StoreAgentCityNetworkRequest;
 use App\Models\NetworkAgentModel;
-
+use App\Http\Requests\StoreNetworkAgentRequest;
+use App\Models\ContinentAgentModel;
+use App\Http\Requests\StoreContinentRequest;
+use App\Models\SubContinentModel;
+use App\Http\Requests\StoreSubContinentRequest;
 
 
 class Administrator extends Controller
@@ -45,12 +50,16 @@ class Administrator extends Controller
         protected $CountryNetworkAgentModel;
         protected $CityNetworkAgentModel;
         protected $NetworkAgentModel;
+        protected $ContinentAgentModel;
+        protected $SubContinentModel;
         public function __construct(usersModel $usersModel, MenuModel $MenuModel, SubmenuModel $SubmenuModel, RoleModel $RoleModel,
          AccessMenuModel $AccessMenuModel, DivisionModel $DivisionModel,
           GroupModel $GroupModel, AccesssubMenuModel $AccesssubMenuModel,
            CountryNetworkAgentModel $CountryNetworkAgentModel,
            CityNetworkAgentModel $CityNetworkAgentModel,
            NetworkAgentModel $NetworkAgentModel,
+           ContinentAgentModel $ContinentAgentModel,
+           SubContinentModel $SubContinentModel,
            ) {
             $this->usersModel = $usersModel;
             $this->MenuModel = $MenuModel;
@@ -63,6 +72,9 @@ class Administrator extends Controller
             $this->CountryNetworkAgentModel = $CountryNetworkAgentModel;
             $this->CityNetworkAgentModel = $CityNetworkAgentModel;
             $this->NetworkAgentModel = $NetworkAgentModel;
+            $this->ContinentAgentModel = $ContinentAgentModel;
+            $this->SubContinentModel = $SubContinentModel;
+
         }
 
     public function index()  {
@@ -926,7 +938,7 @@ public function ChangeAccessSubMenu(Request $request)  {
     }
 
 
-
+   
 
 
     // code master Agent Country
@@ -943,13 +955,25 @@ public function ChangeAccessSubMenu(Request $request)  {
 {
     if ($request->ajax()) {
         // Mulai query tanpa get() dulu
-        $query = $this->CountryNetworkAgentModel->orderBy('name', 'asc');
-        // Cek apakah ada parameter pencarian
-        if ($request->has('search') && !empty($request->input('search')['value'])) {
-            $searchTerm = $request->input('search')['value'];
-            $query->where('name', 'LIKE', "%{$searchTerm}%");
-        }
-        
+       $query = $this->CountryNetworkAgentModel
+                    ->select(
+                        'countries_network_agent.*',
+                        'subcontinents_network_agent.name as name_subcontinent'
+                    )
+                    ->leftJoin(
+                        'subcontinents_network_agent',
+                        'subcontinents_network_agent.id',
+                        '=',
+                        'countries_network_agent.subcontinent_id'
+                    )
+                    ->orderBy('name', 'asc');
+
+                // Cek apakah ada parameter pencarian
+                if ($request->has('search') && !empty($request->input('search')['value'])) {
+                    $searchTerm = $request->input('search')['value'];
+                    $query->where('name', 'LIKE', "%{$searchTerm}%");
+                }
+
         // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
         return DataTables::of($query)
             ->addIndexColumn()
@@ -995,9 +1019,11 @@ public function createDataAgentCountryNetwork()
         $countries = [];
     }
 
+    $getSubContinent =  $this->SubContinentModel->all();
     $data = [
         'title' => 'Form Add Agent Network Country',
-        'dataCountry' => $countries
+        'dataCountry' => $countries,
+        'SubContinent' => $getSubContinent
     ];
     return view('administrator/agent-country/form/create', $data);
 }
@@ -1005,22 +1031,27 @@ public function createDataAgentCountryNetwork()
 
 
 
-    public function storeDataAgentCountryNetwork(validationCountryAgentNetwork $request)  {
+    public function storeDataAgentCountryNetwork(Request $request)  {
         try {
                 $Country = new CountryNetworkAgentModel();
-                $Country->name            = $request->input('country');
-                $Country->iso_code       = $request->input('iso_code');
+                $Country->name             = $request->input('country');
+                $Country->iso_code         = $request->input('iso_code');
+                $Country->subcontinent_id  = $request->input('sub_continent');
+
         // Upload file kalau ada
-        if ($request->hasFile('flag')) {
-            $file     = $request->file('flag');
-            $imageName = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('flag', $imageName, 'public');
-            $Country->flag = $imageName;
-        } else {
-            $Country->flag = 'defaultFlag.jpg';
-        }
-        $Country->save();
-        return redirect()->route('Administrator.agent.network.country')->with('success','success save');
+                if ($request->hasFile('flag')) {
+                    $file     = $request->file('flag');
+                    $imageName = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('flag', $imageName, 'public');
+                    $Country->flag = $imageName;
+                } else {
+                    $Country->flag = 'defaultFlag.jpg';
+                }
+              
+                $Country->save();
+
+                
+                return redirect()->route('Administrator.agent.network.country')->with('success','success save');
         } catch (\Throwable $th) {
             return redirect()->route('Administrator.agent.network.country')->with('error','Failed to create data. Please try again.');
         }
@@ -1038,18 +1069,22 @@ public function createDataAgentCountryNetwork()
                 $decyId = Crypt::decrypt($id);
                 $encyIdCountry = Crypt::encrypt($decyId);
                 $getDataBlogs = $this->CountryNetworkAgentModel->findOrFail($decyId);
+                 $getSubContinent =  $this->SubContinentModel->all();
                 $data = [
                     'title' => 'Form Add Agent Network Country',
                     'dataCountry' => $countries,
                     'row' => $getDataBlogs,
-                    'idCountry' => $encyIdCountry
+                    'idCountry' => $encyIdCountry,
+                    'SubContinent' => $getSubContinent
                 ];
                 return view('administrator/agent-country/form/update', $data);
             }
 
 
     public function UpdateDataAgentCountryNetwork(Request $request) {
-        try {
+
+        
+        // try {
         
         try {
             $idAgents = $request->input('id', null);
@@ -1080,13 +1115,14 @@ public function createDataAgentCountryNetwork()
                   $agentCountry->update([
                         'name'            => $request->input('country'),
                         'iso_code'          => $request->input('iso_code'),
+                        'subcontinent_id'     => $request->input('subcontinent'),
                         'flag'            => $imageName
                     ]);
                    // Redirect dengan pesan sukses
                       return redirect()->route('Administrator.agent.network.country')->with('success','Success Update Data');
-                } catch (\Throwable $th) {
-                    return redirect()->route('Administrator.agent.network.country')->with('error','Failed to create data. Please try again.');
-                }
+                // } catch (\Throwable $th) {
+                //     return redirect()->route('Administrator.agent.network.country')->with('error','Failed to create data. Please try again.');
+                // }
     }  
     
     
@@ -1313,6 +1349,8 @@ public function createDataAgentCountryNetwork()
     }
 
 
+
+    // code Agent Network
     public function AgentNetwork() {
          $data = [
               'title' => 'Agent Network'
@@ -1325,44 +1363,79 @@ public function createDataAgentCountryNetwork()
         $query = $this->NetworkAgentModel
             ->select(
                 'agents_network.*',
+                'agents_network.name as name_agent',
                 'countries_network_agent.name as name_country',
-                'countries_network_agent.flag as flag'
+                'countries_network_agent.flag as flag',
+                'cities_network_agent.name as name_city',
             )
-        ->leftJoin('countries_network_agent', 'agents_network.country_id', '=', 'countries_network_agent.id')
-        ->leftJoin('cities_network_agent', 'agents_network.city_id', '=', 'cities_network_agent.id')
-        ->orderBy('agents_network.id', 'desc')
-        ->get();
+            ->leftJoin('countries_network_agent', 'agents_network.country_id', '=', 'countries_network_agent.id')
+            ->leftJoin('cities_network_agent', 'agents_network.city_id', '=', 'cities_network_agent.id')
+            ->orderBy('agents_network.id', 'desc')
+            ->get();
 
-// Cek apakah ada parameter pencarian
-if ($request->has('search') && !empty($request->input('search')['value'])) {
-    $searchTerm = $request->input('search')['value'];
-    $query->where('agents_network.name', 'LIKE', "%{$searchTerm}%");
-}
+            // Cek apakah ada parameter pencarian
+            if ($request->has('search') && !empty($request->input('search')['value'])) {
+                $searchTerm = $request->input('search')['value'];
+                $query->where('agents_network.name', 'LIKE', "%{$searchTerm}%");
+            }
 
         // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
         return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('name_country', function($row) {
+                        $imageUrl = route('flag.image.show', ['filename' => $row->flag ?? 'defaultFlag.png']);
+                        $countryName = e($row->name_country ?? '-'); // e() untuk escape XSS
+                        return '
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="' . $imageUrl . '" 
+                                    alt="' . $countryName . ' Flag"
+                                    class="rounded" 
+                                    style="width: 30px; height: 20px; object-fit: cover; border: 1px solid #ccc;">
+                                <span>' . $countryName . '</span>
+                            </div>
+                        ';
+                    })
 
-            // ->addColumn('icon', function($row) {
-            //     return ($row->icon == null) ? 'Tidak Ada Icon Karena Bukan Submenu Utama' : $row->icon;
-            // })
+              ->addColumn('name_agent', function($row) {
+                        $imageUrls = route('agent.image.show', ['filename' => $row->image ?? 'DefaultAgent.jpg']);
+                        $AgentNames = e($row->name_agent ?? '-'); // e() untuk escape XSS
+                        return '
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="' . $imageUrls . '" 
+                                    alt="' . $AgentNames . ' Agent"
+                                    class="rounded" 
+                                    style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #ccc;">
+                                <span>' . $AgentNames . '</span>
+                            </div>
+                        ';
+                    })       
+
+                    ->addColumn('status', function($row) {
+                            if ($row->status == 'active') {
+                                return '<span class="badge bg-success text-light">Active</span>';
+                            } elseif ($row->status == 'inactive') {
+                                return '<span class="badge bg-secondary text-light">Inactive</span>';
+                            } else {
+                                return '<span class="badge bg-warning text-light">Unknown</span>';
+                            }
+                        })
             
 
-            ->addColumn('details', function ($row) {
-                return '<a id="sets" class="btn btn-pill btn-outline-orange btn-sm" data-bs-toggle="modal" data-bs-target="#modal-large"
-                             data-menu=""
-                           
-                            >
-                            <i class="fa fa-sticky-note"> </i> Details
-                        </a>';
-            })
+                        ->addColumn('details', function ($row) {
+                            return '<a id="sets" class="btn btn-pill btn-outline-orange btn-sm" data-bs-toggle="modal" data-bs-target="#modal-large"
+                                        data-menu=""
+                                        
+                                        >
+                                        <i class="fa fa-sticky-note"> </i> Details
+                                    </a>';
+                        })
 
             ->addColumn('action', function ($row) {
-                // $getIdSubmenu = Crypt::encrypt($row->id_submenu);
-                // $urlEdit = route('Administrator.submenu.view.update', $getIdSubmenu);
-                // $urlDeleteSubmenu = route('Administrator.delete.submenu.management', $getIdSubmenu);
-                        $btn = '<a href="" class="btn btn-pill btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>';
-                        $btn .= '<form action="" method="POST" class="d-inline">
+                $getId= Crypt::encrypt($row->id);
+                $urlEdit = route('Administrator.edit.agent.network', $getId);
+                $urlDelete = route('Administrator.delete.agent.network', $getId);
+                        $btn = '<a href="' . $urlEdit . '" class="btn btn-pill btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>';
+                        $btn .= '<form action="' . $urlDelete . '" method="POST" class="d-inline">
                         '.csrf_field().'
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" 
@@ -1373,9 +1446,498 @@ if ($request->has('search') && !empty($request->input('search')['value'])) {
                     </form>';
                 return $btn;
             })
-            ->rawColumns(['action','details'])
+            ->rawColumns(['action','details','name_country','name_agent','status'])
             ->make(true);
     }
     }
 
+
+    public function getCitiesByCountry($country_id)
+{
+    $cities = $this->CityNetworkAgentModel
+                ->where('country_id', $country_id)
+                ->orderBy('name', 'asc')
+                ->get(['id', 'name']);
+
+    return response()->json($cities);
 }
+
+
+    public function createDataAgentNetwork()  {
+        $getDataCountry = $this->CountryNetworkAgentModel->all();
+        $getDataCity = $this->CityNetworkAgentModel->all();
+
+         $data = [
+              'title' => 'Form Add Agent Network',
+              'dataCountry' => $getDataCountry,
+              'dataCity' => $getDataCity
+         ];
+         return view('administrator/agent-network/form/create',$data);
+    }
+
+    
+
+
+    public function storeDataAgentNetwork(StoreNetworkAgentRequest $request)  {
+
+            $country = $request->input('country');
+    $countryData = $this->CountryNetworkAgentModel->find($country);
+
+    // Pastikan ada country data
+    if (!$countryData) {
+        return redirect()->back()->with('error', 'Country not found!');
+    }
+
+    // Buat prefix 3 huruf dari nama negara (misal: Indonesia -> IND)
+    $prefix = strtoupper(substr(Str::slug($countryData->name, ''), 0, 3));
+
+    // Cari kode terakhir dengan prefix tsb (contoh: IND-001, IND-002)
+    $lastCode = DB::table('agents_network')
+        ->where('code', 'like', $prefix . '-%')
+        ->orderByDesc('code')
+        ->value('code');
+
+    // Ambil angka terakhir (jika ada)
+    if ($lastCode) {
+        preg_match('/(\d+)$/', $lastCode, $matches);
+        $nextNumber = isset($matches[1]) ? (int)$matches[1] + 1 : 1;
+    } else {
+        $nextNumber = 1;
+    }
+
+    // Format code baru
+    $newCode = $prefix . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
+
+    $Agents = new NetworkAgentModel();
+    $Agents->name        = $request->input('name');
+    // $Agents->code        = 'XXX';
+    $Agents->code        = $newCode;
+    $Agents->country_id  = $request->input('country');
+    $Agents->city_id     = $request->input('city');
+    $Agents->address     = $request->input('address');
+    $Agents->lat         = $request->input('lat');
+    $Agents->lng         = $request->input('lng');
+    $Agents->phone       = $request->input('phone');
+    $Agents->email       = $request->input('email');
+    $Agents->status      = 'active';
+
+    // Upload image (ubah dari "flag" jadi "image" agar sesuai dengan input form)
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $imageName = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('agent', $imageName, 'public');
+        $Agents->image = $imageName;
+    } else {
+        $Agents->image = 'DefaultAgent.jpg';
+    }
+    $Agents->save();
+    return redirect()->route('Administrator.agent.network')->with('success', 'Data agent berhasil disimpan.');
+        }
+
+
+
+public function editDataAgentNetwork($id)
+{
+   
+    $decrypted = Crypt::decrypt($id);
+    // Ambil data agent berdasarkan id
+    $agent = $this->NetworkAgentModel->findOrFail($decrypted);
+
+    // Ambil semua country & city untuk dropdown
+    $getDataCountry = $this->CountryNetworkAgentModel->all();
+    $getDataCity = $this->CityNetworkAgentModel
+        ->where('country_id', $agent->country_id)
+        ->orderBy('name', 'asc')
+        ->get();
+
+    $data = [
+        'title' => 'Edit Agent Network',
+        'agent' => $agent,
+        'dataCountry' => $getDataCountry,
+        'dataCity' => $getDataCity,
+        'idData' => $id
+    ];
+
+    return view('administrator/agent-network/form/update', $data);
+}
+
+
+
+public function updateDataAgentNetwork(StoreNetworkAgentRequest $request, $id)
+{
+    try {
+        // Dekripsi ID dari route parameter, bukan dari input form
+        $idDecy = Crypt::decrypt($id);
+    } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+        return redirect()
+            ->route('Administrator.agent.network')
+            ->with('error', 'Invalid ID Request!');
+    }
+
+    try {
+        // Ambil data agent berdasarkan ID
+        $agent = $this->NetworkAgentModel->findOrFail($idDecy);
+
+        // Kelola gambar
+        $newImage = $request->file('image');
+        $oldImage = $request->input('image_old');
+        $imageName = $oldImage; // default pakai gambar lama
+
+        if ($newImage) {
+            // Simpan file baru
+            $imagePath = $newImage->store('agent', 'public');
+            $imageName = basename($imagePath);
+
+            // Hapus file lama jika bukan default
+            if ($oldImage && $oldImage !== 'DefaultAgent.jpg') {
+                Storage::disk('public')->delete('agent/' . $oldImage);
+            }
+        }
+
+        // Update data
+        $agent->update([
+            'name'        => $request->input('name'),
+            'country_id'  => $request->input('country'),
+            'city_id'     => $request->input('city'),
+            'address'     => $request->input('address'),
+            'lat'         => $request->input('lat'),
+            'lng'         => $request->input('lng'),
+            'email'       => $request->input('email'),
+            'phone'       => $request->input('phone'),
+            'status'      => $request->input('status'),
+            'image'       => $imageName,
+        ]);
+
+        return redirect()
+            ->route('Administrator.agent.network')
+            ->with('success', 'Success Update Data');
+    } catch (\Throwable $th) {
+        // Bisa juga di-log errornya
+        return redirect()
+            ->route('Administrator.agent.network')
+            ->with('error', 'Failed to update data. Please try again.');
+    }
+}
+
+
+public function deleteDataAgentNetwork($id)
+{
+    try {
+        // Dekripsi ID dari route parameter
+        $idDecy = Crypt::decrypt($id);
+    } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+        return redirect()
+            ->route('Administrator.agent.network')
+            ->with('error', 'Invalid ID Request!');
+    }
+
+    try {
+        // Cari agent
+        $agent = $this->NetworkAgentModel->findOrFail($idDecy);
+
+        // Hapus gambar lama jika bukan default
+        if ($agent->image && $agent->image !== 'DefaultAgent.jpg') {
+            Storage::disk('public')->delete('agent/' . $agent->image);
+        }
+
+        // Hapus data agent
+        $agent->delete();
+
+        return redirect()
+            ->route('Administrator.agent.network')
+            ->with('success', 'Data Agent berhasil dihapus.');
+    } catch (\Throwable $th) {
+        // Bisa log error untuk debug
+        return redirect()
+            ->route('Administrator.agent.network')
+            ->with('error', 'Gagal menghapus data agent. Silakan coba lagi.');
+    }
+}
+
+
+
+
+// code master Agent Continent
+    public function AgentNetworkContinent()  {
+         $data = [
+              'title' => 'Agent Network Continent'
+         ];
+         return view('administrator/agent-continent/data/file',$data);
+    }
+
+
+    public function getDataAgentContinentNetwork(Request $request) 
+    {
+        if ($request->ajax()) {
+        // Mulai query tanpa get() dulu
+        $query = $this->ContinentAgentModel->orderBy('name', 'asc');
+        // Cek apakah ada parameter pencarian
+        if ($request->has('search') && !empty($request->input('search')['value'])) {
+            $searchTerm = $request->input('search')['value'];
+            $query->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+        
+        // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
+        return DataTables::of($query)
+            ->addIndexColumn()
+
+            ->addColumn('action', function ($row) {
+                $idContinent= Crypt::encrypt($row->id);
+                $updateContinent =  route('Administrator.agent.network.continent.view.update',$idContinent);
+                $deleteContinent = route('Administrator.delete.agent.network.continent', ['id' => $idContinent]);
+                        $btn = '<a href="' . $updateContinent . '" class="btn btn-pill btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>';
+
+                        $btn .= '<form action="' . $deleteContinent . '" method="POST" class="d-inline">
+                        '.csrf_field().'
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" 
+                            onclick="confirmDelete(this)"
+                            class="btn btn-pill btn-outline-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    }
+
+
+
+
+    public function createDataAgenContinentNetwork()
+    {
+          $data = [
+              'title' => 'Form Agent Network Continent'
+         ];
+         return view('administrator/agent-continent/form/create',$data);
+    }
+
+
+
+    public function storeDataAgentAgenContinentNetwork(StoreContinentRequest $request)  {
+         try {
+            if (ContinentAgentModel::isNameAgentContinentExists($request->input('name'))) {
+                return redirect()->route('Administrator.agent.network.continent')
+                    ->with('error', 'Continent name already exists.');
+            }
+            $this->ContinentAgentModel->create([
+                'name' => $request->input('name') ?: null,
+                'code' => $request->input('code') ?: null,
+            ]);
+        return redirect()->route('Administrator.agent.network.continent')->with('success','success save');
+        } catch (\Throwable $th) {
+            return redirect()->route('Administrator.agent.network.continent')->with('error','Failed to create data. Please try again.');
+        }
+    }
+
+
+
+    public function showDataAgentContinentNetwork($id)
+    {
+        $requestId = Crypt::decrypt($id);
+        $getData = $this->ContinentAgentModel->findOrFail($requestId);
+
+        $data = [
+              'title' => 'Form  Update Agent Network Continent',
+              'id' => $id,
+              'row' => $getData
+         ];
+         return view('administrator/agent-continent/form/update',$data);
+    }
+
+
+    public function updateDataAgentNetworkContinent(Request $request, $id)  {
+        try {
+            try {
+                $idDecy = Crypt::decrypt($id);
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                return redirect()->route('Administrator.agent.network.continent')
+                    ->with('error', 'Invalid ID!');
+            }
+            $ContinentData = $this->ContinentAgentModel->findOrFail($idDecy);
+            //   cek name already exist
+            if (ContinentAgentModel::isNameAgentContinentExistsUpdate($request->input('name'), $idDecy)) {
+                return redirect()->route('Administrator.agent.network.continent')
+                    ->with('error', 'Name Continent already exists!');
+            }
+            $ContinentData->update([
+                'name' => $request->input('name'),
+                'code' => $request->input('code')
+            ]);
+            return redirect()->route('Administrator.agent.network.continent')->with('success','update success');
+
+        } catch (\Throwable $th) {
+            return redirect()->route('Administrator.agent.network.continent')->with('error','Failed to create data. Please try again.');
+        }
+    }
+
+    public function DeleteDataAgentContinentNetwork($id) {
+         try {
+        $idContDecrypted = Crypt::decrypt($id);
+        $ContAgentData = ContinentAgentModel::find($idContDecrypted);
+
+        if (!$ContAgentData) {
+            return redirect()->route('Administrator.agent.network.continent')
+                ->with('error', 'Data ID Not Found!');
+        }
+        $ContAgentData->delete();
+        return redirect()->route('Administrator.agent.network.continent')->with('success', 'Success delete');
+    } catch (DecryptException $e) {
+        return redirect()->route('Administrator.agent.network.continent')
+            ->with('error', 'Invalid ID!');
+    } catch (\Throwable $th) {
+        return redirect()->route('Administrator.agent.network.continent')
+            ->with('error', 'Failed to delete data. Please try again.');
+    }
+    }
+
+
+
+    public function AgentNetworkSubContinent()  {
+          $data = [
+              'title' => 'Agent Network Sub-Continent'
+         ];
+         return view('administrator/agent-sub-continent/data/file',$data);
+    }
+
+
+    public function getDataAgentSubContinentNetwork(Request $request)  {
+        if ($request->ajax()) {
+        // Mulai query tanpa get() dulu
+            $query = $this->SubContinentModel
+            ->leftJoin('continents_network_agent', 'subcontinents_network_agent.continent_id', '=', 'continents_network_agent.id')
+            ->select(
+                'subcontinents_network_agent.*',
+                'continents_network_agent.name as continent_name'
+            )
+            ->orderBy('subcontinents_network_agent.name', 'asc');
+
+            // Search filter
+            if ($request->has('search') && !empty($request->input('search')['value'])) {
+                $searchTerm = $request->input('search')['value'];
+                $query->where('subcontinents_network_agent.name', 'LIKE', "%{$searchTerm}%");
+            }
+        
+        // Gunakan DataTables langsung dari Query Builder, tanpa ->get()
+        return DataTables::of($query)
+            ->addIndexColumn()
+
+            ->addColumn('action', function ($row) {
+                $idSubContinent= Crypt::encrypt($row->id);
+                $updateSubContinent =  route('Administrator.agent.network.subcontinent.view.update',$idSubContinent);
+                $deleteSubContinent = route('Administrator.delete.agent.network.subcontinent', ['id' => $idSubContinent]);
+                        $btn = '<a href="' . $updateSubContinent . '" class="btn btn-pill btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>';
+
+                        $btn .= '<form action="' . $deleteSubContinent . '" method="POST" class="d-inline">
+                        '.csrf_field().'
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" 
+                            onclick="confirmDelete(this)"
+                            class="btn btn-pill btn-outline-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+}
+
+
+public function createDataAgenSubContinentNetwork()  {
+      $getContinent = $this->ContinentAgentModel->all();
+      $data = [
+              'title' => 'Agent Network Sub-Continent',
+              'continent' => $getContinent
+         ];
+         return view('administrator/agent-sub-continent/form/create',$data);
+}
+
+
+public function storeDataAgentAgenSubContinentNetwork(StoreSubContinentRequest $request)  {
+    try {
+            if (SubContinentModel::isNameAgentSubContinentExists($request->input('name'))) {
+                return redirect()->route('Administrator.agent.network.subcontinent')
+                    ->with('error', 'SubContinent name already exists.');
+            }
+
+            $this->SubContinentModel->create([
+                'name' => $request->input('name') ?: null,
+                'code' => $request->input('code') ?: null,
+                'continent_id' => $request->input('continent') ?: null,
+            ]);
+        return redirect()->route('Administrator.agent.network.subcontinent')->with('success','success save');
+        } catch (\Throwable $th) {
+            return redirect()->route('Administrator.agent.network.subcontinent')->with('error','Failed to create data. Please try again.');
+        }
+}
+
+
+
+public function showDataAgentSubContinentNetwork($id)  {
+      $idDecrypt = Crypt::decrypt($id);
+      $getContinent = $this->ContinentAgentModel->all();
+      $getDataSubContinent = $this->SubContinentModel->findOrFail($idDecrypt);
+      $data = [
+              'title' => 'Form Agent Network Sub-Continent',
+              'continent' => $getContinent,
+              'row' => $getDataSubContinent,
+              'id' => $id
+         ];
+         return view('administrator/agent-sub-continent/form/update',$data);
+}
+
+public function updateDataAgentNetworkSubContinent(Request $request, $id) {
+   
+    try {
+            try {
+                $idDecy = Crypt::decrypt($id);
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                return redirect()->route('Administrator.agent.network.subcontinent')
+                    ->with('error', 'Invalid ID!');
+            }
+            $SubContinentData = $this->SubContinentModel->findOrFail($idDecy);
+            //   cek name already exist
+            if (SubContinentModel::isNameAgentContinentExistsUpdate($request->input('name'), $idDecy)) {
+                return redirect()->route('Administrator.agent.network.subcontinent')
+                    ->with('error', 'Name Continent already exists!');
+            }
+            $SubContinentData->update([
+                'name' => $request->input('name') ?: null,
+                'code' => $request->input('code') ?: null,
+                'continent_id' => $request->input('continent') ?: null,
+            ]);
+            return redirect()->route('Administrator.agent.network.subcontinent')->with('success','update success');
+        } catch (\Throwable $th) {
+            return redirect()->route('Administrator.agent.network.subcontinent')->with('error','Failed to create data. Please try again.');
+        }
+}
+
+
+
+public function DeleteDataAgentSubContinentNetwork($id) {
+      try {
+        $idSubConDecrypted = Crypt::decrypt($id);
+        $subContAgentData = SubContinentModel::find($idSubConDecrypted);
+
+        if (!$subContAgentData) {
+            return redirect()->route('Administrator.agent.network.subcontinent')
+                ->with('error', 'Data ID Not Found!');
+        }
+        $subContAgentData->delete();
+        return redirect()->route('Administrator.agent.network.subcontinent')->with('success', 'Success delete');
+    } catch (DecryptException $e) {
+        return redirect()->route('Administrator.agent.network.subcontinent')
+            ->with('error', 'Invalid ID!');
+    } catch (\Throwable $th) {
+        return redirect()->route('Administrator.agent.network.subcontinent')
+            ->with('error', 'Failed to delete data. Please try again.');
+    }
+}
+
+}
+

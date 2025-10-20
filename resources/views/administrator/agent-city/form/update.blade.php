@@ -51,7 +51,7 @@
             <div class="mb-1 mt-2">
               <label class="form-label"> Name City*</label>
               <input type="text" name="name" value="{{ old('name', $row->name ?? '') }}"  class="form-control">
-              <input type="text" name="id" value="{{ old('id', $id ?? '') }}"  class="form-control">
+              <input type="hidden" name="id" value="{{ old('id', $id ?? '') }}"  class="form-control">
               @error('name')
               <div class="text-danger">{{ $message }}</div>
               @enderror

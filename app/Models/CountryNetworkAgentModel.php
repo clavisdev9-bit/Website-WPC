@@ -17,5 +17,6 @@ class CountryNetworkAgentModel extends Model
         'name',
         'iso_code',
         'flag',
+        'subcontinent_id'
     ];
 }

@@ -34,7 +34,7 @@
                         </option>
                     @endforeach
                 </select>
-              @error('name')
+              @error('country')
               <div class="text-danger">{{ $message }}</div>
               @enderror
             </div>
@@ -43,6 +43,24 @@
               <label class="form-label"> ISO Code*</label>
               <input type="text" name="iso_code" class="form-control" readonly>
               @error('iso_code')
+              <div class="text-danger">{{ $message }}</div>
+              @enderror
+            </div>
+
+
+            <div class="mb-1">
+              <label class="form-label"> Sub-Continent*</label>
+                <select name="sub_continent" id="sub_continent" class="form-control">
+                    <option value="">-- Select Sub-Continent --</option>
+                  @foreach ($SubContinent as $sct)
+                      <option 
+                          value="{{ $sct->id }}" 
+                          {{ (string) old('sub_continent') === (string) $sct->id ? 'selected' : '' }}>
+                          {{ $sct->name }}
+                      </option>
+                  @endforeach
+                </select>
+              @error('sub_continent')
               <div class="text-danger">{{ $message }}</div>
               @enderror
             </div>

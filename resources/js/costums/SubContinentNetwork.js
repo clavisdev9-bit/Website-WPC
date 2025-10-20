@@ -1,23 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let metaTag = document.querySelector('meta[name="route-agent-network-get"]');
-    let requestUrlAgentNetworkTable = metaTag ? metaTag.content : null;
+    let metaTag = document.querySelector('meta[name="route-agent-network-subcontinent-get"]');
+    let requestUrlAgentNetworkSubContinentTable = metaTag ? metaTag.content : null;
 
-    if (!requestUrlAgentNetworkTable) {
+    if (!requestUrlAgentNetworkSubContinentTable) {
         // console.error("Meta tag Route Not found.");
         return; // Hentikan eksekusi jika tidak ada URL
     }
 
-    let agentNetworkTable = document.getElementById("agentNetworkTable");
-    if (!agentNetworkTable) {
+    let subcontinentAgentNetworkTable = document.getElementById("subcontinentAgentNetworkTable");
+    if (!subcontinentAgentNetworkTable) {
         // console.error("Table tidak ditemukan di halaman ini.");
         return;
     }
 
-    $("#agentNetworkTable").DataTable({
+    $("#subcontinentAgentNetworkTable").DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: requestUrlAgentNetworkTable,
+            url: requestUrlAgentNetworkSubContinentTable,
             type: "GET",
             headers: {
                 'X-Requested-With': 'XMLHttpRequest', // **Pastikan ini ada**
@@ -26,12 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         columns: [
             { data: "DT_RowIndex", name: "DT_RowIndex", orderable: false, searchable: false },
-            { data: "name_agent", name: "name_agent" },
+            { data: "continent_name", name: "continent_name" },
+            { data: "name", name: "name" },
             { data: "code", name: "code" },
-            { data: "name_country", name: "name_country" },
-            { data: "name_city", name: "name_city" },
-            { data: "status", name: "status" },
-            { data: "details", name: "details" },
             { data: "action", name: "action", orderable: false, searchable: true },
         ],
         responsive: true,

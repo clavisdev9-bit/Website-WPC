@@ -152,6 +152,7 @@ Route::get('/avatar/{filename}', function ($filename) {
     return response($file, 200)->header("Content-Type", $type);
 })->name('avatar.show');
 
+// route for user
 Route::get('Administrator/Users-management', [Administrator::class, 'UserManagement'])->name('Administrator.user.management');
 Route::get('Administrator/Get-user-management', [Administrator::class, 'getUser'])->name('Administrator.get.user.management');
 Route::get('Administrator/create-user-management', [Administrator::class, 'createUser'])->name('Administrator.create.user.management');
@@ -163,6 +164,27 @@ Route::get('Administrator/access-user-submenu/{id}', [Administrator::class, 'Acc
 Route::post('Administrator/change-access-submenu', [Administrator::class, 'ChangeAccessSubMenu'])->name('Administrator.change.access.submenu');
 
 
+// route for Continent
+Route::get('Administrator/Master-continent-agent', [Administrator::class, 'AgentNetworkContinent'])->name('Administrator.agent.network.continent');
+Route::get('Administrator/Get-agent-network-continent', [Administrator::class, 'getDataAgentContinentNetwork'])->name('Administrator.get.agent.network.continent');
+Route::get('Administrator/create-agent-network-continent', [Administrator::class, 'createDataAgenContinentNetwork'])->name('Administrator.create.agent.network.continent');
+Route::post('Administrator/Store-agent-network-continent', [Administrator::class, 'storeDataAgentAgenContinentNetwork'])->name('Administrator.store.agent.network.continent');
+Route::get('Administrator/view-agent-network-continent-update/{id}', [Administrator::class, 'showDataAgentContinentNetwork'])->name('Administrator.agent.network.continent.view.update');
+Route::put('Administrator/agent-network-continent/update/{id}', [Administrator::class, 'updateDataAgentNetworkContinent'])->name('Administrator.update.agent.network.continent');
+Route::delete('Administrator/delete-agent-network-continent/{id}', [Administrator::class, 'DeleteDataAgentContinentNetwork'])->name('Administrator.delete.agent.network.continent');
+
+
+// route for SubContinent
+Route::get('Administrator/Master-subcontinent-agent', [Administrator::class, 'AgentNetworkSubContinent'])->name('Administrator.agent.network.subcontinent');
+Route::get('Administrator/Get-agent-network-subcontinent', [Administrator::class, 'getDataAgentSubContinentNetwork'])->name('Administrator.get.agent.network.subcontinent');
+Route::get('Administrator/create-agent-network-subcontinent', [Administrator::class, 'createDataAgenSubContinentNetwork'])->name('Administrator.create.agent.network.subcontinent');
+Route::post('Administrator/Store-agent-network-subcontinent', [Administrator::class, 'storeDataAgentAgenSubContinentNetwork'])->name('Administrator.store.agent.network.subcontinent');
+Route::get('Administrator/view-agent-network-subcontinent-update/{id}', [Administrator::class, 'showDataAgentSubContinentNetwork'])->name('Administrator.agent.network.subcontinent.view.update');
+Route::put('Administrator/agent-network-subcontinent/update/{id}', [Administrator::class, 'updateDataAgentNetworkSubContinent'])->name('Administrator.update.agent.network.subcontinent');
+Route::delete('Administrator/delete-agent-network-subcontinent/{id}', [Administrator::class, 'DeleteDataAgentSubContinentNetwork'])->name('Administrator.delete.agent.network.subcontinent');
+
+
+// route for country network
 Route::get('/flag/{filename}', function ($filename) {
     $path = storage_path('app/public/flag/' . $filename);
     if (!File::exists($path)) {
@@ -179,18 +201,36 @@ Route::get('Administrator/create-agent-network-country', [Administrator::class, 
 Route::post('Administrator/Store-agent-network-country', [Administrator::class, 'storeDataAgentCountryNetwork'])->name('Administrator.store.agent.network.country');
 Route::get('Administrator/view-agent-network-country-update/{id}', [Administrator::class, 'showDataAgentCountryNetwork'])->name('Administrator.agent.network.country.view.update');
 Route::put('Administrator/update-agent-network-country', [Administrator::class, 'UpdateDataAgentCountryNetwork'])->name('Administrator.agent.network.country.view.updates');
-Route::delete('Administrator/user-delete-agent-network-country/{id}', [Administrator::class, 'DeleteDataAgentCountryNetwork'])->name('Administrator.delete.agent.network.country');
+Route::delete('Administrator/delete-agent-network-country/{id}', [Administrator::class, 'DeleteDataAgentCountryNetwork'])->name('Administrator.delete.agent.network.country');
 
+// route for city network
 Route::get('Administrator/Agent-network-city', [Administrator::class, 'AgentNetworkCity'])->name('Administrator.agent.network.city');
 Route::get('Administrator/Get-agent-network-city', [Administrator::class, 'getDataAgentCityNetwork'])->name('Administrator.get.agent.network.city');
 Route::get('Administrator/create-agent-network-city', [Administrator::class, 'createDataAgentCityNetwork'])->name('Administrator.create.agent.network.city');
 Route::post('Administrator/Store-agent-network-city', [Administrator::class, 'storeDataAgentCityNetwork'])->name('Administrator.store.agent.network.city');
 Route::get('Administrator/view-agent-network-city-update/{id}', [Administrator::class, 'showDataAgentCityNetwork'])->name('Administrator.agent.network.city.view.update');
 Route::put('Administrator/update-agent-network-city', [Administrator::class, 'UpdateDataAgentCityNetwork'])->name('Administrator.agent.network.city.view.updates');
-Route::delete('Administrator/user-delete-agent-network-city/{id}', [Administrator::class, 'DeleteDataAgentCityNetwork'])->name('Administrator.delete.agent.network.city');
+Route::delete('Administrator/delete-agent-network-city/{id}', [Administrator::class, 'DeleteDataAgentCityNetwork'])->name('Administrator.delete.agent.network.city');
 
+
+// route for agent network
+Route::get('/agent/{filename}', function ($filename) {
+    $path = storage_path('app/public/agent/' . $filename);
+    if (!File::exists($path)) {
+        abort(404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    return response($file, 200)->header("Content-Type", $type);
+})->name('agent.image.show');
 Route::get('Administrator/Master-agent-network', [Administrator::class, 'AgentNetwork'])->name('Administrator.agent.network');
 Route::get('Administrator/Get-agent-network', [Administrator::class, 'getDataAgentNetwork'])->name('Administrator.get.agent.network');
+Route::get('Administrator/get-cities/{country_id}', [Administrator::class, 'getCitiesByCountry'])->name('get.cities.by.country');
+Route::get('Administrator/create-agent-network', [Administrator::class, 'createDataAgentNetwork'])->name('Administrator.create.agent.network');
+Route::post('Administrator/Store-agent-network', [Administrator::class, 'storeDataAgentNetwork'])->name('Administrator.store.agent.network');
+Route::get('Administrator/agent-network/edit/{id}', [Administrator::class, 'editDataAgentNetwork'])->name('Administrator.edit.agent.network');
+Route::put('Administrator/agent-network/update/{id}', [Administrator::class, 'updateDataAgentNetwork'])->name('Administrator.update.agent.network');
+Route::delete('/Administrator/agent-network/delete/{id}', [Administrator::class, 'deleteDataAgentNetwork'])->name('Administrator.delete.agent.network');
 
 
 

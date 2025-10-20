@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         columns: [
             { data: "DT_RowIndex", name: "DT_RowIndex", orderable: false, searchable: false },
+            { data: "name_subcontinent", name: "name_subcontinent" },
             { data: "name", name: "name" },
             { data: "iso_code", name: "iso_code" },
             { data: "flag", name: "flag" },

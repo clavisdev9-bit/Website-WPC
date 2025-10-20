@@ -38,6 +38,25 @@
                    value="{{ $row->iso_code }}" readonly>
           </div>
 
+
+           <div class="mb-1">
+            <label class="form-label">Continent*</label>
+            <select name="subcontinent" id="subcontinent" class="form-control">
+              <option value="">-- Select Continent --</option>
+              @foreach ($SubContinent as $ct)
+                <option 
+                    value="{{ $ct->id }}" 
+                    {{ (string) old('subcontinent', $row->subcontinent_id ?? '') === (string) $ct->id ? 'selected' : '' }}>
+                    {{ $ct->name }}
+                </option>
+                @endforeach
+            </select>
+            @error('subcontinent')
+              <div class="text-danger">{{ $message }}</div>
+            @enderror
+          </div>
+
+
           <div class="col-md-4">
   <div class="mb-3">
     <label for="flag" class="form-label">

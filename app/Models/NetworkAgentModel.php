@@ -13,6 +13,19 @@ class NetworkAgentModel extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
+     protected $fillable = [
+        'name',
+        'code',
+        'country_id',
+        'city_id',
+        'address',
+        'lat',
+        'lng',
+        'phone',
+        'email',
+        'image',
+        'status',
+    ];
 
 
     public function scopeSearch($query, $search)

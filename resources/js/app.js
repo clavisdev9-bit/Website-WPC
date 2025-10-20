@@ -31,6 +31,8 @@ import './costums/syncContactLog.js'
 import './costums/agentCountryNetwork.js'
 import './costums/agentCityNetwork.js'
 import './costums/agentNetwork.js'
+import './costums/ContinentNetwork.js'
+import './costums/SubContinentNetwork.js'
 
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
