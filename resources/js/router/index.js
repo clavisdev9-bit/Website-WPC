@@ -4,6 +4,8 @@ import Network from '../pages/Frontend/Network/network.vue';
 import Login from '../pages/Frontend/Auth/login.vue';
 import Registeration from '../pages/Frontend/Auth/registeration.vue';
 import FormQout from '../pages/Frontend/Qoutations/Form.vue';
+import networkNew from '../pages/Frontend/Network/networkNew.vue';
+import networkHighLevel from '../pages/Frontend/Network/networkHighLevel.vue';
 
 
 
@@ -27,7 +29,9 @@ const routes = [
 
    { 
     path: '/wpc-esys/network', 
-    component: Network, 
+    // component: Network, 
+    // component: networkNew, 
+     component: networkHighLevel, 
     // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
   },
 
