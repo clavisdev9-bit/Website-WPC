@@ -7,8 +7,16 @@ import "leaflet/dist/leaflet.css"
 import L from "leaflet"
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
+import { useRouter } from 'vue-router'
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+const router = useRouter()
 
-// ✅ Fix marker hilang
+const refreshPage = () => {
+  router.go(0) // reload halaman saat ini
+}
+
+// Fix marker hilang
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
@@ -16,9 +24,8 @@ L.Icon.Default.mergeOptions({
 
 const defaultImage = "/images/footer_works.jpg"
 
-// ============================
+
 // STATE
-// ============================
 const mapRef = ref(null)
 const mapInstance = ref(null)
 const zoomLevel = ref(3)
@@ -31,9 +38,8 @@ const showModal = ref(false)
 const selectedImage = ref("")
 const activeAgent = ref(null)
 
-// ============================
+
 // ICONS
-// ============================
 const defaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   iconSize: [25, 41],
@@ -46,9 +52,17 @@ const activeIcon = L.icon({
   iconAnchor: [15, 45],
 })
 
-// ============================
+
+const continentIcon = L.icon({
+  iconUrl: '/images/marker.png',
+  iconSize: [36, 45],
+  iconAnchor: [12, 41],
+  className: 'continent-marker'
+})
+
+
+
 // FETCH DATA
-// ============================
 const data = ref([])
 const loading = ref(true)
 const error = ref(null)
@@ -117,102 +131,217 @@ const openImage = (img) => {
 
 
 
+// const fetchData = async () => {
+//   try {
+//     const res = await axios.get("http://127.0.0.1:8000/api/Agents/Network")
+//     const agents = res.data.data.data
+
+//     const groupedByContinent = Object.values(
+//       agents.reduce((acc, item) => {
+//         const continentName = item.location.continent
+//         const subcontinentName = item.location.subcontinent
+//         const countryName = item.location.country.name
+//         const cityName = item.location.city
+//         const lat = parseFloat(item.location.coordinates.lat)
+//         const lng = parseFloat(item.location.coordinates.lng)
+
+//         if (!acc[continentName]) {
+//           acc[continentName] = { 
+//             continent: continentName, 
+//             subcontinents: {}, 
+//             positions: [] 
+//           }
+//         }
+
+//         acc[continentName].positions.push([lat, lng])
+
+//         if (!acc[continentName].subcontinents[subcontinentName]) {
+//           acc[continentName].subcontinents[subcontinentName] = { 
+//             subcontinent: subcontinentName, 
+//             countries: {} 
+//           }
+//         }
+
+//         if (!acc[continentName].subcontinents[subcontinentName].countries[countryName]) {
+//           acc[continentName].subcontinents[subcontinentName].countries[countryName] = {
+//             country: countryName,
+//             flag: item.location.country.flag,
+//             position: [lat, lng],
+//             cities: {}
+//           }
+//         }
+
+//         if (!acc[continentName].subcontinents[subcontinentName].countries[countryName].cities[cityName]) {
+//           acc[continentName].subcontinents[subcontinentName].countries[countryName].cities[cityName] = {
+//             city: cityName,
+//             position: [lat, lng],
+//             agents: []
+//           }
+//         }
+
+//         acc[continentName].subcontinents[subcontinentName].countries[countryName].cities[cityName].agents.push({
+//           id: item.id,
+//           name: item.name,
+//           address: item.location.address,
+//           position: [lat, lng],
+//           phone: item.contact.phone,
+//           email: item.contact.email,
+//           image: item.image || defaultImage,
+//           city: cityName,
+//           country: countryName,
+//           subcontinent: subcontinentName,
+//           continent: continentName,
+//         })
+
+//         return acc
+//       }, {})
+//     ).map(continent => {
+      
+//       const avgLat = continent.positions.reduce((sum, [lat]) => sum + lat, 0) / continent.positions.length
+//       const avgLng = continent.positions.reduce((sum, [, lng]) => sum + lng, 0) / continent.positions.length
+//       return {
+//         ...continent,
+//         position: [avgLat, avgLng],
+//         subcontinents: Object.values(continent.subcontinents).map(sc => {
+  
+//   const allCoords = Object.values(sc.countries).flatMap(c =>
+//     Object.values(c.cities).map(city => city.position)
+//   )
+//   const avgLat = allCoords.reduce((sum, [lat]) => sum + lat, 0) / allCoords.length
+//   const avgLng = allCoords.reduce((sum, [, lng]) => sum + lng, 0) / allCoords.length
+
+//   return {
+//     ...sc,
+//     position: [avgLat, avgLng],
+//     countries: Object.values(sc.countries).map(c => ({
+//       ...c,
+//       cities: Object.values(c.cities)
+//     }))
+//   }
+// })
+
+//       }
+//     })
+
+//     data.value = groupedByContinent
+//   } catch (err) {
+//     error.value = "Gagal memuat data"
+//     console.error(err)
+//   } finally {
+//     loading.value = false
+//   }
+// }
+
+
 const fetchData = async () => {
   try {
     const res = await axios.get("http://127.0.0.1:8000/api/Agents/Network")
     const agents = res.data.data.data
 
-    const groupedByContinent = Object.values(
-      agents.reduce((acc, item) => {
-        const continentName = item.location.continent
-        const subcontinentName = item.location.subcontinent
-        const countryName = item.location.country.name
-        const cityName = item.location.city
-        const lat = parseFloat(item.location.coordinates.lat)
-        const lng = parseFloat(item.location.coordinates.lng)
+    // Gunakan objek agar tidak bentrok antar benua
+    const continentsMap = {}
 
-        if (!acc[continentName]) {
-          acc[continentName] = { 
-            continent: continentName, 
-            subcontinents: {}, 
-            positions: [] 
-          }
+    agents.forEach(item => {
+      const continentKey = item.location.continent?.trim()?.toLowerCase() || "unknown"
+      const continentName = item.location.continent || "Unknown"
+      const subKey = item.location.subcontinent?.trim()?.toLowerCase() || "other"
+      const subName = item.location.subcontinent || "Other"
+      const countryName = item.location.country?.name || "Unknown Country"
+      const cityName = item.location.city || "Unknown City"
+      const lat = parseFloat(item.location.coordinates?.lat)
+      const lng = parseFloat(item.location.coordinates?.lng)
+      const flag = item.location.country?.flag || ""
+      const position = [lat, lng]
+
+      // === GROUPING CONTINENT ===
+      if (!continentsMap[continentKey]) {
+        continentsMap[continentKey] = {
+          continent: continentName,
+          subcontinents: {},
+          positions: []
         }
+      }
+      continentsMap[continentKey].positions.push(position)
 
-        acc[continentName].positions.push([lat, lng])
-
-        if (!acc[continentName].subcontinents[subcontinentName]) {
-          acc[continentName].subcontinents[subcontinentName] = { 
-            subcontinent: subcontinentName, 
-            countries: {} 
-          }
+      // === GROUPING SUBCONTINENT ===
+      if (!continentsMap[continentKey].subcontinents[subKey]) {
+        continentsMap[continentKey].subcontinents[subKey] = {
+          subcontinent: subName,
+          countries: {}
         }
+      }
 
-        if (!acc[continentName].subcontinents[subcontinentName].countries[countryName]) {
-          acc[continentName].subcontinents[subcontinentName].countries[countryName] = {
-            country: countryName,
-            flag: item.location.country.flag,
-            position: [lat, lng],
-            cities: {}
-          }
+      // === GROUPING COUNTRY ===
+      if (!continentsMap[continentKey].subcontinents[subKey].countries[countryName]) {
+        continentsMap[continentKey].subcontinents[subKey].countries[countryName] = {
+          country: countryName,
+          flag: flag,
+          position: position,
+          cities: {}
         }
+      }
 
-        if (!acc[continentName].subcontinents[subcontinentName].countries[countryName].cities[cityName]) {
-          acc[continentName].subcontinents[subcontinentName].countries[countryName].cities[cityName] = {
-            city: cityName,
-            position: [lat, lng],
-            agents: []
-          }
+      // === GROUPING CITY ===
+      if (!continentsMap[continentKey].subcontinents[subKey].countries[countryName].cities[cityName]) {
+        continentsMap[continentKey].subcontinents[subKey].countries[countryName].cities[cityName] = {
+          city: cityName,
+          position: position,
+          agents: []
         }
+      }
 
-        acc[continentName].subcontinents[subcontinentName].countries[countryName].cities[cityName].agents.push({
+      // === AGENT DATA ===
+      continentsMap[continentKey]
+        .subcontinents[subKey]
+        .countries[countryName]
+        .cities[cityName]
+        .agents.push({
           id: item.id,
           name: item.name,
           address: item.location.address,
-          position: [lat, lng],
+          position: position,
           phone: item.contact.phone,
           email: item.contact.email,
           image: item.image || defaultImage,
           city: cityName,
           country: countryName,
-          subcontinent: subcontinentName,
-          continent: continentName,
+          subcontinent: subName,
+          continent: continentName
         })
+    })
 
-        return acc
-      }, {})
-    ).map(continent => {
-      
+    // === CONVERT OBJECTS TO ARRAYS + HITUNG POSISI RATA-RATA ===
+    const groupedByContinent = Object.values(continentsMap).map(continent => {
       const avgLat = continent.positions.reduce((sum, [lat]) => sum + lat, 0) / continent.positions.length
       const avgLng = continent.positions.reduce((sum, [, lng]) => sum + lng, 0) / continent.positions.length
+
       return {
         ...continent,
         position: [avgLat, avgLng],
         subcontinents: Object.values(continent.subcontinents).map(sc => {
-  
-  const allCoords = Object.values(sc.countries).flatMap(c =>
-    Object.values(c.cities).map(city => city.position)
-  )
-  const avgLat = allCoords.reduce((sum, [lat]) => sum + lat, 0) / allCoords.length
-  const avgLng = allCoords.reduce((sum, [, lng]) => sum + lng, 0) / allCoords.length
+          const allCoords = Object.values(sc.countries).flatMap(c =>
+            Object.values(c.cities).map(city => city.position)
+          )
+          const avgLat = allCoords.reduce((sum, [lat]) => sum + lat, 0) / allCoords.length
+          const avgLng = allCoords.reduce((sum, [, lng]) => sum + lng, 0) / allCoords.length
 
-  return {
-    ...sc,
-    position: [avgLat, avgLng],
-    countries: Object.values(sc.countries).map(c => ({
-      ...c,
-      cities: Object.values(c.cities)
-    }))
-  }
-})
-
+          return {
+            ...sc,
+            position: [avgLat, avgLng],
+            countries: Object.values(sc.countries).map(c => ({
+              ...c,
+              cities: Object.values(c.cities)
+            }))
+          }
+        })
       }
     })
 
     data.value = groupedByContinent
+    console.log("✅ Data benua:", groupedByContinent.map(c => c.continent))
   } catch (err) {
     error.value = "Gagal memuat data"
-    console.error(err)
+    console.error("❌ Error fetchData:", err)
   } finally {
     loading.value = false
   }
@@ -220,11 +349,12 @@ const fetchData = async () => {
 
 
 
+
 const onMapReady = (map) => {
   mapInstance.value = map
   console.log("🗺️ Map ready")
 
-  // 🟢 Setelah data terload, fokuskan ke area dunia (berdasarkan semua benua)
+  // Setelah data terload, fokuskan ke area dunia (berdasarkan semua benua)
   watch(data, (val) => {
     if (val.length > 0) {
       const allCoords = val.flatMap(c => c.positions)
@@ -241,9 +371,9 @@ const zoomTo = (pos, zoom) => {
   }
 }
 
-// ============================
+
 // PAGINATION & LIST
-// ============================
+
 const agentListItemsPerPage = ref(10)
 const agentListCurrentPage = ref(1)
 
@@ -280,9 +410,8 @@ watch([selectedLevel, selectedCountry, selectedCity], resetAgentListPagination)
 
 onMounted(fetchData)
 
-// ============================
+
 // FLAT AGENT LIST
-// ============================
 const flatAgents = computed(() => {
   if (!data.value?.length) return []
   return data.value.flatMap(continent =>
@@ -300,18 +429,63 @@ const flatAgents = computed(() => {
   )
 })
 
-// ============================
+
 // FILTER & PAGINATION
-// ============================
+// const filterCountry = ref('')
+// const itemsPerPage = ref(6)
+// const currentPage = ref(1)
+// const selectedCountries = ref([])
+
+// const filteredAgents = computed(() => {
+//   if (!filterCountry.value) return flatAgents.value
+//   return flatAgents.value.filter(a => a.country === filterCountry.value)
+// })
+
+// const paginatedAgents = computed(() => {
+//   const start = (currentPage.value - 1) * itemsPerPage.value
+//   return filteredAgents.value.slice(start, start + itemsPerPage.value)
+// })
+
+// const loadMore = () => {
+//   if (currentPage.value * itemsPerPage.value < filteredAgents.value.length) {
+//     currentPage.value++
+//   }
+// }
+
+// watch(filterCountry, () => {
+//   currentPage.value = 1
+// })
+
+
+// FILTER & PAGINATION
 const filterCountry = ref('')
+const searchQuery = ref('')
 const itemsPerPage = ref(6)
 const currentPage = ref(1)
 
+// FILTERED AGENTS
 const filteredAgents = computed(() => {
-  if (!filterCountry.value) return flatAgents.value
-  return flatAgents.value.filter(a => a.country === filterCountry.value)
+  let agents = flatAgents.value
+
+  // Filter by country
+  if (filterCountry.value) {
+    agents = agents.filter(a => a.country === filterCountry.value)
+  }
+
+  // Filter by search query
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    agents = agents.filter(a =>
+      (a.name && a.name.toLowerCase().includes(query)) ||
+      (a.city && a.city.toLowerCase().includes(query)) ||
+      (a.address && a.address.toLowerCase().includes(query))
+    )
+  }
+
+  return agents
 })
 
+// PAGINATION
 const paginatedAgents = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
   return filteredAgents.value.slice(start, start + itemsPerPage.value)
@@ -323,22 +497,20 @@ const loadMore = () => {
   }
 }
 
-watch(filterCountry, () => {
+// Reset pagination when filters change
+watch([filterCountry, searchQuery], () => {
   currentPage.value = 1
 })
 
-// ============================
+
 // DETAIL MODAL
-// ============================
 const showDetailModal = ref(false)
 const openDetail = (agent) => {
   activeAgent.value = agent
   showDetailModal.value = true
 }
 
-// ============================
 // BACK BUTTON
-// ============================
 const goBack = () => {
   if (selectedLevel.value === 'subcontinent') {
     selectedLevel.value = 'continent'
@@ -363,9 +535,9 @@ const texts = [
 ]
 
 const displayedText = ref('')
-const typingSpeed = 100   // kecepatan mengetik (ms)
-const deletingSpeed = 50  // kecepatan menghapus
-const delayBetweenTexts = 1200 // jeda sebelum teks dihapus
+const typingSpeed = 100   
+const deletingSpeed = 50  
+const delayBetweenTexts = 1200 
 let textIndex = 0
 let charIndex = 0
 let isDeleting = false
@@ -425,7 +597,7 @@ function typeEffect() {
                         v-for="(continent, i) in data"
                         :key="i"
                         :lat-lng="continent.position"
-                        :icon="defaultIcon"
+                        :icon="continentIcon"
                         @click="goToContinent(continent)"
                     >
                         <LPopup>
@@ -441,8 +613,8 @@ function typeEffect() {
                         v-for="(sub,i) in selectedContinent.subcontinents || []"
                         :key="i"
                         :lat-lng="sub.position"
-                        :icon="defaultIcon"
-                        class="bounce"
+                        :icon="continentIcon"
+                        class="pulse"
                         @click="goToSubcontinent(sub)"
                         >
                         <LPopup>
@@ -459,7 +631,7 @@ function typeEffect() {
                     <LMarker 
                       v-for="(country,i) in selectedSubcontinent?.countries || []" :key="i" 
                       :lat-lng="country.position"
-                      :icon="defaultIcon"
+                      :icon="continentIcon"
                       @click="goToCountry(country)">
                       <LPopup>
                         <b>{{ country.country }}</b> ({{ country.cities.length }} cities)
@@ -472,7 +644,7 @@ function typeEffect() {
                     <LMarker 
                       v-for="(city,i) in selectedCountry?.cities || []" :key="i" 
                       :lat-lng="city.position"
-                      :icon="defaultIcon"
+                      :icon="continentIcon"
                       @click="goToCity(city)">
                       <LPopup>
                         <b>{{ city.city }}</b> ({{ city.agents.length }} agents)
@@ -486,7 +658,7 @@ function typeEffect() {
                       v-for="(agent,i) in selectedCity.agents" :key="i"
                       :lat-lng="agent.position"
                       @click="goToAgent(agent)"
-                      :icon="activeAgent && activeAgent.id === agent.id ? activeIcon : defaultIcon"
+                      :icon="continentIcon && continentIcon.id === agent.id ? continentIcon : continentIcon"
                     >
                       <LPopup>
                         <div class="text-center" style="min-width: 160px;">
@@ -574,9 +746,22 @@ function typeEffect() {
                 </li>
               </ul>
 
-              <button v-if="selectedLevel!=='continent'" class="btn btn-outline-secondary mt-3" @click="goBack">
-                ← Back
-              </button>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <button
+                    v-if="selectedLevel !== 'continent'"
+                    class="btn btn-outline-secondary"
+                    @click="goBack"
+                >
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </button>
+
+                <button
+                    class="btn btn-outline-secondary"
+                    @click="refreshPage"
+                >
+                    <i class="fa-solid fa-refresh"></i> Refresh
+                </button>
+            </div>
             </div>
           </div>
         </div>
@@ -584,85 +769,129 @@ function typeEffect() {
     </div>
 
     <!-- PAGE BODY & AGENT GRID -->
-    <div class="page-body mt-5">
-      <div class="container-xl">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <h2 class="text-primary mb-1 fw-bold"> Global Locations </h2>
-            <p class="text-secondary small mb-0">Connecting you through our network of international branches and partners.</p>
-          </div>
-          <div>
-            <select v-model="filterCountry" class="form-select form-select shadow-sm">
-              <option value="">🌍All Countries</option>
-              <option v-for="c in data.flatMap(cont => (cont.subcontinents || []).flatMap(sc => (sc.countries || [])))" :key="c.country" :value="c.country">
-                {{ c.country }}
-              </option>
-            </select>
-          </div>
-        </div>
+  <div class="page-body mt-5">
+  <div class="container-xl">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="text-primary fw-bold mb-1">🌍 Global Locations</h2>
+        <p class="text-muted small mb-0">
+          Connecting you through our network of international branches and partners.
+        </p>
+      </div>
+      <div class="mt-2 mt-sm-0">
+       
+        <div class="mt-2 mt-sm-0 d-flex gap-2">
+  <!-- FILTER COUNTRY -->
+  <select
+    v-model="filterCountry"
+    class="form-select shadow-sm border-primary"
+    style="min-width: 200px; border-radius: 10px;"
+  >
+    <option value="">🌐 All Countries</option>
+    <option
+      v-for="c in data.flatMap(cont => (cont.subcontinents || []).flatMap(sc => (sc.countries || [])))"
+      :key="c.country"
+      :value="c.country"
+    >
+      {{ c.country }}
+    </option>
+  </select>
 
-        <div class="row row-cards">
-          <div v-for="(agent, i) in paginatedAgents" :key="i" class="col-sm-6 col-lg-4">
-            <div class="card card-sm shadow-sm hover-shadow transition-all duration-200 border-0">
-              <a href="#" class="d-block position-relative" @click.prevent="openImage(agent.image)">
-                <img :src="defaultImage" class="card-img-top" style="height:200px; object-fit:cover;" />
-                <div class="position-absolute top-0 start-0 m-2 px-2 py-1 bg-primary text-white rounded-pill text-xs">
-                  {{ agent.country }}
-                </div>
-              </a>
-              <div class="card-body">
-                <div class="d-flex align-items-center mb-2">
-                  <span class="avatar avatar-2 me-3 rounded bg-outline-primary bg-opacity-10">
-                    <i class="fa-solid fa-map"></i>
-                  </span>
-                  <div>
-                    <div class="fw-bold text-dark">{{ agent.name }}</div>
-                    <div class="text-secondary small">{{ agent.city }}</div>
-                  </div>
-                </div>
-                <div class="small text-muted mb-2">
-                  <i class="fa-solid fa-location-dot me-1 text-primary"></i> {{ agent.address }}
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="text-secondary small"></div>
-                  <button class="btn btn-outline-primary text-white" @click="goToQuotation" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
-                    Get Quotation
-                  </button>
-                </div>
-              </div>
+  <!-- SEARCH BOX -->
+  <input
+    type="text"
+    v-model="searchQuery"
+    placeholder=" Search agent..."
+    class="form-control shadow-sm border-primary"
+    style="min-width: 220px; border-radius: 10px;"
+  />
+ 
+</div>
+
+
+      </div>
+    </div>
+
+    <!-- Agents Grid with Transition -->
+    <transition-group
+      name="fade"
+      tag="div"
+      class="row g-4"
+      appear
+    >
+      <div
+        v-for="(agent, i) in paginatedAgents"
+        :key="agent.id || i"
+        class="col-12 col-sm-6 col-lg-4"
+      >
+        <div class="card border-0 shadow-sm h-100 hover-card transition-all">
+          <div class="position-relative overflow-hidden rounded-top" style="height: 200px;">
+            <img
+              :src="defaultImage"
+              class="w-100 h-100"
+              style="object-fit: cover;"
+              @click.prevent="openImage(agent.image)"
+              alt="Agent Image"
+            />
+            <div class="position-absolute top-0 start-0 m-2 px-3 py-1 bg-primary text-white rounded-pill text-xs fw-semibold">
+              {{ agent.country }}
             </div>
           </div>
 
-          <div v-if="loading" class="text-center text-secondary py-5">Loading branch gallery...</div>
-          <div v-if="!loading && filteredAgents.length === 0" class="text-center text-secondary py-5">
-            No branches found.
-          </div>
-        </div>
+          <div class="card-body">
+            <div class="d-flex align-items-start mb-2">
+               <i class="fa-solid fa-building-circle-check me-1 text-primary"></i>
+              <div>
+                <div class="fw-bold text-dark mb-0">{{ agent.name }}</div>
+                <div class="text-secondary small">{{ agent.city }}</div>
+              </div>
+            </div>
 
-        <div class="text-center mt-4">
-          <button v-if="currentPage * itemsPerPage < filteredAgents.length" class="btn btn-outline-primary" @click="loadMore">Load More</button>
-        </div>
-      </div>
-    </div>
+            <div class="small text-muted mb-3">
+              <i class="fa-solid fa-location-dot me-1 text-primary"></i>
+              {{ agent.address }}
+            </div>
 
-    <!-- Modal Detail -->
-    <div v-if="showDetailModal" class="modal fade show d-block" style="background: rgba(0,0,0,0.6);" @click.self="showDetailModal=false">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content p-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold text-primary mb-0">{{ activeAgent.name }}</h5>
-            <button type="button" class="btn-close" @click="showDetailModal=false"></button>
-          </div>
-          <img :src="activeAgent.image || defaultImage" class="img-fluid rounded mb-3" alt="Agent">
-          <p><i class="fa-solid fa-city text-primary"> </i> {{ activeAgent.country }} | {{ activeAgent.city }}</p>
-          <p><i class="fa-solid fa-location-dot text-primary"></i> {{ activeAgent.address }}</p>
-          <p><i class="fa-solid fa-phone text-primary"></i> {{ activeAgent.phone || 'N/A' }}</p>
-          <div class="text-end">
-            <button class="btn btn-primary" @click="goToQuotation(activeAgent)">Get Quotation</button>
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- <small class="text-muted">{{ agent.phone || '—' }}</small> -->
+              <button
+                class="btn btn-primary px-3 shadow-sm"
+                style="border-radius: 8px; background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;"
+                @click="goToQuotation(agent)"
+              >
+                Get Quotation
+              </button>
+            </div>
           </div>
         </div>
       </div>
+    </transition-group>
+
+    <!-- Loading & Empty States -->
+    <div v-if="loading" class="col-12 text-center text-secondary py-5 fw-semibold">
+      <i class="fa-solid fa-spinner fa-spin me-2"></i> Loading branch gallery...
     </div>
+
+    <div v-if="!loading && filteredAgents.length === 0" class="col-12 text-center text-muted py-5 fw-semibold">
+      <i class="fa-solid fa-circle-exclamation text-primary me-2"></i>
+      No branches found.
+    </div>
+
+    <!-- Load More -->
+    <div class="text-center mt-4">
+      <button
+        v-if="currentPage * itemsPerPage < filteredAgents.length"
+        class="btn btn-outline-primary px-4 py-2 fw-semibold shadow-sm"
+        style="border-radius: 10px;"
+        @click="loadMore"
+      >
+        <i class="fa-solid fa-plus me-2"></i> Load More
+      </button>
+    </div>
+  </div>
+</div>
+
   </FrontendLayout>
 </template>
 
@@ -793,13 +1022,59 @@ h3 {
   }
 }
 
-.leaflet-marker-icon.bounce {
-  animation: bounce 0.8s ease-in-out infinite alternate;
+/* Efek Pulse lembut untuk marker */
+.leaflet-marker-icon.pulse {
+  position: relative;
+  animation: pulseMarker 1.6s ease-in-out infinite;
+  transform-origin: center;
 }
 
-@keyframes bounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-6px); }
+@keyframes pulseMarker {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.15);
+    filter: brightness(1.3);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+
+.continent-marker img {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+
+.hover-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 123, 255, 0.15);
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  letter-spacing: 0.3px;
+}
+
+/* ✨ Fade-in animation for transition-group */
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.5s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+  transform: translateY(15px);
 }
 
 </style>
