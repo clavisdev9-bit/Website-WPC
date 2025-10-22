@@ -44,7 +44,10 @@ class AgentNetworkResource extends JsonResource
                 'subcontinent' => $this->name_subcontinents,
                 'country' => [
                     'name' => $this->name_country,
-                    'flag' => $this->flag_country,
+                    // 'flag' => $this->flag_country,
+                    'flag' => $this->flag_country
+                        ? asset('storage/flag/' . $this->flag_country)
+                        : asset('storage/flag/defaultFlag.png'),
                 ],
                 'city' => $this->name_city,
                 'address' => $this->address,
@@ -62,7 +65,7 @@ class AgentNetworkResource extends JsonResource
 
             //  Media
             'image' => $this->image 
-                ? asset('storage/agents/' . $this->image) 
+                ? asset('storage/agent/' . $this->image) 
                 : asset('images/default-agent.jpg'),
 
             //  Status

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
@@ -942,7 +943,6 @@ public function ChangeAccessSubMenu(Request $request)  {
 
 
     // code master Agent Country
-
     public function AgentNetworkCountry()  {
          $data = [
               'title' => 'Agent Network Country'
@@ -1010,14 +1010,32 @@ public function ChangeAccessSubMenu(Request $request)  {
 
 public function createDataAgentCountryNetwork()
 {
-    $response = Http::get('http://127.0.0.1:8000/api/country');
-
+    // $response = Http::get('http://53794bb17cf4.ngrok-free.app/countries');
+  $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/countries');
     if ($response->successful()) {
         $json = $response->json();
         $countries = $json['data'] ?? []; // ambil isi 'data'
     } else {
         $countries = [];
     }
+
+    // Simpan hasil API selama 1 jam (3600 detik)
+    // $countries = Cache::remember('countries_data', 3600, function () {
+    //     try {
+    //         // Gunakan timeout agar tidak menggantung
+    //         $response = Http::timeout(5)->get('http://53794bb17cf4.ngrok-free.app/countries');
+              
+    //         if ($response->successful()) {
+    //             $json = $response->json();
+    //             return $json['data'] ?? [];
+    //         }
+    //     } catch (\Exception $e) {
+    //         // Kalau error (timeout, koneksi, dsb), return array kosong
+    //         \Log::error('Error fetching countries: ' . $e->getMessage());
+    //     }
+
+    //     return []; // fallback default
+    // });
 
     $getSubContinent =  $this->SubContinentModel->all();
     $data = [
@@ -1045,7 +1063,7 @@ public function createDataAgentCountryNetwork()
                     $file->storeAs('flag', $imageName, 'public');
                     $Country->flag = $imageName;
                 } else {
-                    $Country->flag = 'defaultFlag.jpg';
+                    $Country->flag = 'default_flag.png';
                 }
               
                 $Country->save();
@@ -1059,13 +1077,32 @@ public function createDataAgentCountryNetwork()
 
 
     public function showDataAgentCountryNetwork($id) {
-        $response = Http::get('http://127.0.0.1:8000/api/country');
+        $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/countries');
             if ($response->successful()) {
                 $json = $response->json();
                 $countries = $json['data'] ?? []; // ambil isi 'data'
             } else {
                 $countries = [];
             }
+
+    //     $countries = Cache::remember('countries_data', 3600, function () {
+    //     try {
+    //         $response = Http::timeout(5)->get('http://53794bb17cf4.ngrok-free.app/countries');
+
+    //         if ($response->successful()) {
+    //             $json = $response->json();
+    //             return $json['data'] ?? [];
+    //         }
+    //     } catch (\Exception $e) {
+    //         \Log::error('Error fetching countries: ' . $e->getMessage());
+    //     }
+
+    //     return []; // fallback jika API gagal
+    // });
+
+
+        
+        
                 $decyId = Crypt::decrypt($id);
                 $encyIdCountry = Crypt::encrypt($decyId);
                 $getDataBlogs = $this->CountryNetworkAgentModel->findOrFail($decyId);
@@ -1101,7 +1138,7 @@ public function createDataAgentCountryNetwork()
            if ($newImage) {
                $imagePath =  $newImage->store('flag', 'public');
                $imageName = basename($imagePath);
-               if ($oldImage && $oldImage !== 'defaultFlag.png') {
+               if ($oldImage && $oldImage !== 'default_flag.png') {
                 $imagePath = storage_path('app/public/flag/' . $oldImage);
                 if (file_exists($imagePath)) {
                     unlink($imagePath);
@@ -1140,7 +1177,7 @@ public function createDataAgentCountryNetwork()
             }
 
 
-            if ($images && $images !== 'defaultFlag.png') {
+            if ($images && $images !== 'default_flag.png') {
                 // Menentukan path file gambar di storage/app/avatar
                 $imagePath = storage_path('app/public/flag/' . $images);
                 // Memastikan gambar ada di folder tersebut dan menghapusnya
@@ -1529,7 +1566,7 @@ public function createDataAgentCountryNetwork()
         $file->storeAs('agent', $imageName, 'public');
         $Agents->image = $imageName;
     } else {
-        $Agents->image = 'DefaultAgent.jpg';
+        $Agents->image = 'default_agent.jpg';
     }
     $Agents->save();
     return redirect()->route('Administrator.agent.network')->with('success', 'Data agent berhasil disimpan.');
@@ -1590,7 +1627,7 @@ public function updateDataAgentNetwork(StoreNetworkAgentRequest $request, $id)
             $imageName = basename($imagePath);
 
             // Hapus file lama jika bukan default
-            if ($oldImage && $oldImage !== 'DefaultAgent.jpg') {
+            if ($oldImage && $oldImage !== 'default_agent.jpg') {
                 Storage::disk('public')->delete('agent/' . $oldImage);
             }
         }
@@ -1637,7 +1674,7 @@ public function deleteDataAgentNetwork($id)
         $agent = $this->NetworkAgentModel->findOrFail($idDecy);
 
         // Hapus gambar lama jika bukan default
-        if ($agent->image && $agent->image !== 'DefaultAgent.jpg') {
+        if ($agent->image && $agent->image !== 'default_agent.jpg') {
             Storage::disk('public')->delete('agent/' . $agent->image);
         }
 
