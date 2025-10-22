@@ -25,9 +25,7 @@
                                           <a href="/wpc-esys/qoutation-request" class="btn btn-gradient px-4 py-2 mt-2">
                                             Get Quote
                                           </a>
-                                          {{-- <a href="" class="btn btn-gradient px-4 py-2 mt-2">
-                                          Tracking Login
-                                          </a> --}}
+                                         
 
                                             <!-- Ikon logistik -->
                                             <div class="d-flex justify-content-center justify-content-md-start gap-3 mt-4">
@@ -76,9 +74,7 @@
                                               Get Quote
                                             </a>
 
-                                             {{-- <a href="" class="btn btn-gradient px-4 py-2 mt-2">
-                                              Tracking Login
-                                              </a> --}}
+                                             
 
                                               <!-- Ikon logistik -->
                                               <div class="d-flex justify-content-center justify-content-md-start gap-3 mt-4">

@@ -364,12 +364,12 @@ const profileStatic = '/images/profile.png'
 /*  Logo styling */
 .navbar-brand-image {
   object-fit: contain;
-  height: 55px;
+  height: 60px;
   width: auto;
 }
 
 .logo-large {
-  height: 58px !important;
+  height: 75px !important;
   margin-right: 6px; /* lebih dekat ke teks, tapi tetap lega */
 }
 

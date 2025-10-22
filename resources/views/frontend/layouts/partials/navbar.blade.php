@@ -12,13 +12,10 @@
             <div class="container d-flex align-items-center">
                 <div class="d-flex align-items-center h-100">
                     <a href="#" class="navbar-brand" style="height: 125px;">
-                        {{-- <h1 class="text-white mb-0">WPC Logistic</h1> --}}
-                       {{-- <img src="{{ asset('assets/frontend/img/logo.png') }}" alt="Logo">  --}}
                        <img src="/images/logox.png" 
                         alt="Logo" 
-                        class="img-fluid d-inline-block align-text-top mb-2" 
-                        style="max-height:100px; width:auto;"> 
-                       
+                        class="img-fluid d-inline-block align-text-top mb-4" 
+                        style="max-height:105px; width:auto;"> 
                     </a>
                   
 
@@ -40,7 +37,7 @@
                                 <div class="d-flex justify-content-end">
                                     <div class="d-flex align-items-center small">
                                         <a href="{{ route('Auth.login') }}" class="login-btn text-body me-3 pe-3"> <span>Login</span></a>
-                                        <a href="{{ route('Auth.register') }}" class="text-body me-3"> Register</a>
+                                        <a href="/wpc-esys/qoutation-request" class="text-body me-3"> Get Qoute</a>
                                     </div>
                                     <div class="d-flex pe-3">
                                         <a class="btn p-0 text-white me-3" href="#"><i class="fab fa-facebook-f"></i></a>
@@ -56,10 +53,10 @@
                         <nav class="navbar navbar-expand-lg navbar-light d-flex justify-content-lg-end">
                             <a href="#" class="navbar-brand-2">
                                  {{-- <h1 class="text-white mb-0">WPC Logistic</h1> --}}
-                               <img src="/images/logo.png" 
+                               <img src="/images/logox.png" 
                         alt="Logo" 
                         class="img-fluid d-inline-block align-text-top mb-2" 
-                        style="max-height:63px; width:auto;">
+                        style="max-height:90px; width:auto;">
                             </a> 
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                                 <span class="fa fa-bars"></span>
@@ -70,34 +67,34 @@
                                 <div class="navbar-nav mx-0 mx-lg-auto">
                                    
                                     <a href="{{ route('users.home') }}" 
-       class="nav-item nav-link {{ request()->routeIs('users.home') ? 'active' : '' }}">
-       Home
-    </a>
+                                class="nav-item nav-link {{ request()->routeIs('users.home') ? 'active' : '' }}">
+                                Home
+                                </a>
 
-    <a href="{{ route('users.about') }}" 
-       class="nav-item nav-link {{ request()->routeIs('users.about') ? 'active' : '' }}">
-       About
-    </a>
+                                <a href="{{ route('users.about') }}" 
+                                class="nav-item nav-link {{ request()->routeIs('users.about') ? 'active' : '' }}">
+                                About
+                                </a>
 
-    <div class="nav-item dropdown">
-        <a href="#" class="nav-link {{ request()->is('services/*') ? 'active' : '' }}" data-bs-toggle="dropdown">
-            <span class="dropdown-toggle">Services</span>
-        </a>
-        <div class="dropdown-menu">
-            <a href="{{ route('users.logistic') }}" 
-               class="dropdown-item {{ request()->routeIs('users.logistic') ? 'active' : '' }}">
-               Logistic
-            </a>
-            <a href="{{ route('users.transportation') }}" 
-               class="dropdown-item {{ request()->routeIs('users.transportation') ? 'active' : '' }}">
-               Transportation
-            </a>
-            <a href="{{ route('users.warehouse') }}" 
-               class="dropdown-item {{ request()->routeIs('users.warehouse') ? 'active' : '' }}">
-               Warehouse
-            </a>
-        </div>
-    </div>
+                                <div class="nav-item dropdown">
+                                    <a href="#" class="nav-link {{ request()->is('services/*') ? 'active' : '' }}" data-bs-toggle="dropdown">
+                                        <span class="dropdown-toggle">Services</span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a href="{{ route('users.logistic') }}" 
+                                        class="dropdown-item {{ request()->routeIs('users.logistic') ? 'active' : '' }}">
+                                        Logistic
+                                        </a>
+                                        <a href="{{ route('users.transportation') }}" 
+                                        class="dropdown-item {{ request()->routeIs('users.transportation') ? 'active' : '' }}">
+                                        Transportation
+                                        </a>
+                                        <a href="{{ route('users.warehouse') }}" 
+                                        class="dropdown-item {{ request()->routeIs('users.warehouse') ? 'active' : '' }}">
+                                        Warehouse
+                                        </a>
+                                    </div>
+                                </div>
 
                                 <a href="/wpc-esys/qoutation-request" 
                                 class="nav-item nav-link {{ request()->is('wpc-esys/qoutation-request') ? 'active' : '' }}">
@@ -143,22 +140,4 @@
         </div>
         <!-- Navbar & Hero End -->
 
-        <!-- Modal Search Start -->
-        {{-- <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center bg-primary">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="btn bg-light border nput-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-        <!-- Modal Search End -->
-
+       

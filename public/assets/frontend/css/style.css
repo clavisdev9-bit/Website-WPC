@@ -553,78 +553,70 @@
 
 /*** Carousel Hero Header Start ***/
 .hero-section {
-    background-image: url(../img/renew/web3.jpg);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    width: 100%;
-    height: 700px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
+  background-image: url(../img/renew/web3.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
+/* FULL BACKGROUND VERSION */
 .hero-bg-half-1 {
-    /* background-image: url(../img/transportation-service.png); */
-    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
-    filter: grayscale(15%);
-    transform: scale(100% - 50%);
-    background-position: center right;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: absolute;
-    width: 58%;
-    height: 100%;
-    right: 0;
-    top: 0;
+  background-image: url(../img/renew/web3.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  inset: 0; /* = top:0; right:0; bottom:0; left:0; */
+  z-index: 1;
 }
 
 .hero-bg-half-2 {
-    /* background-image: url(../img/transportation-service.png); */
-    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
-    filter: grayscale(15%);
-    transform: scale(100% - 50%);
-    background-position: center right;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: absolute;
-    width: 58%;
-    height: 100%;
-    right: 0;
-    top: 0;
+  background-image: url(../img/renew/images1.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
 }
 
-@media (max-width: 991px) {
-    .hero-bg-half-1 {
-        /* background-image: url(../img/transportation-service.png); */
-        clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
-        filter: grayscale(0%);
-        transform: scale(100% - 0%);
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        right: 0;
-        top: 0;
-    }
 
-    .hero-bg-half-2 {
-        /* background-image: url(../img/transportation-service.png); */
-        clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
-        filter: grayscale(0%);
-        transform: scale(100% - 0%);
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        right: 0;
-        top: 0;
-    }
+
+
+@media (max-width: 991px) {
+  .hero-bg-half-1,
+  .hero-bg-half-2 {
+    /* Hapus bentuk polygon di mobile agar gambar penuh */
+    clip-path: none;
+
+    /* Hapus efek filter abu-abu */
+    filter: grayscale(0%);
+
+    /* transform sebelumnya tidak valid */
+    transform: scale(1);
+
+    /* Buat gambar memenuhi area hero */
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /* Pastikan posisinya benar */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Pastikan urutan tumpukan aman */
+    z-index: 1;
+  }
 }
 
 /*** Carousel Hero Header Start ***/
@@ -1265,7 +1257,7 @@
 .testimonial {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(rgba(12, 24, 68, 0.9), rgba(12, 24, 68, 0.9)), url(../img/carousel-2.jpg);
+    background: linear-gradient(rgba(12, 24, 68, 0.9), rgba(12, 24, 68, 0.9)), url(../img/renew/web4.jpg);
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1377,7 +1369,7 @@
 /*** Footer Start ***/
 .footer {
     overflow: hidden;
-    background: linear-gradient(rgba(12, 24, 68, 0.9), rgba(12, 24, 68, 0.98)), url(../img/transport-alt_21.jpg);
+    background: linear-gradient(rgba(12, 24, 68, 0.9), rgba(12, 24, 68, 0.98)), url(../img/renew/images2.jpg);
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1483,6 +1475,24 @@
 }
 
 /* Gelombang bawah */
+/* Hero utama */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background layer */
+.hero-bg-half-1,
+.hero-bg-half-2 {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  z-index: 0; /* paling bawah */
+}
+
+/* Efek gelombang bawah */
 .hero-section::after {
   content: "";
   position: absolute;
@@ -1493,9 +1503,10 @@
   background: linear-gradient(to top, rgba(0, 123, 255, 0.4), rgba(0, 123, 255, 0.1));
   clip-path: polygon(0 60%, 25% 100%, 50% 60%, 75% 100%, 100% 60%, 100% 100%, 0 100%);
   animation: waveAnim 6s linear infinite;
+  z-index: 1; /* di atas background */
 }
 
-/* Gelombang atas */
+/* Efek gelombang atas */
 .hero-section::before {
   content: "";
   position: absolute;
@@ -1506,8 +1517,16 @@
   background: linear-gradient(to bottom, rgba(0, 123, 255, 0.4), rgba(0, 123, 255, 0.1));
   clip-path: polygon(0 40%, 25% 0%, 50% 40%, 75% 0%, 100% 40%, 100% 0%, 0 0);
   animation: waveAnimTop 7s linear infinite;
+  z-index: 1; /* di atas background */
 }
 
+/* Konten hero (teks, tombol, dsb) */
+.hero-content {
+  position: relative;
+  z-index: 2; /* paling atas */
+}
+
+/* Animasi */
 @keyframes waveAnim {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -1517,6 +1536,7 @@
   0%   { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
+
 
 
 
