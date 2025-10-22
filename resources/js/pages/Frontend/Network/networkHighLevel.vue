@@ -13,7 +13,7 @@ import 'vue-multiselect/dist/vue-multiselect.min.css'
 const router = useRouter()
 
 const refreshPage = () => {
-  router.go(0) // reload halaman saat ini
+  router.go(0) // reload 
 }
 
 // Fix marker hilang
@@ -93,7 +93,6 @@ const goToContinent = (continent) => {
 }
 
 
-
 const goToSubcontinent = (subcontinent) => {
   selectedSubcontinent.value = subcontinent
   selectedLevel.value = 'country'
@@ -132,19 +131,15 @@ const openImage = (img) => {
 
 
 
-
-// ... (Bagian atas script tetap sama)
-
 const fetchData = async () => {
     loading.value = true
     error.value = null
     
-    // Inisialisasi variabel untuk menyimpan semua agen dari semua halaman
+    
     let allAgents = []
-    let nextUrl = "http://127.0.0.1:8000/api/Agents/Network" // Mulai dari halaman pertama
+    let nextUrl = "http://127.0.0.1:8000/api/Agents/Network" 
 
     try {
-        // Lakukan looping selama masih ada halaman berikutnya (nextUrl bukan null)
         while (nextUrl) {
             const res = await axios.get(nextUrl)
             const responseData = res.data.data
@@ -154,12 +149,9 @@ const fetchData = async () => {
 
             // Dapatkan URL halaman berikutnya, jika ada
             nextUrl = responseData.pagination.next_page_url
-            
-            // Log untuk debugging (opsional)
-            // console.log(`Fetched page. Total agents so far: ${allAgents.length}. Next URL: ${nextUrl}`)
         }
 
-        // --- MULAI LOGIKA GROUPING DENGAN allAgents ---
+        //  MULAI LOGIKA GROUPING DENGAN allAgents
         const agents = allAgents
         const continentsMap = {}
 
@@ -174,11 +166,9 @@ const fetchData = async () => {
             const lng = parseFloat(item.location.coordinates?.lng)
             const flag = item.location.country?.flag || ""
 
-            // PENTING: Lakukan pengecekan validitas koordinat sebelum membuat position.
             // Gunakan posisi rata-rata (0,0) atau lainnya jika NaN, agar tidak mengganggu peta.
             const position = (isNaN(lat) || isNaN(lng)) ? [0, 0] : [lat, lng]
             
-            // Pastikan agen dengan koordinat [0,0] tetap masuk grouping dan hitungan
             
             // === GROUPING CONTINENT ===
             if (!continentsMap[continentKey]) {
@@ -285,11 +275,11 @@ const fetchData = async () => {
 
         data.value = groupedByContinent
         // Log ini sekarang akan menunjukkan hitungan yang benar:
-        console.log("✅ Data Benua:", groupedByContinent.map(c => ({
-            continent: c.continent, 
-            agents: c.agentCount, 
-            subcontinents: c.subcontinents.length // Sekarang akan jadi 2 untuk Asia (Tenggara & Timur)
-        })))
+        // console.log("✅ Data Benua:", groupedByContinent.map(c => ({
+        //     continent: c.continent, 
+        //     agents: c.agentCount, 
+        //     subcontinents: c.subcontinents.length // Sekarang akan jadi 2 untuk Asia (Tenggara & Timur)
+        // })))
         
     } catch (err) {
         error.value = "Gagal memuat data dari API. Cek koneksi atau endpoint."
@@ -304,7 +294,7 @@ const fetchData = async () => {
 
 const onMapReady = (map) => {
   mapInstance.value = map
-  console.log(" Map ready")
+  // console.log(" Map ready")
 
   // Setelah data terload, fokuskan ke area dunia (berdasarkan semua benua)
   watch(data, (val) => {
@@ -849,7 +839,6 @@ function typeEffect() {
       >
       <p><i class="fa-solid fa-city text-primary"> </i> {{ activeAgent.country }} | {{ activeAgent.city }}</p>
       <p><i class="fa-solid fa-location-dot text-primary"></i> {{ activeAgent.address }}</p>
-      <!-- <p><i class="fa-solid fa-phone text-primary"></i> {{ activeAgent.phone || 'N/A' }}</p> -->
       <div class="text-end">
         <button 
           class="btn btn-primary"

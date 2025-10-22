@@ -41,10 +41,10 @@
         class="img-fluid mx-auto d-block rounded"
         style="max-width: 280px;"
        />
-       <h1 class="text-danger fw-bold w-100">Sorry, the Menu feature you clicked is not yet available <i class="fa-regular fa-face-sad-tear"></i></h1>
+       <h1 class="text-danger fw-bold w-100">🚧 Under Development</h1>
         <div class="mb-3">
           <span class="d-block text-danger fw-bold fs-5 w-100">
-            Maaf, fitur <b>Menu yang Anda klik</b> belum tersedia <i class="fa-regular fa-face-sad-tear"></i>
+             <b>🧱 We’re building something awesome here!</b>
           </span>
         </div>
       </div>
