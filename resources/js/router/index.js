@@ -6,7 +6,7 @@ import Registeration from '../pages/Frontend/Auth/registeration.vue';
 import FormQout from '../pages/Frontend/Qoutations/Form.vue';
 import networkNew from '../pages/Frontend/Network/networkNew.vue';
 import networkHighLevel from '../pages/Frontend/Network/networkHighLevel.vue';
-
+import dataTableSchedule from '../pages/Frontend/Schedule/dataTableSchedule.vue';
 
 
 
@@ -26,20 +26,25 @@ const routes = [
     // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
   },
 
-
-   { 
-    path: '/wpc-esys/network', 
-    // component: Network, 
-    // component: networkNew, 
-     component: networkHighLevel, 
-    // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
-  },
-
    { 
     path: '/wpc-esys/qoutation-request', 
     component: FormQout, 
     // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
-  },
+    },
+
+   { 
+    path: '/wpc-esys/network', 
+     component: networkHighLevel, 
+    // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
+   },
+
+   { 
+    path: '/wpc-esys/schedule', 
+     component: dataTableSchedule, 
+    // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
+   },
+
+  
 
 
 

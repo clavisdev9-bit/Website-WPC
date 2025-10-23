@@ -5,16 +5,20 @@
         <!-- Subscribe -->
         <div class="col-md-4 mb-3">
           <div class="d-flex">
-            <input type="email" class="form-control me-2" placeholder="Email address to Subscribe" />
-            <button class="btn btn-white">Subscribe</button>
+            <input
+              type="email"
+              class="form-control me-2"
+              :placeholder="$t('footer.subscribePlaceholder')"
+            />
+            <button class="btn btn-white">{{ $t('footer.subscribeButton') }}</button>
           </div>
         </div>
 
         <!-- Social Icons -->
         <div class="col-md-8 text-md-end mb-3">
-          <a href="#" class="btn btn-outline-light  me-1"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="btn btn-outline-light  me-1"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="btn btn-outline-light  me-1"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="btn btn-outline-light me-1"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="btn btn-outline-light me-1"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="btn btn-outline-light me-1"><i class="fab fa-instagram"></i></a>
           <a href="#" class="btn btn-outline-light"><i class="fab fa-linkedin-in"></i></a>
         </div>
       </div>
@@ -23,61 +27,61 @@
         <!-- Logo & About -->
         <div class="col-md-3 mb-4">
           <img :src="LogoCompany" alt="WPC Logistics" class="mb-3" style="max-width: 100px;">
-          <p class="text-white" >Since 1998, WPC Logistics gives alternative logistic solution while never missed the delivery deadlines to our consumers. WPC Logistics also keeps the system updated by doing cycle changing regularly.</p>
+          <p class="text-white">
+            {{ $t('footer.about') }}
+          </p>
         </div>
 
         <!-- Quick Links -->
         <div class="col-md-2 mb-4">
-          <h5 class="fw-bold text-white">Quick Links</h5>
+          <h5 class="fw-bold text-white">{{ $t('footer.quickLinks') }}</h5>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-white text-decoration-none">Home</a></li>
-            <li><a href="#" class="text-white text-decoration-none">Quotation</a></li>
-            <li><a href="#" class="text-white text-decoration-none">Schedule</a></li>
-            <li><a href="#" class="text-white text-decoration-none">Prices</a></li>
-            <li><a href="#" class="text-white text-decoration-none">Booking</a></li>
-            <li><a href="#" class="text-white text-decoration-none">Documentation</a></li>
+            <li><a href="#" class="text-white text-decoration-none">{{ $t('footer.home') }}</a></li>
+            <li><a href="#" class="text-white text-decoration-none">{{ $t('footer.quotation') }}</a></li>
+            <li><a href="#" class="text-white text-decoration-none">{{ $t('footer.schedule') }}</a></li>
+            <li><a href="#" class="text-white text-decoration-none">{{ $t('footer.prices') }}</a></li>
+            <li><a href="#" class="text-white text-decoration-none">{{ $t('footer.booking') }}</a></li>
+            <li><a href="#" class="text-white text-decoration-none">{{ $t('footer.documentation') }}</a></li>
           </ul>
         </div>
 
         <!-- Contact Info -->
         <div class="col-md-3 mb-4">
-          <h5 class="fw-bold text-white">Contact Info</h5>
+          <h5 class="fw-bold text-white">{{ $t('footer.contactInfo') }}</h5>
           <ul class="list-unstyled">
-            <li class="text-white"><i class="fas fa-map-marker-alt text-white"></i> WPC MAIN OFFICE - INDONESIA Jl. Kesehatan Raya No.54 B Tanah Abang IV, Jakarta 10160</li>
-            <li class="text-white"><i class="fas fa-envelope text-white"></i> inquiry@wpclogistics.com</li>
-            <li class="text-white"><i class="fas fa-phone text-white"></i> +62 21 3450605</li>
+            <li class="text-white">
+              <i class="fas fa-map-marker-alt text-white"></i> {{ $t('footer.address') }}
+            </li>
+            <li class="text-white">
+              <i class="fas fa-envelope text-white"></i> {{ $t('footer.email') }}
+            </li>
+            <li class="text-white">
+              <i class="fas fa-phone text-white"></i> {{ $t('footer.phone') }}
+            </li>
           </ul>
         </div>
 
         <!-- Recent Work -->
         <div class="col-md-4 mb-4">
-          <h5 class="fw-bold text-white">Recent Work</h5>
+          <h5 class="fw-bold text-white">{{ $t('footer.recentWork') }}</h5>
           <div class="row g-2">
             <div class="col-4" v-for="n in 9" :key="n">
-              <img :src="marker" alt="Recent Work" class="img-fluid rounded">
+              <img :src="marker" alt="Recent Work" class="img-fluid rounded" />
             </div>
           </div>
         </div>
       </div>
-             <!-- Certification Logos -->
-            <!-- <div class="container-fluid bg-light py-3" style="background: linear-gradient(90deg, #007bff, #0056b3)"> -->
-                <div class="container text-center">
-                    <img :src="logoCertifikat" 
-                        alt="Certification Logos" 
-                        class="img-fluid" style="max-height:70px;">
-                </div>
-            <!-- </div> -->
 
-      <hr class="my-3 border-light">
+      <!-- Certification Logos -->
+      <div class="container text-center">
+        <img :src="logoCertifikat" alt="Certification Logos" class="img-fluid" style="max-height:70px;">
+      </div>
+
+      <hr class="my-3 border-light" />
 
       <!-- Bottom -->
       <div class="d-flex justify-content-between align-items-center">
-        <small class="text-white">© Clavis Group, All right reserved.</small>
-        <!-- <div>
-          <img src="" alt="Cert" style="height:30px;" class="me-2">
-          <img src="" alt="Cert" style="height:30px;" class="me-2">
-          <img src="" alt="Cert" style="height:30px;">
-        </div> -->
+        <small class="text-white">{{ $t('footer.copyright') }}</small>
       </div>
     </div>
   </footer>
@@ -94,7 +98,6 @@ const logoCertifikat = '/images/certification-logo.png'
   text-decoration: underline;
 }
 
-
 .footer {
   position: relative;
   color: white;
@@ -105,7 +108,6 @@ const logoCertifikat = '/images/certification-logo.png'
   z-index: 1;
 }
 
-/* Ombak pertama */
 .footer::before {
   content: "";
   position: absolute;
@@ -123,7 +125,6 @@ const logoCertifikat = '/images/certification-logo.png'
   z-index: 0;
 }
 
-/* Ombak kedua */
 .footer::after {
   content: "";
   position: absolute;
@@ -140,14 +141,12 @@ const logoCertifikat = '/images/certification-logo.png'
   z-index: 0;
 }
 
-/* Animasi gradient */
 @keyframes oceanGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Animasi ombak */
 @keyframes waveMove {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -157,5 +156,4 @@ const logoCertifikat = '/images/certification-logo.png'
   position: relative;
   z-index: 2;
 }
-
 </style>

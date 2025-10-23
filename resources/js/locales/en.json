@@ -1,0 +1,75 @@
+{
+  "language": "Language",
+  "navbar": {
+    "home": "Home",
+    "quotation": "Quotation Request",
+    "network": "Network",
+    "schedule": "Schedule",
+    "prices": "Prices",
+    "booking": "Booking",
+    "documentation": "Documentation",
+    "support": "Support",
+    "userGuide": "User Guide",
+    "language": "Language",
+    "userName": "Username",
+    "back": "Back to Main Page"
+  },
+  "footer": {
+    "subscribePlaceholder": "Email address to subscribe",
+    "subscribeButton": "Subscribe",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Information",
+    "recentWork": "Recent Work",
+    "home": "Home",
+    "quotation": "Quotation",
+    "schedule": "Schedule",
+    "prices": "Prices",
+    "booking": "Booking",
+    "documentation": "Documentation",
+    "address": "HEAD OFFICE WPC - INDONESIA, Jl. Kesehatan Raya No.54 B Tanah Abang IV, Jakarta 10160",
+    "email": "inquiry@wpclogistics.com",
+    "phone": "+62 21 3450605",
+    "copyright": "© Clavis Group, All rights reserved.",
+    "about": "Since 1998, WPC Logistics has provided alternative logistics solutions without missing shipment deadlines. On the other hand, WPC Logistics continuously upgrades systems through regular cycle changes."
+  },
+  "home": {
+    "tabs": {
+      "tracking": "Tracking",
+      "schedule": "Schedule",
+      "comingSoon": "Tracking coming soon..."
+    },
+    "form": {
+      "tracking_label": "Tracking Number / Container",
+      "tracking_placeholder": "Enter tracking number",
+      "track_button": "Track"
+    },
+    "buttons": {
+      "login": "LOG IN",
+      "register": "CREATE ACCOUNT",
+      "quotation": "Quotation Request"
+    },
+    "carousel": {
+      "title": "New Shipping Instructions",
+      "desc": "Experience a streamlined process from SI submission to BL approval.",
+      "discover": "Discover"
+    }
+  },
+   "map": {
+      "loadingMap": "Loading map data...",
+      "continent": "continent",
+      "subcontinent": "subcontinent",
+      "country": "country",
+      "city": "city",
+      "agent": "agent",
+      "detailsAgent": "Details Agent",
+      "getQuotation": "Get Quotation",
+      "back": "Back",
+      "refresh": "Refresh",
+      "allCountries": "All Countries",
+      "searchAgent": "Search agent...",
+      "globalLocations": "Global Locations",
+      "connectingText": "Connecting you through our network of international branches and partners.",
+      "noBranches": "No branches found.",
+      "loadingGallery": "Loading branch gallery..."
+    }
+}

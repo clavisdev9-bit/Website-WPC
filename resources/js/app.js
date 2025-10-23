@@ -45,6 +45,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import { createI18n } from 'vue-i18n'
 
 // Import Tabler JS from the new location in 'resources/vendor'
 import '../vendor/dist/js/tabler.min.js';
@@ -60,6 +61,31 @@ import 'vue-toastification/dist/index.css'
 
 import 'select2';
 import 'select2/dist/css/select2.css';
+
+
+// Import semua file bahasa
+import en from './locales/en.json'
+import id from './locales/id.json'
+import ar from './locales/ar.json'
+import cn from './locales/cn.json'
+import ja from './locales/ja.json'
+
+// code untuk bahasa
+const userLang = navigator.language.split('-')[0]
+const availableLangs = ['en', 'id', 'ar', 'cn', 'ja']
+const defaultLang = availableLangs.includes(userLang) ? userLang : 'en'
+const i18n = createI18n({
+  legacy: false, 
+  locale: defaultLang, 
+  fallbackLocale: 'en',
+  messages: {
+    en,
+    id,
+    ar,
+    cn,
+    ja
+  }
+})
 
 const app = createApp(App)
 
@@ -79,10 +105,9 @@ app.use(Toast, {
   rtl: false
 })
 
-// lib leaflet
+// code lib leaflet
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
-
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
@@ -90,9 +115,9 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-const pinia = createPinia()   // ⬅️ inisialisasi pinia
-app.use(pinia)                // ⬅️ daftarkan ke Vue
-
+const pinia = createPinia()   
+app.use(pinia)                
+app.use(i18n)
 app.use(router)
 app.mount('#app')
 

@@ -1,0 +1,76 @@
+{
+  "language": "日本語",
+  "navbar": {
+    "home": "ホーム",
+    "quotation": "見積依頼",
+    "network": "ネットワーク",
+    "schedule": "スケジュール",
+    "prices": "料金",
+    "booking": "予約",
+    "documentation": "ドキュメント",
+    "support": "サポート",
+    "userGuide": "ユーザーガイド",
+    "language": "言語",
+    "userName": "ユーザー名",
+    "back": "メインページに戻る"
+  },
+  "footer": {
+    "subscribePlaceholder": "購読用メールアドレス",
+    "subscribeButton": "購読する",
+    "quickLinks": "クイックリンク",
+    "contactInfo": "連絡先情報",
+    "recentWork": "最近の作業",
+    "home": "ホーム",
+    "quotation": "見積",
+    "schedule": "スケジュール",
+    "prices": "料金",
+    "booking": "予約",
+    "documentation": "ドキュメント",
+    "address": "WPC本社 - インドネシア、ジャカルタ 10160、Jl. Kesehatan Raya No.54 B Tanah Abang IV",
+    "email": "inquiry@wpclogistics.com",
+    "phone": "+62 21 3450605",
+    "copyright": "© Clavis Group, 全著作権所有。",
+    "about": "1998年以来、WPC Logisticsは納期を守りながら代替物流ソリューションを提供しています。また、定期的なシステム更新を行い、常に最新の状態を維持しています。"
+  },
+  "home": {
+    "tabs": {
+      "tracking": "追跡",
+      "schedule": "スケジュール",
+      "comingSoon": "追跡機能はまもなく公開されます..."
+
+    },
+    "form": {
+      "tracking_label": "追跡番号 / コンテナ",
+      "tracking_placeholder": "追跡番号を入力してください",
+      "track_button": "追跡"
+    },
+    "buttons": {
+      "login": "ログイン",
+      "register": "アカウント作成",
+      "quotation": "見積依頼"
+    },
+    "carousel": {
+      "title": "新しい出荷指示",
+      "desc": "SI提出からBL承認までの効率的なプロセスを体験してください。",
+      "discover": "詳細"
+    }
+  },
+  "map": {
+      "loadingMap": "地図データを読み込み中...",
+      "continent": "大陸",
+      "subcontinent": "亜大陸",
+      "country": "国",
+      "city": "都市",
+      "agent": "エージェント",
+      "detailsAgent": "エージェント詳細",
+      "getQuotation": "見積依頼",
+      "back": "戻る",
+      "refresh": "更新",
+      "allCountries": "全ての国",
+      "searchAgent": "エージェントを検索...",
+      "globalLocations": "世界の拠点",
+      "connectingText": "国際支店およびパートナーネットワークを通じて接続します。",
+      "noBranches": "支店が見つかりません。",
+      "loadingGallery": "支店ギャラリーを読み込み中..."
+    }
+}

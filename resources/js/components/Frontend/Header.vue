@@ -38,29 +38,14 @@
               <div class="btn-list">
                 <a href="" class="btn btn-primary btn-5" target="_blank" rel="noreferrer" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
                   <i class="fa-solid fa-headset"> </i>
-                 Support
+                  {{ $t('navbar.support') }}
                 </a>
 
                 <a href="" class="btn btn-primary btn-6" target="_blank" rel="noreferrer" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
                   <i class="fa-solid fa-book"> </i>
-                  User Guide
+                  {{ $t('navbar.userGuide') }}
                 </a>
-
-                <div class="dropdown">
-                <a class="btn btn-primary btn-6 dropdown-toggle" href="#" role="button"  style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;"
-                  id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-language"> </i>
-                    Languange
-                </a>
-
-                <ul class="dropdown-menu" aria-labelledby="languageDropdown" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
-                  <li><a class="dropdown-item" href="?lang=id">🇮🇩 Indonesia</a></li>
-                  <li><a class="dropdown-item" href="?lang=en">🇬🇧 English</a></li>
-                  <li><a class="dropdown-item" href="?lang=fr">🇫🇷 Français</a></li>
-                  <li><a class="dropdown-item" href="?lang=zh">🇨🇳 中文</a></li>
-                </ul>
-              </div>
-
+                <NavbarLanguage />
               </div>
             </div>
            
@@ -71,7 +56,7 @@
                   <img  :src="profileStatic" 
                   class="avatar avatar-sm rounded-circle"  style="background-image" alt="">
                       <div class="d-none d-xl-block ps-2">
-                        <div class="text-light">Name Users</div>
+                        <div class="text-light"> {{ $t('navbar.userName') }} </div>
                     <div class="mt-1 small text-light">xxxxx</div>
                       </div>
               </a>
@@ -106,7 +91,7 @@
                       <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <i class="nav-icon fa fa-home fa-lg"></i>
                       </span>
-                      <span class="nav-link-title">Home</span>
+                      <span class="nav-link-title">{{ $t('navbar.home') }}</span>
                     </RouterLink>
                   </li>
 
@@ -121,7 +106,7 @@
                       <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <i class="nav-icon fa fa-file-invoice fa-lg"></i>
                       </span>
-                      <span class="nav-link-title">Quotation</span>
+                      <span class="nav-link-title"> {{ $t('navbar.quotation') }}</span>
                     </RouterLink>
                   </li>
 
@@ -135,23 +120,25 @@
                       <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <i class="nav-icon fa fa-map-location-dot"></i>
                       </span>
-                      <span class="nav-link-title">Network</span>
+                      <span class="nav-link-title">{{ $t('navbar.network') }}</span>
                     </RouterLink>
                   </li>
 
 
-                <li class="nav-item">
-                  <a 
-                    href="javascript:void(0)" 
-                    class="nav-link ripple"
-                    @click="$emit('openComingSoon')"
-                  >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                      <i class="nav-icon fa fa-calendar-days fa-lg"></i>
-                    </span>
-                    <span class="nav-link-title">Schedule</span>
-                  </a>
-                </li>
+                  <li class="nav-item">
+                    <RouterLink 
+                      to="/wpc-esys/schedule" 
+                      class="nav-link ripple" 
+                      active-class="active-link"
+                    >
+                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="nav-icon fa fa-map-location-dot"></i>
+                      </span>
+                      <span class="nav-link-title">{{ $t('navbar.schedule') }}</span>
+                    </RouterLink>
+                  </li>
+
+
 
 
 
@@ -165,7 +152,7 @@
                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                        <i class="nav-icon fa fa-money-bill-wave fa-lg"></i>
                     </span>
-                    <span class="nav-link-title">Prices</span>
+                    <span class="nav-link-title"> {{ $t('navbar.prices') }}</span>
                   </a>
                 </li>
 
@@ -179,7 +166,7 @@
                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <i class="nav-icon fas fa-receipt fa-lg"></i>
                     </span>
-                    <span class="nav-link-title">Booking</span>
+                    <span class="nav-link-title"> {{ $t('navbar.booking') }}</span>
                   </a>
                 </li>
 
@@ -193,7 +180,7 @@
                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <i class="nav-icon fas fa-book fa-lg"></i> 
                     </span>
-                    <span class="nav-link-title">Documentation</span>
+                    <span class="nav-link-title"> {{ $t('navbar.documentation') }}</span>
                   </a>
                 </li>
   
@@ -203,7 +190,7 @@
                         <span class="nav-link-icon d-md-none d-lg-inline-block text-secondary">
                           <i class="nav-icon fas fa-arrow-up-right-from-square"></i>
                         </span>
-                        <span class="nav-link-title text-secondary">Back To Landing Page</span>
+                        <span class="nav-link-title text-secondary"> {{ $t('navbar.back') }}</span>
                     </a>
                 </li>
 
@@ -223,6 +210,7 @@
 <script setup>
 const LogoCompany = '/images/logox.png'
 const profileStatic = '/images/profile.png'
+import NavbarLanguage from './NavbarLanguage.vue';
 </script>
 
 <style scoped>

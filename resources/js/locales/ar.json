@@ -1,0 +1,76 @@
+{
+  "language": "العربية",
+  "navbar": {
+    "home": "الرئيسية",
+    "quotation": "طلب عرض سعر",
+    "network": "الشبكة",
+    "schedule": "الجدول",
+    "prices": "الأسعار",
+    "booking": "الحجز",
+    "documentation": "الوثائق",
+    "support": "الدعم",
+    "userGuide": "دليل المستخدم",
+    "language": "اللغة",
+    "userName": "اسم المستخدم",
+    "back": "العودة إلى الصفحة الرئيسية"
+  },
+  "footer": {
+    "subscribePlaceholder": "عنوان البريد الإلكتروني للاشتراك",
+    "subscribeButton": "اشترك",
+    "quickLinks": "روابط سريعة",
+    "contactInfo": "معلومات الاتصال",
+    "recentWork": "أحدث الأعمال",
+    "home": "الرئيسية",
+    "quotation": "عرض السعر",
+    "schedule": "الجدول",
+    "prices": "الأسعار",
+    "booking": "الحجز",
+    "documentation": "الوثائق",
+    "address": "المكتب الرئيسي لشركة WPC - إندونيسيا، Jl. Kesehatan Raya No.54 B Tanah Abang IV، جاكرتا 10160",
+    "email": "inquiry@wpclogistics.com",
+    "phone": "+62 21 3450605",
+    "copyright": "© مجموعة Clavis، جميع الحقوق محفوظة.",
+    "about": "منذ عام 1998، تقدم شركة WPC للخدمات اللوجستية حلولًا بديلة للشحن دون التأخر عن المواعيد النهائية. كما تعمل الشركة على تحديث أنظمتها بشكل دوري."
+  },
+  "home": {
+    "tabs": {
+      "tracking": "تتبع",
+      "schedule": "الجدول",
+      "comingSoon": "ميزة التتبع قادمة قريبًا..."
+
+    },
+    "form": {
+      "tracking_label": "رقم التتبع / الحاوية",
+      "tracking_placeholder": "أدخل رقم التتبع",
+      "track_button": "تتبع"
+    },
+    "buttons": {
+      "login": "تسجيل الدخول",
+      "register": "إنشاء حساب",
+      "quotation": "طلب عرض سعر"
+    },
+    "carousel": {
+      "title": "تعليمات شحن جديدة",
+      "desc": "استمتع بعملية أكثر كفاءة من تقديم SI إلى الموافقة على BL.",
+      "discover": "اكتشف المزيد"
+    }
+  },
+  "map": {
+      "loadingMap": "جارٍ تحميل بيانات الخريطة...",
+      "continent": "قارة",
+      "subcontinent": "قارة فرعية",
+      "country": "دولة",
+      "city": "مدينة",
+      "agent": "وكيل",
+      "detailsAgent": "تفاصيل الوكيل",
+      "getQuotation": "طلب عرض سعر",
+      "back": "عودة",
+      "refresh": "تحديث",
+      "allCountries": "كل الدول",
+      "searchAgent": "ابحث عن وكيل...",
+      "globalLocations": "المواقع العالمية",
+      "connectingText": "ربطك من خلال شبكة فروعنا وشركائنا الدوليين.",
+      "noBranches": "لم يتم العثور على الفروع.",
+      "loadingGallery": "جارٍ تحميل معرض الفروع..."
+    }
+}

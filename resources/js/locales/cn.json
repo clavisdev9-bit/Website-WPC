@@ -1,0 +1,76 @@
+{
+  "language": "中文",
+  "navbar": {
+    "home": "首页",
+    "quotation": "报价请求",
+    "network": "网络",
+    "schedule": "时间表",
+    "prices": "价格",
+    "booking": "预订",
+    "documentation": "文档",
+    "support": "支持",
+    "userGuide": "用户指南",
+    "language": "语言",
+    "userName": "用户名",
+    "back": "返回主页"
+  },
+  "footer": {
+    "subscribePlaceholder": "订阅邮箱地址",
+    "subscribeButton": "订阅",
+    "quickLinks": "快速链接",
+    "contactInfo": "联系信息",
+    "recentWork": "最新工作",
+    "home": "首页",
+    "quotation": "报价",
+    "schedule": "时间表",
+    "prices": "价格",
+    "booking": "预订",
+    "documentation": "文档",
+    "address": "WPC总部 - 印度尼西亚雅加达10160，Jl. Kesehatan Raya No.54 B Tanah Abang IV",
+    "email": "inquiry@wpclogistics.com",
+    "phone": "+62 21 3450605",
+    "copyright": "© Clavis集团，版权所有。",
+    "about": "自1998年以来，WPC物流公司一直为客户提供按时交付的替代物流解决方案，并通过定期更新系统不断改进。"
+  },
+  "home": {
+    "tabs": {
+      "tracking": "追踪",
+      "schedule": "时间表",
+      "comingSoon": "追踪功能即将上线..."
+
+    },
+    "form": {
+      "tracking_label": "追踪号码 / 集装箱",
+      "tracking_placeholder": "请输入追踪号码",
+      "track_button": "追踪"
+    },
+    "buttons": {
+      "login": "登录",
+      "register": "创建账户",
+      "quotation": "报价请求"
+    },
+    "carousel": {
+      "title": "新的装运指示",
+      "desc": "体验从SI提交到BL批准的高效流程。",
+      "discover": "了解更多"
+    }
+  },
+  "map": {
+      "loadingMap": "加载地图数据...",
+      "continent": "大陆",
+      "subcontinent": "次大陆",
+      "country": "国家",
+      "city": "城市",
+      "agent": "代理",
+      "detailsAgent": "代理详情",
+      "getQuotation": "报价请求",
+      "back": "返回",
+      "refresh": "刷新",
+      "allCountries": "所有国家",
+      "searchAgent": "搜索代理...",
+      "globalLocations": "全球分布",
+      "connectingText": "通过我们的国际分支机构和合作伙伴网络与您连接。",
+      "noBranches": "未找到分支机构。",
+      "loadingGallery": "正在加载分支画廊..."
+    }
+}

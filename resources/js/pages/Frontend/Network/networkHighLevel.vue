@@ -396,7 +396,6 @@ const filteredAgents = computed(() => {
       (a.address && a.address.toLowerCase().includes(query))
     )
   }
-
   return agents
 })
 
@@ -494,7 +493,7 @@ function typeEffect() {
         <div class="col-md-8">
           <div class="card">
             <div class="card-body p-0" style="min-height:500px">
-              <div v-if="loading" class="text-center py-5 text-dark fw-bold">Loading map data...</div>
+              <div v-if="loading" class="text-center py-5 text-dark fw-bold"> {{ $t('map.loadingMap') }} </div>
               <div v-else>
                 <LMap
                   ref="mapRef"
@@ -536,31 +535,29 @@ function typeEffect() {
                         </LMarker>
                     </template>
 
+                    <template v-if="selectedLevel==='country'">
+                      <LMarker 
+                        v-for="(country,i) in selectedSubcontinent?.countries || []" :key="i" 
+                        :lat-lng="country.position"
+                        :icon="continentIcon"
+                        @click="goToCountry(country)">
+                        <LPopup>
+                          <b>{{ country.country }}</b> ({{ country.cities.length }} cities)
+                        </LPopup>
+                      </LMarker>
+                    </template>
 
-
-                  <template v-if="selectedLevel==='country'">
-                    <LMarker 
-                      v-for="(country,i) in selectedSubcontinent?.countries || []" :key="i" 
-                      :lat-lng="country.position"
-                      :icon="continentIcon"
-                      @click="goToCountry(country)">
-                      <LPopup>
-                        <b>{{ country.country }}</b> ({{ country.cities.length }} cities)
-                      </LPopup>
-                    </LMarker>
-                  </template>
-
-                  <template v-else-if="selectedLevel==='city'">
-                    <LMarker 
-                      v-for="(city,i) in selectedCountry?.cities || []" :key="i" 
-                      :lat-lng="city.position"
-                      :icon="continentIcon"
-                      @click="goToCity(city)">
-                      <LPopup>
-                        <b>{{ city.city }}</b> ({{ city.agents.length }} agents)
-                      </LPopup>
-                    </LMarker>
-                  </template>
+                    <template v-else-if="selectedLevel==='city'">
+                      <LMarker 
+                        v-for="(city,i) in selectedCountry?.cities || []" :key="i" 
+                        :lat-lng="city.position"
+                        :icon="continentIcon"
+                        @click="goToCity(city)">
+                        <LPopup>
+                          <b>{{ city.city }}</b> ({{ city.agents.length }} agents)
+                        </LPopup>
+                      </LMarker>
+                    </template>
 
                   <template v-else-if="selectedLevel==='agent' && selectedCity?.agents">
                     <LMarker 
@@ -575,8 +572,8 @@ function typeEffect() {
                           <div class="fw-bold text-primary"><i class="fa-solid fa-building"></i> {{ agent.name }}</div>
                           <small class="text-muted d-block mb-3"><i class="fa-solid fa-map-pin"></i>{{ agent.country }} | {{ agent.city }}</small>
                           <div class="d-flex justify-content-center gap-2">
-                            <button class="btn btn-sm text-white" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 10px;" @click="openDetail(agent)">Details Agent</button>
-                            <button class="btn btn-sm text-white" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 10px;" @click="goToQuotation(agent)">Get Quotation</button>
+                            <button class="btn btn-sm text-white" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 10px;" @click="openDetail(agent)">{{ $t('map.detailsAgent') }}</button>
+                            <button class="btn btn-sm text-white" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 10px;" @click="goToQuotation(agent)">{{ $t('map.getQuotation') }}</button>
                           </div>
                         </div>
                       </LPopup>
@@ -588,7 +585,7 @@ function typeEffect() {
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 mt-2">
           <div class="card">
             <div class="card-header list-agents-card">
               <h3 class="text-primary mb-0">{{ displayedText }}</h3>
@@ -676,7 +673,7 @@ function typeEffect() {
                     <img :src="agent.image || defaultImage" alt="" width="40" height="40" class="rounded me-2 border">
                     <span :class="{ 'text-primary fw-bold': activeAgent && activeAgent.id === agent.id }">{{ agent.name }}</span>
                   </div>
-                  <button class="btn btn-outline-primary" @click="goToQuotation">Get Quotation</button>
+                  <button class="btn btn-outline-primary" @click="goToQuotation"> {{ $t('map.getQuotation') }}</button>
                 </li>
               </ul>
 
@@ -686,14 +683,14 @@ function typeEffect() {
                     class="btn btn-outline-secondary"
                     @click="goBack"
                 >
-                    <i class="fa-solid fa-arrow-left"></i> Back
+                    <i class="fa-solid fa-arrow-left"></i> {{ $t('map.back') }}
                 </button>
 
                 <button
                     class="btn btn-outline-secondary"
                     @click="refreshPage"
                 >
-                    <i class="fa-solid fa-refresh"></i> Refresh
+                    <i class="fa-solid fa-refresh"></i> {{ $t('map.refresh') }}
                 </button>
             </div>
             </div>
@@ -706,41 +703,40 @@ function typeEffect() {
   <div class="container-xl">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
       <div>
-        <h2 class="text-primary fw-bold mb-1">🌍 Global Locations</h2>
+        <h2 class="text-primary fw-bold mb-1">🌍 {{ $t('map.globalLocations') }} </h2>
         <p class="text-muted small mb-0">
-          Connecting you through our network of international branches and partners.
+          {{ $t('map.connectingText') }}
         </p>
       </div>
       <div class="mt-2 mt-sm-0">
        
         <div class="mt-2 mt-sm-0 d-flex gap-2">
-  <select
-    v-model="filterCountry"
-    class="form-select shadow-sm border-primary"
-    style="min-width: 200px; border-radius: 10px;"
-  >
-    <option value="">🌐 All Countries</option>
-    <option
-      v-for="c in data.flatMap(cont => (cont.subcontinents || []).flatMap(sc => (sc.countries || [])))"
-      :key="c.country"
-      :value="c.country"
-    >
-      {{ c.country }}
-    </option>
-  </select>
+        <select
+          v-model="filterCountry"
+          class="form-select shadow-sm border-primary"
+          style="min-width: 200px; border-radius: 10px;"
+        >
+          <option value="">🌐 {{ $t('map.allCountries') }}</option>
+          <option
+            v-for="c in data.flatMap(cont => (cont.subcontinents || []).flatMap(sc => (sc.countries || [])))"
+            :key="c.country"
+            :value="c.country"
+          >
+            {{ c.country }}
+          </option>
+        </select>
 
-  <input
-    type="text"
-    v-model="searchQuery"
-    placeholder=" Search agent..."
-    class="form-control shadow-sm border-primary"
-    style="min-width: 220px; border-radius: 10px;"
-  />
- 
-</div>
+      
+      <input
+  type="text"
+  v-model="searchQuery"
+  :placeholder="$t('map.searchAgent')"
+  class="form-control rounded-3 shadow-sm border-primary"
+/>
 
 
-      </div>
+    </div>
+  </div>
     </div>
 
     <transition-group
@@ -788,7 +784,7 @@ function typeEffect() {
                 style="border-radius: 8px; background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;"
                 @click="goToQuotation(agent)"
               >
-                Get Quotation
+              {{ $t('map.getQuotation') }}
               </button>
             </div>
           </div>
@@ -802,7 +798,7 @@ function typeEffect() {
 
     <div v-if="!loading && filteredAgents.length === 0" class="col-12 text-center text-muted py-5 fw-semibold">
       <i class="fa-solid fa-circle-exclamation text-primary me-2"></i>
-      No branches found.
+        {{ $t('map.loadingGallery') }}
     </div>
 
     <div class="text-center mt-4">
@@ -812,7 +808,7 @@ function typeEffect() {
         style="border-radius: 10px;"
         @click="loadMore"
       >
-        <i class="fa-solid fa-plus me-2"></i> Load More
+        <i class="fa-solid fa-plus me-2"></i> {{ $t('map.refresh') }}
       </button>
     </div>
   </div>
@@ -844,7 +840,7 @@ function typeEffect() {
           class="btn btn-primary"
           @click="goToQuotation(activeAgent)"
         >
-          Get Quotation
+          {{ $t('map.getQuotation') }}
         </button>
       </div>
     </div>
@@ -1027,13 +1023,20 @@ h3 {
   letter-spacing: 0.3px;
 }
 
-/* ✨ Fade-in animation for transition-group */
+/* Fade-in animation for transition-group */
 .fade-enter-active, .fade-leave-active {
   transition: all 0.5s ease;
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
   transform: translateY(15px);
+}
+
+
+.list-agents-card h3 {
+  min-height: 1.5em; /* cukup untuk 1 baris teks */
+  display: flex;
+  align-items: center; /* biar teks tetap di tengah vertikal */
 }
 
 </style>

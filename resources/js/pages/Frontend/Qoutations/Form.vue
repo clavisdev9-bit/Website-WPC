@@ -12,11 +12,7 @@
                   <i class="fa fa-file-invoice me-1"></i> Form Quotation
                 </button>
               </li>
-              <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#point-to-point" type="button">
-                  <i class="fa fa-route me-1"></i>Schedule Point to Point
-                </button>
-              </li>
+              
               <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tracking" type="button">
                   <i class="fa fa-search-location me-1"></i> Tracking
@@ -317,66 +313,7 @@
 
 
 
-              <!-- Point to Point Tab -->
-              <div class="tab-pane fade" id="point-to-point" role="tabpanel">
-               <div class="card shadow-sm p-4">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 class="fw-bold">Point to Point Search Schedule</h4>
-                                    <!-- <div>
-                                        <button class="btn btn-outline-secondary btn-sm">List</button>
-                                        <button class="btn btn-outline-secondary btn-sm">Calendar</button>
-                                    </div> -->
-                                </div>
-
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Origin</label>
-                                            <input type="text" class="form-control" placeholder="Input up to 3 Origins">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Destination</label>
-                                            <input type="text" class="form-control" placeholder="Input up to 3 Destinations">
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Date</label>
-                                            <input type="date" class="form-control" value="{{ date('Y-m-d') }}">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Next</label>
-                                            <select class="form-select">
-                                                <option>1 Week</option>
-                                                <option selected>2 Weeks</option>
-                                                <option>1 Month</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Cargo Type</label>
-                                            <select class="form-select">
-                                                <option>Dry/General</option>
-                                                <option>Reefer</option>
-                                                <option>Dangerous Goods</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="humanCheck">
-                                            <label class="form-check-label" for="humanCheck">I am human</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-end mt-3">
-                                        <button type="reset" class="btn btn-secondary me-1" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">Clear</button>
-                                        <button type="submit" class="btn btn-primary" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">Search</button>
-                                    </div>
-                                </form>
-                 </div>
-              </div>
+              
 
 
 

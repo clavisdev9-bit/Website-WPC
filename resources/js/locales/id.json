@@ -1,0 +1,76 @@
+{
+  "language": "Bahasa",
+  "navbar": {
+    "home": "Beranda",
+    "quotation": "Permintaan Penawaran",
+    "network": "Jaringan",
+    "schedule": "Jadwal",
+    "prices": "Harga",
+    "booking": "Pemesanan",
+    "documentation": "Dokumentasi",
+    "support": "Dukungan",
+    "userGuide": "Panduan Pengguna",
+    "language": "Bahasa",
+    "userName": "Nama Pengguna",
+    "back": "Kembali ke Halaman Utama"
+  },
+  "footer": {
+    "subscribePlaceholder": "Alamat email untuk berlangganan",
+    "subscribeButton": "Langganan",
+    "quickLinks": "Tautan Cepat",
+    "contactInfo": "Informasi Kontak",
+    "recentWork": "Pekerjaan Terbaru",
+    "home": "Beranda",
+    "quotation": "Penawaran",
+    "schedule": "Jadwal",
+    "prices": "Harga",
+    "booking": "Pemesanan",
+    "documentation": "Dokumentasi",
+    "address": "KANTOR PUSAT WPC - INDONESIA, Jl. Kesehatan Raya No.54 B Tanah Abang IV, Jakarta 10160",
+    "email": "inquiry@wpclogistics.com",
+    "phone": "+62 21 3450605",
+    "copyright": "© Clavis Group, Semua hak dilindungi.",
+    "about": "Sejak tahun 1998, WPC Logistics telah menyediakan solusi logistik alternatif tanpa melewatkan tenggat waktu pengiriman kepada pelanggan kami. Di sisi lain, WPC Logistics juga terus memperbarui sistem dengan melakukan pergantian siklus secara berkala."
+  },
+  "home": {
+    "tabs": {
+      "tracking": "Lacak",
+      "schedule": "Jadwal",
+      "comingSoon": "Pelacakan akan segera hadir..."
+
+    },
+    "form": {
+      "tracking_label": "Nomor Pelacakan / Kontainer",
+      "tracking_placeholder": "Masukkan nomor pelacakan",
+      "track_button": "Lacak"
+    },
+    "buttons": {
+      "login": "MASUK",
+      "register": "BUAT AKUN",
+      "quotation": "Permintaan Penawaran"
+    },
+    "carousel": {
+      "title": "Instruksi Pengiriman Baru",
+      "desc": "Nikmati proses yang lebih efisien dari pengajuan SI hingga persetujuan BL.",
+      "discover": "Pelajari"
+    }
+  },
+   "map": {
+    "loadingMap": "Memuat data peta...",
+    "continent": "benua",
+    "subcontinent": "subbenua",
+    "country": "negara",
+    "city": "kota",
+    "agent": "agen",
+    "detailsAgent": "Detail Agen",
+    "getQuotation": "Permintaan Penawaran",
+    "back": "Kembali",
+    "refresh": "Muat Ulang",
+    "allCountries": "Semua Negara",
+    "searchAgent": "Cari agen...",
+    "globalLocations": "Lokasi Global",
+    "connectingText": "Menghubungkan Anda melalui jaringan cabang dan mitra internasional kami.",
+    "noBranches": "Cabang tidak ditemukan.",
+    "loadingGallery": "Memuat galeri cabang..."
+  }
+}
