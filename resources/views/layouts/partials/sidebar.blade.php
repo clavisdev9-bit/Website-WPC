@@ -5,16 +5,13 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-<div class="navbar-brand d-flex flex-column align-items-center"
-     style="margin-bottom: 0; padding-bottom: 0; line-height: 1;">
-  <img src="{{ asset('images/logox.png') }}" 
-       alt="Logo"
-       class="navbar-brand-image"
-       style="height: 65px; width: auto; object-fit: contain; margin-bottom: 0;" />
-</div>
-
-
-
+            <div class="navbar-brand d-flex flex-column align-items-center"
+                style="margin-bottom: 0; padding-bottom: 0; line-height: 1;">
+            <img src="{{ asset('images/logox.png') }}" 
+                alt="Logo"
+                class="navbar-brand-image"
+                style="height: 65px; width: auto; object-fit: contain; margin-bottom: 0;" />
+            </div>
 
         <hr class="my-2 border-light">
 
@@ -50,16 +47,14 @@
                     </div>
                 </div>
             </div>
+                @php
+                $user = getUserData();
+                            $defaultImg = 'default.jpg';
+                            $imageUrl = $user->image ? route('avatar.show', ['filename' => $user->image]) : asset('storage/profile/' . $defaultImg);
+                            $version = $user->image ? time() : time(); // Anda bisa menyesuaikan versioning untuk route
+                @endphp
 
-    @php
-    $user = getUserData();
-                  $defaultImg = 'default.jpg';
-                  $imageUrl = $user->image ? route('avatar.show', ['filename' => $user->image]) : asset('storage/profile/' . $defaultImg);
-                  $version = $user->image ? time() : time(); // Anda bisa menyesuaikan versioning untuk route
-    @endphp
-
-@if ($user)
-
+    @if ($user)
     <div class="nav-item dropdown">
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu"  style="cursor:pointer;">
             <img src="{{ $imageUrl }}?v={{ $version }}" 
@@ -78,7 +73,7 @@
             <a href="{{ route('Setting_General.logout') }}" class="dropdown-item">Logout</a>
         </div>
     </div>
-</div>
+  </div>
     @else
     {{-- {{ set null also}} --}} 
     @endif
@@ -180,29 +175,7 @@
                 </li>
             @else
                 
-                {{-- <li class="nav-item dropdown {{ $isActiveParent ? 'show' : '' }}">
-                    <a class="nav-link dropdown-toggle {{ $isActiveParent ? 'show' : '' }}" href="#" id="submenu-{{ $sm->id_submenu }}" role="button" data-bs-toggle="dropdown" aria-expanded="{{ $isActiveParent ? 'true' : 'false' }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="{{ $sm->icon }}"></i>
-                        </span>
-                        <span class="nav-link-title">
-                            {{ $sm->title }}
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu {{ $isActiveParent ? 'show' : '' }}" aria-labelledby="submenu-{{ $sm->id_submenu }}">
-                        @foreach ($groupedChildren[$sm->id_submenu] as $child)
-                            <li>
-                                <a class="dropdown-item {{ Request::is(trim($child->url, '/')) ? 'active' : '' }}" href="{{ url($child->url) }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="{{ $child->icon }}"></i>
-                                        <span class="nav-link-title">{{ $child->title }}</span>
-                                    </span>
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </li> --}}
-
+                
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" 
                     data-bs-toggle="collapse" 
@@ -261,26 +234,21 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
                 </a>
                 <div class="nav-item dropdown d-none d-md-flex me-3">
-
-            <!-- Download SVG icon from http://tabler.io/icons/icon/bell -->
-           
                     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
                         <div class="card">
-           
            
             </div>
                     </div>
                 </div>
             </div>
               @if ($user)
-      <div class="nav-item dropdown">
+          <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu"  style="cursor:pointer;">
                     <img src="{{ $imageUrl }}?v={{ $version }}" 
                     class="avatar avatar-sm rounded-circle"
                     alt="{{ $row->fullname ?? 'User' }} profile"
                     loading="lazy"
                     onerror="this.src='{{ asset('storage/profile/'.$defaultImg) }}'">
-            {{-- <span class="avatar avatar-sm" style="background-image: ></span> --}}
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ $user->fullname }}</div>
                         <div class="mt-1 small text-secondary">{{$user->email }}</div>
@@ -295,11 +263,10 @@
         </div>
             <div class="collapse navbar-collapse" id="navbar-menu">
                     <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-                  {{-- <small>this is if your add new title</small> --}}
                     </div>
             </div>
         </div>
     </header>
     @else
-   {{-- {{ biarin kososng aja}} --}}
+ 
 @endif

@@ -2,13 +2,13 @@
   <div>
     <!-- Floating Chat Button -->
     <button class="chat-button" @click="toggleChat">
-      💬
+      <i class="fa-regular fa-comments"></i>
     </button>
 
     <!-- Chat Window -->
     <div v-if="isOpen" class="chat-window">
       <div class="chat-header">
-        <span>WPC Chatbot</span>
+        <span>WPC Chatbot  <i class="fa-regular fa-comments"></i></span>
         <button class="close-btn" @click="toggleChat">×</button>
       </div>
 

@@ -2,18 +2,7 @@
   <FrontendLayout>
     <div class="container py-4">
       <ul class="nav nav-tabs mb-4" id="scheduleTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button
-            class="nav-link"
-            id="point-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#point-to-point"
-            type="button"
-            role="tab"
-          >
-            <i class="fa fa-route me-1"></i> {{ $t('schedule.tabs.pointToPoint') }}
-          </button>
-        </li>
+
         <li class="nav-item" role="presentation">
           <button
             class="nav-link active"
@@ -26,6 +15,35 @@
             <i class="fa-solid fa-ship me-1"></i> {{ $t('schedule.tabs.vessel') }}
           </button>
         </li>
+
+
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="vessel-lists-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#vesselLists"
+            type="button"
+            role="tab"
+          >
+            <i class="fa-solid fa-ship me-1"></i> List vessel
+          </button>
+        </li>
+
+
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="point-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#point-to-point"
+            type="button"
+            role="tab"
+          >
+            <i class="fa fa-route me-1"></i> {{ $t('schedule.tabs.pointToPoint') }}
+          </button>
+        </li>
+        
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
@@ -276,15 +294,129 @@
             {{ $t('schedule.placeholder.portComingSoon') }}
           </div>
         </div>
+
+
         <div
           class="tab-pane fade"
           id="long-range"
           role="tabpanel"
           aria-labelledby="long-tab"
-        >
+          >
           <div class="alert alert-info">
             {{ $t('schedule.placeholder.longRangeComingSoon') }}
           </div>
+        </div>
+
+
+
+        <div
+          class="tab-pane fade"
+          id="vesselLists"
+          role="tabpanel"
+          aria-labelledby="long-tab"
+          >
+          
+          <div class="container my-4">
+    <div class="card shadow-lg border-0 rounded-4">
+      <!-- Header -->
+      <div class="card-header bg-primary text-white rounded-top-4 py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fa-solid fa-ship"></i> List Vessel Schedule
+        </h5>
+        <div class="position-relative" style="max-width: 250px;">
+
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Search vessel..."
+            class="form-control search-input"
+          />
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table align-middle table-hover mb-0">
+          <thead class="table-light text-center">
+            <tr>
+              <th>Vessel Name</th>
+              <th>Voyage</th>
+              <th>Arrival</th>
+              <th>Berthing</th>
+              <th>Departure</th>
+              <th>Closing</th>
+              <th>Terminal</th>
+              <th>Status</th>
+              <th>Open Stack</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <tr v-for="(item, index) in paginatedData" :key="index">
+              <td><strong>{{ item.vessel }}</strong></td>
+              <td>{{ item.voyage }}</td>
+              <td>
+                {{ item.arrival.date }}<br />
+                <small class="text-muted">{{ item.arrival.time }}</small>
+              </td>
+              <td>
+                {{ item.berthing.date }}<br />
+                <small class="text-muted">{{ item.berthing.time }}</small>
+              </td>
+              <td>
+                {{ item.departure.date }}<br />
+                <small class="text-muted">{{ item.departure.time }}</small>
+              </td>
+              <td>{{ item.closing }}</td>
+              <td><span class="badge bg-primary text-light">{{ item.terminal }}</span></td>
+              <td>-</td>
+              <td>{{ item.openStack }}</td>
+            </tr>
+            <tr v-if="paginatedData.length === 0">
+              <td colspan="9" class="text-muted py-4">No matching vessels found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          Showing {{ startRow + 1 }} to {{ endRow }} of {{ filteredData.length }} entries
+        </small>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === 1 }"
+              @click="prevPage"
+            >
+              <a class="page-link" href="#">Prev</a>
+            </li>
+            <li
+              v-for="page in totalPages"
+              :key="page"
+              class="page-item"
+              :class="{ active: currentPage === page }"
+              @click="goToPage(page)"
+            >
+              <a class="page-link" href="#">{{ page }}</a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === totalPages }"
+              @click="nextPage"
+            >
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+
+
+
         </div>
       </div>
     </div>
@@ -292,7 +424,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import FrontendLayout from "../../../layouts/FrontendLayout.vue";
 // NOTE: Jika Anda menggunakan setup script, Anda mungkin tidak perlu mengimpor useI18n
 // karena properti global $t harusnya tersedia secara otomatis di template.
@@ -337,6 +469,104 @@ const searchVessel = () => {
     ],
   };
 };
+
+
+
+
+
+// code list
+
+
+const searchQuery = ref("");
+const currentPage = ref(1);
+const rowsPerPage = 3;
+
+// Data tabel statis
+const vessels = ref([
+  {
+    vessel: "SONGA SUCCESS",
+    voyage: "0041N",
+    arrival: { date: "31/10/2025", time: "07:00" },
+    berthing: { date: "31/10/2025", time: "09:30" },
+    departure: { date: "01/11/2025", time: "11:30" },
+    closing: "-",
+    terminal: "T1",
+    openStack: "-",
+  },
+  {
+    vessel: "WAN HAI 377",
+    voyage: "W015",
+    arrival: { date: "31/10/2025", time: "03:00" },
+    berthing: { date: "31/10/2025", time: "06:30" },
+    departure: { date: "01/11/2025", time: "07:30" },
+    closing: "-",
+    terminal: "T1",
+    openStack: "-",
+  },
+  {
+    vessel: "SPIL KARTINI",
+    voyage: "009N",
+    arrival: { date: "30/10/2025", time: "18:00" },
+    berthing: { date: "30/10/2025", time: "19:00" },
+    departure: { date: "01/11/2025", time: "09:00" },
+    closing: "-",
+    terminal: "T1",
+    openStack: "-",
+  },
+  {
+    vessel: "XIN FANG CHENG",
+    voyage: "298N",
+    arrival: { date: "30/10/2025", time: "06:00" },
+    berthing: { date: "30/10/2025", time: "15:00" },
+    departure: { date: "01/11/2025", time: "05:00" },
+    closing: "-",
+    terminal: "T1",
+    openStack: "-",
+  },
+  {
+    vessel: "CNC PANTHER",
+    voyage: "0K80AN",
+    arrival: { date: "29/10/2025", time: "00:00" },
+    berthing: { date: "29/10/2025", time: "20:00" },
+    departure: { date: "31/10/2025", time: "00:00" },
+    closing: "-",
+    terminal: "T1",
+    openStack: "-",
+  },
+]);
+
+// Filter pencarian
+const filteredData = computed(() => {
+  if (!searchQuery.value) return vessels.value;
+  return vessels.value.filter((v) =>
+    Object.values(v)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchQuery.value.toLowerCase())
+  );
+});
+
+// Pagination
+const totalPages = computed(() =>
+  Math.ceil(filteredData.value.length / rowsPerPage)
+);
+const startRow = computed(() => (currentPage.value - 1) * rowsPerPage);
+const endRow = computed(() =>
+  Math.min(startRow.value + rowsPerPage, filteredData.value.length)
+);
+const paginatedData = computed(() =>
+  filteredData.value.slice(startRow.value, endRow.value)
+);
+
+function nextPage() {
+  if (currentPage.value < totalPages.value) currentPage.value++;
+}
+function prevPage() {
+  if (currentPage.value > 1) currentPage.value--;
+}
+function goToPage(page) {
+  currentPage.value = page;
+}
 </script>
 
 <style scoped>
@@ -388,5 +618,30 @@ const searchVessel = () => {
 .card:hover {
   transform: translateY(-6px) scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15);
+}
+
+
+.search-input {
+  border-radius: 10px;
+  border: 1px solid #d0d7de;
+  padding-left: 40px;
+}
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  color: #6c757d;
+}
+.table thead th {
+  background-color: #f1f3f6;
+  font-weight: 600;
+}
+.table-hover tbody tr:hover {
+  background-color: #f9fbff;
+  transition: all 0.2s;
+}
+.pagination .page-link {
+  border-radius: 8px;
+  margin: 0 3px;
 }
 </style>
