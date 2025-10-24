@@ -9,13 +9,13 @@
             <ul class="nav nav-tabs mb-4" id="quotationTabs" role="tablist">
               <li class="nav-item">
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#quotation" type="button">
-                  <i class="fa fa-file-invoice me-1"></i> Form Quotation
+                  <i class="fa fa-file-invoice me-1"></i> {{ $t("quotationForm.tabs.form") }}
                 </button>
               </li>
               
               <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tracking" type="button">
-                  <i class="fa fa-search-location me-1"></i> Tracking
+                  <i class="fa fa-search-location me-1"></i> {{ $t("quotationForm.tabs.tracking") }}
                 </button>
               </li>
             </ul>
@@ -26,10 +26,9 @@
               <!-- Quotation -->
               <div class="tab-pane fade show active" id="quotation">
                 <div class="p-3">
-                  <!-- <h4 class="fw-bold text-primary mb-4">Request Quotation</h4> -->
 
                   <!-- Stepper indicator -->
-                   <ul class="stepper justify-content-center mb-4">
+                   <!-- <ul class="stepper justify-content-center mb-4">
                         <li
                         v-for="(step, index) in steps"
                         :key="index"
@@ -40,7 +39,20 @@
                         <div class="step-circle">{{ index + 1 }}</div>
                         <div class="step-label">{{ step }}</div>
                         </li>
+                    </ul> -->
+                    <ul class="stepper justify-content-center mb-4">
+                      <li
+                        v-for="(step, index) in steps"
+                        :key="index"
+                        class="step-item"
+                        :class="{ active: currentStep === index, completed: currentStep > index }"
+                        @click="goToStep(index)"
+                      >
+                        <div class="step-circle">{{ index + 1 }}</div>
+                        <div class="step-label">{{ $t(`quotationForm.steps.${step}`) }}</div>
+                      </li>
                     </ul>
+
 
 
                   <form @submit.prevent="submitQuote">
@@ -48,17 +60,17 @@
                     <!-- STEP 1: Personal Information -->
                     <div v-if="currentStep === 0">
                       <h3 class="fw-bold text-primary mb-3 mt-2">
-                        Personal Information <i class="fa fa-user"></i>
+                        {{ $t("quotationForm.steps.personalInfo") }}<i class="fa fa-user"></i>
                       </h3>
                       <div class="row">
                         <div class="col-md-6 mb-3">
-                          <label class="form-label fw-bold">Who are you? <span class="text-danger">*</span></label>
+                          <label class="form-label fw-bold">{{ $t("quotationForm.labels.whoAreYou") }} <span class="text-danger">*</span></label>
                           <Multiselect
                             v-model="selectedBusinessType"
                             :options="businessTypes"
                             track-by="value"
                             label="label"
-                            placeholder="Who are you"
+                            :placeholder="$t('quotationForm.placeholders.whoAreYou')"
                             @close="validateField('selectedBusinessType')" 
                             :class="errors.selectedBusinessType ? 'is-invalid' : ''"
                           />
@@ -66,19 +78,19 @@
                         </div>
 
                         <div class="col-md-6 mb-3" v-if="selectedBusinessType?.value === 'I am a business'">
-                          <label class="form-label">Company Name / Full Name</label>
+                          <label class="form-label">{{ $t("quotationForm.labels.companyName") }}</label>
                           <input type="text" 
                           :class="['form-control', errors.fullnameOrCompanyName ? 'is-invalid' : '']" 
-                          placeholder="Enter company name" 
+                          :placeholder=" $t('quotationForm.placeholders.companyName') " 
                           v-model="fullnameOrCompanyName">
                           <small class="text-danger">{{ errors.fullnameOrCompanyName }}</small>
                         </div>
 
                         <div class="col-md-6 mb-3" v-if="selectedBusinessType?.value === 'I am a freight forwarder'">
-                          <label class="form-label">Forwarder Name</label>
+                          <label class="form-label">{{ $t("quotationForm.labels.forwarderName") }}</label>
                           <input type="text"
                            :class="['form-control', errors.fullnameOrCompanyName ? 'is-invalid' : '']" 
-                           placeholder="Enter forwarder name" 
+                           :placeholder="$t('quotationForm.placeholders.forwarderName')" 
                            v-model="fullnameOrCompanyName">
                             <small class="text-danger">{{ errors.fullnameOrCompanyName }}</small>
                         </div>
@@ -86,14 +98,14 @@
 
                       <div class="row">
                         <div class="col-md-6 mb-3">
-                          <label class="form-label">Phone <small class="text-danger">*</small></label>
+                          <label class="form-label">{{ $t("quotationForm.labels.phone") }} <small class="text-danger">*</small></label>
                           <div class="input-group">
                             <Multiselect
                               v-model="selectedPhoneType"
                               :options="phoneTypes"
                               track-by="value"
                               label="label"
-                              placeholder="Select type"
+                              :placeholder="$t('quotationForm.placeholders.phoneType')"
                               style="max-width:150px;"
                               @close="validateField('selectedPhoneType')"
                               @select="validateField('selectedPhoneType')"
@@ -102,7 +114,7 @@
                             <input type="text" 
                             @blur="validateField('phone')"
                             :class="['form-control', errors.phone ? 'is-invalid' : '']"
-                             placeholder="Enter your phone number" 
+                             :placeholder="$t('quotationForm.placeholders.phone')" 
                              v-model="phone">
                           </div>
                            <small class="text-danger" v-if="errors.selectedPhoneType">{{ errors.selectedPhoneType }}</small><br v-if="errors.selectedPhoneType && errors.phone">
@@ -112,14 +124,14 @@
 
 
                         <div class="col-md-6 mb-3">
-                          <label class="form-label">Email <small class="text-danger">*</small></label>
+                          <label class="form-label">{{ $t("quotationForm.labels.email") }} <small class="text-danger">*</small></label>
                           <div class="input-group">
                             <Multiselect
                               v-model="selectedEmailType"
                               :options="emailTypes"
                               track-by="value"
                               label="label"
-                              placeholder="Select type"
+                              :placeholder="$t('quotationForm.placeholders.emailType')"
                               style="max-width:150px;"
                               @close="validateField('selectedEmailType')"
                               @select="validateField('selectedEmailType')"
@@ -127,7 +139,7 @@
                             />
                             <input type="email" 
                             class="form-control" 
-                            placeholder="Enter your email" 
+                            :placeholder="$t('quotationForm.placeholders.email')" 
                             v-model="email"
                             @blur="validateField('email')"
                             :class="['form-control', errors.email ? 'is-invalid' : '']"
@@ -139,13 +151,13 @@
 
                       <div class="row">
                         <div class="col-md-6 mb-3">
-                          <label class="form-label fw-bold">Country <span class="text-danger">*</span></label>
+                          <label class="form-label fw-bold">{{ $t("quotationForm.labels.country") }} <span class="text-danger">*</span></label>
                           <Multiselect
                             v-model="selectedCountry"
                             :options="quotationStore.dataCountry"
                             :track-by="'id'"
                             :label="'name'"
-                            placeholder="Select Country"
+                            :placeholder="$t('quotationForm.placeholders.country')"
                             :custom-label="country => `${country.name} (${country.code})`"
                             @close="validateField('selectedCountry')" 
                             :class="errors.selectedCountry ? 'is-invalid' : ''" 
@@ -154,13 +166,13 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                          <label class="form-label fw-bold">State <span class="text-danger">*</span></label>
+                          <label class="form-label fw-bold">{{ $t("quotationForm.labels.state") }} <span class="text-danger">*</span></label>
                           <Multiselect
                             v-model="selectedState"
                             :options="quotationStore.dataState"
                             track-by="id"
                             label="name"
-                            placeholder="Select State"
+                            :placeholder="$t('quotationForm.placeholders.state')"
                             @close="validateField('selectedState')"
                             :class="errors.selectedState ? 'is-invalid' : ''" 
                           />
@@ -175,11 +187,11 @@
                         Cargo Details <i class="fa fa-box"></i>
                       </h3>
                       <div class="mb-3">
-                        <label class="form-label fw-bold">Terms & Conditions <small class="text-danger">*</small></label>
+                        <label class="form-label fw-bold">{{ $t("quotationForm.labels.termsCondition") }} <small class="text-danger">*</small></label>
                         <textarea
                           v-model="termsCondition"
                           :class="['form-control', errors.termsCondition ? 'is-invalid' : '']"
-                          placeholder="Enter Your terms & conditions example Pieces, weights, dimensions, special handling or etc..."
+                          :placeholder="$t('quotationForm.placeholders.termsCondition')"
                           rows="4"
                           @blur="validateField('termsCondition')">
                       </textarea>
@@ -208,13 +220,13 @@
                       </h3>
                       <div class="row">
                         <div class="col-md-6 mb-3">
-                          <label class="form-label fw-bold">Transportation Method <span class="text-danger">*</span></label>
+                          <label class="form-label fw-bold">{{ $t("quotationForm.labels.transportationMethod") }} <span class="text-danger">*</span></label>
                           <Multiselect
                             v-model="selectedTransportation1"
                             :options="transportationMethods"
                             track-by="value"
                             label="label"
-                            placeholder="Select method"
+                            :placeholder="$t('quotationForm.labels.transportationMethod')"
                             @close="validateField('selectedTransportation1')" 
                             @select="validateField('selectedTransportation1')"
                             :class="errors.selectedTransportation1 ? 'is-invalid' : ''"
@@ -223,13 +235,13 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                          <label class="form-label fw-bold">Origin <small class="text-danger">*</small></label>
+                          <label class="form-label fw-bold">{{ $t("quotationForm.labels.origin") }} <small class="text-danger">*</small></label>
                           <Multiselect
                             v-model="selectedPickupOrigin"
                             :options="quotationStore.dataPickupOrigins"
                             track-by="id"
                             label="name"
-                            placeholder="Select Origin"
+                            :placeholder="$t('quotationForm.placeholders.origin')"
                             @close="validateField('selectedPickupOrigin')"
                             @select="validateField('selectedPickupOrigin')"
                             :class="errors.selectedPickupOrigin ? 'is-invalid' : ''"
@@ -238,13 +250,13 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                          <label class="form-label fw-bold">Transportation Method <span class="text-danger">*</span></label>
+                          <label class="form-label fw-bold">{{ $t("quotationForm.labels.transportationMethod") }} <span class="text-danger">*</span></label>
                           <Multiselect
                             v-model="selectedTransportation2"
                             :options="transportationMethods"
                             track-by="value"
                             label="label"
-                            placeholder="Select method"
+                            :placeholder="$t('quotationForm.labels.transportationMethod')"
                             @close="validateField('selectedTransportation2')" 
                             @select="validateField('selectedTransportation2')"
                             :class="errors.selectedTransportation2 ? 'is-invalid' : ''"
@@ -253,13 +265,13 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                          <label class="form-label">Destination <small class="text-danger">*</small></label>
+                          <label class="form-label">{{ $t("quotationForm.labels.destination") }} <small class="text-danger">*</small></label>
                           <Multiselect
                             v-model="selectedPickupDestination"
                             :options="quotationStore.dataPickupDestinations"
                             track-by="id"
                             label="name"
-                            placeholder="Select Destination"
+                            :placeholder="$t('quotationForm.placeholders.destination')"
                             @close="validateField('selectedPickupDestination')"
                             @select="validateField('selectedPickupDestination')"
                             :class="errors.selectedPickupDestination ? 'is-invalid' : ''"
@@ -278,8 +290,8 @@
                         @click="prevStep"
                         style="background: linear-gradient(90deg, #6c757d, #495057); border-radius: 12px; border: none;"
                       >
-                        <i class="fa fa-arrow-left"></i> Back
-                      </button>
+                        <i class="fa fa-arrow-left"></i> {{ $t("quotationForm.buttons.back") }}
+                      </button> 
 
                       <button 
                         type="button"
@@ -288,7 +300,7 @@
                         @click="nextStep"
                         style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;"
                       >
-                        Next <i class="fa-solid fa-arrow-right"></i>
+                         {{ $t("quotationForm.buttons.next") }} <i class="fa-solid fa-arrow-right"></i>
                       </button>
 
                       <button
@@ -299,11 +311,11 @@
                       >
                         <!-- <i class="fa fa-paper-plane"></i> Request Quotation -->
                         <span v-if="!isSubmitting">
-                        <i class="fa fa-paper-plane"></i> Request Quotation
+                        <i class="fa fa-paper-plane"></i> {{ $t("quotationForm.buttons.submit") }} 
                       </span>
                       <span v-else>
                         <div class="spinner-border spinner-border-sm text-light me-2" role="status"></div>
-                        Processing...
+                          {{ $t("quotationForm.buttons.processing") }}
                       </span>
                       </button>
                     </div>
@@ -321,13 +333,14 @@
               <!-- Tracking Tab -->
               <div class="tab-pane fade" id="tracking" role="tabpanel">
                             <div class="card shadow-sm p-4">
-                                <h4 class="fw-bold mb-3">Track Your Shipment</h4>
+                                <h4 class="fw-bold mb-3">{{ $t("quotationForm.tracking.title") }} </h4>
+                                   <div class="alert alert-info ">{{ $t('home.tabs.comingSoon') }}</div>
                                 <form>
                                     <div class="mb-3">
-                                        <label class="form-label">Tracking Number / Container Number</label>
-                                        <input type="text" class="form-control" placeholder="Enter your tracking number">
+                                        <label class="form-label">{{ $t("quotationForm.tracking.label") }}</label>
+                                        <input type="text" class="form-control" :placeholder="$t('quotationForm.tracking.placeholder')">
                                     </div>
-                                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">Track Now</button>
+                                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">{{ $t("quotationForm.tracking.button") }}</button>
                                 </form>
                             </div>
               </div>
@@ -362,7 +375,9 @@ const quotationStore = useQuotation();
 
 // --- Stepper Control ---
 const currentStep = ref(0);
-const steps = ["Personal Information", "Cargo Details", "Route"];
+// const steps = ["Personal Information", "Cargo Details", "Route"];
+const steps = ['personalInfo', 'cargoDetails', 'route']
+
 
 // animation spinner
 const isSubmitting = ref(false);

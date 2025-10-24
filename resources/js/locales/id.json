@@ -12,7 +12,9 @@
     "userGuide": "Panduan Pengguna",
     "language": "Bahasa",
     "userName": "Nama Pengguna",
-    "back": "Kembali ke Halaman Utama"
+    "back": "Kembali ke Halaman Utama",
+    "profile": "Profil",
+    "logout": "Keluar"
   },
   "footer": {
     "subscribePlaceholder": "Alamat email untuk berlangganan",
@@ -27,7 +29,6 @@
     "booking": "Pemesanan",
     "documentation": "Dokumentasi",
     "address": "KANTOR PUSAT WPC - INDONESIA, Jl. Kesehatan Raya No.54 B Tanah Abang IV, Jakarta 10160",
-    "email": "inquiry@wpclogistics.com",
     "phone": "+62 21 3450605",
     "copyright": "© Clavis Group, Semua hak dilindungi.",
     "about": "Sejak tahun 1998, WPC Logistics telah menyediakan solusi logistik alternatif tanpa melewatkan tenggat waktu pengiriman kepada pelanggan kami. Di sisi lain, WPC Logistics juga terus memperbarui sistem dengan melakukan pergantian siklus secara berkala."
@@ -72,5 +73,124 @@
     "connectingText": "Menghubungkan Anda melalui jaringan cabang dan mitra internasional kami.",
     "noBranches": "Cabang tidak ditemukan.",
     "loadingGallery": "Memuat galeri cabang..."
-  }
+  },
+  "schedule": {
+    "tabs": {
+      "pointToPoint": "Jadwal Titik ke Titik",
+      "vessel": "Cari Kapal",
+      "port": "Pelabuhan",
+      "longRange": "Jangka Panjang"
+    },
+    "pointToPoint": {
+      "title": "Cari Jadwal Titik ke Titik",
+      "origin": "Asal",
+      "destination": "Tujuan",
+      "originPlaceholder": "Masukkan hingga 3 Asal",
+      "destinationPlaceholder": "Masukkan hingga 3 Tujuan",
+      "date": "Tanggal",
+      "next": "Berikutnya",
+      "nextOptions": {
+        "oneWeek": "1 Minggu",
+        "twoWeeks": "2 Minggu",
+        "oneMonth": "1 Bulan"
+      },
+      "cargoType": "Jenis Kargo",
+      "cargoOptions": {
+        "dryGeneral": "Kering/Umum",
+        "reefer": "Reefer",
+        "dangerousGoods": "Barang Berbahaya"
+      },
+      "humanCheck": "Saya bukan robot",
+      "clear": "Bersihkan",
+      "search": "Cari"
+    },
+    "vessel": {
+      "title": "Cari Jadwal Kapal",
+      "vesselName": "Nama Kapal",
+      "vesselPlaceholder": "Masukkan nama kapal",
+      "cargoType": "Jenis Kargo",
+      "cargoOptions": {
+        "dryGeneral": "Kering/Umum",
+        "reefer": "Reefer",
+        "hazardous": "Berbahaya"
+      },
+      "confirmCheck": "Saya konfirmasi nama kapal sudah benar",
+      "clear": "Bersihkan",
+      "search": "Cari",
+      "result": {
+        "service": "Layanan",
+        "status": "Berangkat dari",
+        "totalPorts": "Total: {count} Pelabuhan Singgah",
+        "currentPort": "Pelabuhan Saat Ini",
+        "voyage": "Pelayaran",
+        "terminal": "Terminal",
+        "arrival": "Kedatangan",
+        "departure": "Keberangkatan",
+        "cutOff": "Batas Waktu"
+      }
+    },
+    "placeholder": {
+      "portComingSoon": "Jadwal pelabuhan segera hadir...",
+      "longRangeComingSoon": "Jadwal jangka panjang segera hadir..."
+    }
+  },
+  "quotationForm": {
+  "tabs": {
+    "form": "Form Penawaran",
+    "tracking": "Pelacakan"
+  },
+  "steps": {
+    "personalInfo": "Informasi Pribadi",
+    "cargoDetails": "Detail Kargo",
+    "route": "Rute"
+  },
+  "labels": {
+    "whoAreYou": "Siapa Anda?",
+    "companyName": "Nama Perusahaan / Lengkap",
+    "forwarderName": "Nama Forwarder",
+    "phone": "Telepon",
+    "email": "Email",
+    "country": "Negara",
+    "state": "Provinsi",
+    "termsCondition": "Syarat & Ketentuan",
+    "transportationMethod": "Metode Transportasi",
+    "origin": "Asal",
+    "destination": "Tujuan"
+  },
+  "placeholders": {
+    "whoAreYou": "Pilih siapa Anda",
+    "companyName": "Masukkan nama perusahaan",
+    "forwarderName": "Masukkan nama forwarder",
+    "phone": "Masukkan nomor telepon",
+    "phoneType": "Pilih tipe tlp",
+    "email": "Masukkan email",
+    "emailType": "Pilih tipe email",
+    "country": "Pilih negara",
+    "state": "Pilih provinsi",
+    "termsCondition": "Masukkan Syarat & Ketentuan",
+    "origin": "Pilih asal",
+    "destination": "Pilih tujuan"
+  },
+  "buttons": {
+    "next": "Berikutnya",
+    "back": "Kembali",
+    "submit": "Kirim Permintaan",
+    "processing": "Memproses..."
+  },
+  "errors": {
+    "required": "Harus diisi",
+    "invalidEmail": "Format email tidak valid",
+    "invalidPhone": "Format nomor telepon tidak valid",
+    "minLength": "Minimal {count} karakter",
+    "maxLength": "Maksimal {count} karakter"
+  },
+  "tracking": {
+  "title": "Pelacakan",
+  "label": "Nomor Pelacakan / Nomor Kontainer",
+  "placeholder": "Masukkan nomor pelacakan Anda",
+  "button": "Lacak Sekarang"
+}
+
+}
+
 }

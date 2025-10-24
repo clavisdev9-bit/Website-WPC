@@ -1,7 +1,6 @@
 <template>
   <FrontendLayout>
     <div class="container py-4">
-      <!-- Tabs -->
       <ul class="nav nav-tabs mb-4" id="scheduleTabs" role="tablist">
         <li class="nav-item" role="presentation">
           <button
@@ -12,7 +11,7 @@
             type="button"
             role="tab"
           >
-            <i class="fa fa-route me-1"></i> Schedule Point to Point
+            <i class="fa fa-route me-1"></i> {{ $t('schedule.tabs.pointToPoint') }}
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -24,7 +23,7 @@
             type="button"
             role="tab"
           >
-            <i class="fa-solid fa-ship me-1"></i> Vessel
+            <i class="fa-solid fa-ship me-1"></i> {{ $t('schedule.tabs.vessel') }}
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -36,7 +35,7 @@
             type="button"
             role="tab"
           >
-            <i class="fa-solid fa-anchor me-1"></i> Port
+            <i class="fa-solid fa-anchor me-1"></i> {{ $t('schedule.tabs.port') }}
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -48,14 +47,12 @@
             type="button"
             role="tab"
           >
-            <i class="fa-solid fa-clock-rotate-left me-1"></i> Long Range
+            <i class="fa-solid fa-clock-rotate-left me-1"></i> {{ $t('schedule.tabs.longRange') }}
           </button>
         </li>
       </ul>
 
-      <!-- Tab Contents -->
       <div class="tab-content" id="scheduleTabsContent">
-        <!-- Point to Point -->
         <div
           class="tab-pane fade"
           id="point-to-point"
@@ -64,48 +61,48 @@
         >
           <div class="card shadow-sm p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <h4 class="fw-bold">Point to Point Search Schedule</h4>
+              <h4 class="fw-bold">{{ $t('schedule.pointToPoint.title') }}</h4>
             </div>
 
             <form>
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Origin</label>
+                  <label class="form-label">{{ $t('schedule.pointToPoint.origin') }}</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Input up to 3 Origins"
+                    :placeholder="$t('schedule.pointToPoint.originPlaceholder')"
                   />
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Destination</label>
+                  <label class="form-label">{{ $t('schedule.pointToPoint.destination') }}</label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Input up to 3 Destinations"
+                    :placeholder="$t('schedule.pointToPoint.destinationPlaceholder')"
                   />
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-4 mb-3">
-                  <label class="form-label">Date</label>
+                  <label class="form-label">{{ $t('schedule.pointToPoint.date') }}</label>
                   <input type="date" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="form-label">Next</label>
+                  <label class="form-label">{{ $t('schedule.pointToPoint.next') }}</label>
                   <select class="form-select">
-                    <option>1 Week</option>
-                    <option selected>2 Weeks</option>
-                    <option>1 Month</option>
+                    <option>{{ $t('schedule.pointToPoint.nextOptions.oneWeek') }}</option>
+                    <option selected>{{ $t('schedule.pointToPoint.nextOptions.twoWeeks') }}</option>
+                    <option>{{ $t('schedule.pointToPoint.nextOptions.oneMonth') }}</option>
                   </select>
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="form-label">Cargo Type</label>
+                  <label class="form-label">{{ $t('schedule.pointToPoint.cargoType') }}</label>
                   <select class="form-select">
-                    <option>Dry/General</option>
+                    <option>{{ $t('schedule.pointToPoint.cargoOptions.dryGeneral') }}</option>
                     <option>Reefer</option>
-                    <option>Dangerous Goods</option>
+                    <option>{{ $t('schedule.pointToPoint.cargoOptions.dangerousGoods') }}</option>
                   </select>
                 </div>
               </div>
@@ -117,9 +114,9 @@
                     class="form-check-input"
                     id="humanCheck"
                   />
-                  <label class="form-check-label" for="humanCheck"
-                    >I am human</label
-                  >
+                  <label class="form-check-label" for="humanCheck">
+                    {{ $t('schedule.pointToPoint.humanCheck') }}
+                  </label>
                 </div>
               </div>
 
@@ -128,20 +125,19 @@
                   type="reset"
                   class="btn btn-secondary me-1 btn-gradient-secondary"
                 >
-                  <i class="fa-solid fa-rotate"></i> Clear
+                  <i class="fa-solid fa-rotate"></i> {{ $t('schedule.pointToPoint.clear') }}
                 </button>
                 <button
                   type="submit"
                   class="btn btn-primary btn-gradient"
                 >
-                  <i class="fa-solid fa-magnifying-glass"></i> Search
+                  <i class="fa-solid fa-magnifying-glass"></i> {{ $t('schedule.pointToPoint.search') }}
                 </button>
               </div>
             </form>
           </div>
         </div>
 
-        <!-- Vessel Tab -->
         <div
           class="tab-pane fade show active"
           id="vessel"
@@ -150,13 +146,13 @@
         >
           <div class="card shadow-sm p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <h4 class="fw-bold">Vessel Schedule Search</h4>
+              <h4 class="fw-bold">{{ $t('schedule.vessel.title') }}</h4>
             </div>
 
             <form @submit.prevent="searchVessel">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label fw-semibold">Vessel Name</label>
+                  <label class="form-label fw-semibold">{{ $t('schedule.vessel.vesselName') }}</label>
                   <div class="input-group">
                     <span class="input-group-text bg-light">
                       <i class="fa-solid fa-ship"></i>
@@ -164,17 +160,17 @@
                     <input
                       type="text"
                       class="form-control"
-                      placeholder="Enter vessel name"
+                      :placeholder="$t('schedule.vessel.vesselPlaceholder')"
                       v-model="vesselName"
                     />
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label fw-semibold">Cargo Type</label>
+                  <label class="form-label fw-semibold">{{ $t('schedule.vessel.cargoType') }}</label>
                   <select class="form-select" v-model="cargoType">
-                    <option>Dry/General</option>
+                    <option>{{ $t('schedule.vessel.cargoOptions.dryGeneral') }}</option>
                     <option>Reefer</option>
-                    <option>Hazardous</option>
+                    <option>{{ $t('schedule.vessel.cargoOptions.hazardous') }}</option>
                   </select>
                 </div>
               </div>
@@ -187,9 +183,9 @@
                     id="confirmCheck"
                     v-model="confirmed"
                   />
-                  <label class="form-check-label" for="confirmCheck"
-                    >I confirm vessel name is correct</label
-                  >
+                  <label class="form-check-label" for="confirmCheck">
+                    {{ $t('schedule.vessel.confirmCheck') }}
+                  </label>
                 </div>
               </div>
 
@@ -199,33 +195,34 @@
                   class="btn btn-gradient-secondary me-2"
                   @click="clearForm"
                 >
-                  <i class="fa-solid fa-rotate"></i> Clear
+                  <i class="fa-solid fa-rotate"></i> {{ $t('schedule.vessel.clear') }}
                 </button>
                 <button
                   type="submit"
                   class="btn btn-primary btn-gradient"
                   :disabled="!confirmed"
                 >
-                  <i class="fa-solid fa-magnifying-glass me-1"></i> Search
+                  <i class="fa-solid fa-magnifying-glass me-1"></i> {{ $t('schedule.vessel.search') }}
                 </button>
               </div>
             </form>
           </div>
 
-          <!-- Result -->
           <div v-if="vessel" class="card shadow-sm p-4 mt-4">
             <div
               class="d-flex justify-content-between align-items-center mb-3"
             >
               <h5 class="fw-bold text-primary mb-0">{{ vessel.name }}</h5>
-              <span class="badge bg-info text-dark"
-                >Service: {{ vessel.service }}</span
-              >
+              <span class="badge bg-info text-dark">
+                {{ $t('schedule.vessel.result.service') }}: {{ vessel.service }}
+              </span>
             </div>
-            <p class="text-muted mb-3 small">{{ vessel.status }}</p>
+            <p class="text-muted mb-3 small">
+              {{ $t('schedule.vessel.result.status') }} {{ vessel.status.substring(vessel.status.indexOf('from') + 5) }}
+            </p>
             <hr />
             <h6 class="fw-semibold mb-3">
-              Total: {{ vessel.ports.length }} Calling Ports
+              {{ $t('schedule.vessel.result.totalPorts', { count: vessel.ports.length }) }}
             </h6>
 
             <div class="vstack gap-3">
@@ -243,22 +240,24 @@
                       v-if="port.current"
                       class="badge bg-primary ms-2"
                     >
-                      Current Port
+                      {{ $t('schedule.vessel.result.currentPort') }}
                     </span>
                   </h6>
-                  <small class="text-muted">Voyage: {{ port.voyage }}</small>
+                  <small class="text-muted">
+                    {{ $t('schedule.vessel.result.voyage') }}: {{ port.voyage }}
+                  </small>
                 </div>
                 <p class="text-muted small mb-1">
-                  Terminal: {{ port.terminal }}
+                  {{ $t('schedule.vessel.result.terminal') }}: {{ port.terminal }}
                 </p>
                 <div class="row small text-muted">
                   <div class="col-md-6">
-                    Arrival: <strong>{{ port.arrival }}</strong>
+                    {{ $t('schedule.vessel.result.arrival') }}: <strong>{{ port.arrival }}</strong>
                   </div>
                   <div class="col-md-6">
-                    Departure: <strong>{{ port.departure }}</strong>
+                    {{ $t('schedule.vessel.result.departure') }}: <strong>{{ port.departure }}</strong>
                     <button class="btn btn-sm btn-outline-secondary ms-2">
-                      Cut off
+                      {{ $t('schedule.vessel.result.cutOff') }}
                     </button>
                   </div>
                 </div>
@@ -267,14 +266,15 @@
           </div>
         </div>
 
-        <!-- Placeholder for Port & Long Range -->
         <div
           class="tab-pane fade"
           id="port"
           role="tabpanel"
           aria-labelledby="port-tab"
         >
-          <div class="alert alert-info">Port schedule coming soon...</div>
+          <div class="alert alert-info">
+            {{ $t('schedule.placeholder.portComingSoon') }}
+          </div>
         </div>
         <div
           class="tab-pane fade"
@@ -282,7 +282,9 @@
           role="tabpanel"
           aria-labelledby="long-tab"
         >
-          <div class="alert alert-info">Long range schedule coming soon...</div>
+          <div class="alert alert-info">
+            {{ $t('schedule.placeholder.longRangeComingSoon') }}
+          </div>
         </div>
       </div>
     </div>
@@ -292,6 +294,8 @@
 <script setup>
 import { ref } from "vue";
 import FrontendLayout from "../../../layouts/FrontendLayout.vue";
+// NOTE: Jika Anda menggunakan setup script, Anda mungkin tidak perlu mengimpor useI18n
+// karena properti global $t harusnya tersedia secara otomatis di template.
 
 const vesselName = ref("");
 const cargoType = ref("Dry/General");
@@ -307,6 +311,7 @@ const clearForm = () => {
 };
 
 const searchVessel = () => {
+  // Data mock (contoh hasil pencarian)
   vessel.value = {
     name: "CAROLINE MAERSK (CINT)",
     service: "SX2",

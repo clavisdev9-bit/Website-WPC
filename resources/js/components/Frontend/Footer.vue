@@ -53,7 +53,7 @@
               <i class="fas fa-map-marker-alt text-white"></i> {{ $t('footer.address') }}
             </li>
             <li class="text-white">
-              <i class="fas fa-envelope text-white"></i> {{ $t('footer.email') }}
+              <i class="fas fa-envelope text-white"></i> inquiry@wpclogistics.com
             </li>
             <li class="text-white">
               <i class="fas fa-phone text-white"></i> {{ $t('footer.phone') }}
@@ -65,7 +65,7 @@
         <div class="col-md-4 mb-4">
           <h5 class="fw-bold text-white">{{ $t('footer.recentWork') }}</h5>
           <div class="row g-2">
-            <div class="col-4" v-for="n in 9" :key="n">
+            <div class="col-4" v-for="n in 6" :key="n">
               <img :src="marker" alt="Recent Work" class="img-fluid rounded" />
             </div>
           </div>

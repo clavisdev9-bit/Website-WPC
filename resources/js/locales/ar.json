@@ -12,7 +12,9 @@
     "userGuide": "دليل المستخدم",
     "language": "اللغة",
     "userName": "اسم المستخدم",
-    "back": "العودة إلى الصفحة الرئيسية"
+    "back": "العودة إلى الصفحة الرئيسية",
+    "profile": "الملف الشخصي",
+    "logout": "تسجيل الخروج"
   },
   "footer": {
     "subscribePlaceholder": "عنوان البريد الإلكتروني للاشتراك",
@@ -72,5 +74,124 @@
       "connectingText": "ربطك من خلال شبكة فروعنا وشركائنا الدوليين.",
       "noBranches": "لم يتم العثور على الفروع.",
       "loadingGallery": "جارٍ تحميل معرض الفروع..."
+    },
+    "schedule": {
+    "tabs": {
+      "pointToPoint": "جدول نقطة إلى نقطة",
+     "vessel": "ابحث عن سفينة",
+      "port": "الميناء",
+      "longRange": "المدى الطويل"
+    },
+    "pointToPoint": {
+      "title": "البحث عن جدول نقطة إلى نقطة",
+      "origin": "الأصل",
+      "destination": "الوجهة",
+      "originPlaceholder": "أدخل ما يصل إلى 3 أصول",
+      "destinationPlaceholder": "أدخل ما يصل إلى 3 وجهات",
+      "date": "التاريخ",
+      "next": "التالي",
+      "nextOptions": {
+        "oneWeek": "أسبوع واحد",
+        "twoWeeks": "أسبوعان",
+        "oneMonth": "شهر واحد"
+      },
+      "cargoType": "نوع البضاعة",
+      "cargoOptions": {
+        "dryGeneral": "جاف/عام",
+        "reefer": "مبرد",
+        "dangerousGoods": "بضائع خطرة"
+      },
+      "humanCheck": "أنا لست روبوت",
+      "clear": "مسح",
+      "search": "بحث"
+    },
+    "vessel": {
+      "title": "البحث في جدول السفن",
+      "vesselName": "اسم السفينة",
+      "vesselPlaceholder": "أدخل اسم السفينة",
+      "cargoType": "نوع البضاعة",
+      "cargoOptions": {
+        "dryGeneral": "جاف/عام",
+        "reefer": "مبرد",
+        "hazardous": "خطرة"
+      },
+      "confirmCheck": "أؤكد أن اسم السفينة صحيح",
+      "clear": "مسح",
+      "search": "بحث",
+      "result": {
+        "service": "الخدمة",
+        "status": "غادرت من",
+        "totalPorts": "الإجمالي: {count} ميناء اتصال",
+        "currentPort": "الميناء الحالي",
+        "voyage": "الرحلة",
+        "terminal": "المحطة",
+        "arrival": "الوصول",
+        "departure": "المغادرة",
+        "cutOff": "القطع"
+      }
+    },
+    "placeholder": {
+      "portComingSoon": "جدول الميناء قريباً...",
+      "longRangeComingSoon": "جدول المدى الطويل قريباً..."
     }
+  },
+  "quotationForm": {
+  "tabs": {
+    "form": "نموذج عرض الأسعار",
+    "tracking": "تتبع"
+  },
+  "steps": {
+    "personalInfo": "المعلومات الشخصية",
+    "cargoDetails": "تفاصيل الشحنة",
+    "route": "المسار"
+  },
+  "labels": {
+    "whoAreYou": "من أنت؟",
+    "companyName": "اسم الشركة / الاسم الكامل",
+    "forwarderName": "اسم الناقل",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "country": "الدولة",
+    "state": "المحافظة / الولاية",
+    "termsCondition": "الشروط والأحكام",
+    "transportationMethod": "طريقة النقل",
+    "origin": "المنشأ",
+    "destination": "الوجهة"
+  },
+  "placeholders": {
+    "whoAreYou": "اختر من أنت",
+    "companyName": "أدخل اسم الشركة",
+    "forwarderName": "أدخل اسم الناقل",
+    "phone": "أدخل رقم الهاتف",
+    "phoneType": "اختر نوع الهاتف",
+    "email": "أدخل البريد الإلكتروني",
+    "emailType": "اختر نوع البريد الإلكتروني",
+    "country": "اختر الدولة",
+    "state": "اختر المحافظة / الولاية",
+    "termsCondition": "أدخل الشروط والأحكام",
+    "origin": "اختر المنشأ",
+    "destination": "اختر الوجهة"
+  },
+  "buttons": {
+    "next": "التالي",
+    "back": "عودة",
+    "submit": "إرسال الطلب",
+    "processing": "جارٍ المعالجة..."
+  },
+  "errors": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "تنسيق البريد الإلكتروني غير صالح",
+    "invalidPhone": "تنسيق رقم الهاتف غير صالح",
+    "minLength": "الحد الأدنى {count} أحرف",
+    "maxLength": "الحد الأقصى {count} أحرف"
+  },
+  "tracking": {
+  "title": "تتبع",
+  "label": "رقم التتبع / رقم الحاوية",
+  "placeholder": "أدخل رقم التتبع الخاص بك",
+  "button": "تتبع الآن"
+}
+
+}
+
 }

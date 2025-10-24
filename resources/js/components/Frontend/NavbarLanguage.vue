@@ -16,7 +16,9 @@
       <li><a class="dropdown-item" href="#" @click="changeLang('en')">🇬🇧 English</a></li>
       <li><a class="dropdown-item" href="#" @click="changeLang('cn')">🇨🇳 中文</a></li>
       <li><a class="dropdown-item" href="#" @click="changeLang('ar')">🇸🇦 العربية</a></li>
-      <li><a class="dropdown-item" href="#" @click="changeLang('ja')">Ja 日本語</a></li>
+      <!-- <li><a class="dropdown-item" href="#" @click="changeLang('ja')">ja 日本語</a></li> -->
+        <li><a class="dropdown-item" href="#" @click="changeLang('ja')">🇯🇵 日本語</a></li>
+
     </ul>
   </div>
 </template>

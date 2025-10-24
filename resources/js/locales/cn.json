@@ -12,7 +12,9 @@
     "userGuide": "用户指南",
     "language": "语言",
     "userName": "用户名",
-    "back": "返回主页"
+    "back": "返回主页",
+    "profile": "个人资料",
+    "logout": "登出"
   },
   "footer": {
     "subscribePlaceholder": "订阅邮箱地址",
@@ -72,5 +74,124 @@
       "connectingText": "通过我们的国际分支机构和合作伙伴网络与您连接。",
       "noBranches": "未找到分支机构。",
       "loadingGallery": "正在加载分支画廊..."
+    },
+    "schedule": {
+    "tabs": {
+      "pointToPoint": "点对点船期",
+      "vessel": "搜索船舶",
+      "port": "港口",
+      "longRange": "长期船期"
+    },
+    "pointToPoint": {
+      "title": "点对点船期查询",
+      "origin": "起运地",
+      "destination": "目的地",
+      "originPlaceholder": "输入最多 3 个起运地",
+      "destinationPlaceholder": "输入最多 3 个目的地",
+      "date": "日期",
+      "next": "下一个",
+      "nextOptions": {
+        "oneWeek": "1 周",
+        "twoWeeks": "2 周",
+        "oneMonth": "1 个月"
+      },
+      "cargoType": "货物类型",
+      "cargoOptions": {
+        "dryGeneral": "干货/普通",
+        "reefer": "冷藏",
+        "dangerousGoods": "危险品"
+      },
+      "humanCheck": "我不是机器人",
+      "clear": "清除",
+      "search": "搜索"
+    },
+    "vessel": {
+      "title": "船舶船期查询",
+      "vesselName": "船名",
+      "vesselPlaceholder": "输入船名",
+      "cargoType": "货物类型",
+      "cargoOptions": {
+        "dryGeneral": "干货/普通",
+        "reefer": "冷藏",
+        "hazardous": "危险品"
+      },
+      "confirmCheck": "我确认船名正确",
+      "clear": "清除",
+      "search": "搜索",
+      "result": {
+        "service": "服务",
+        "status": "已从",
+        "totalPorts": "总计：{count} 挂靠港",
+        "currentPort": "当前港口",
+        "voyage": "航次",
+        "terminal": "码头",
+        "arrival": "到达",
+        "departure": "离开",
+        "cutOff": "截止"
+      }
+    },
+    "placeholder": {
+      "portComingSoon": "港口船期即将推出...",
+      "longRangeComingSoon": "长期船期即将推出..."
     }
+  },
+  "quotationForm": {
+  "tabs": {
+    "form": "报价表单",
+    "tracking": "追踪"
+  },
+  "steps": {
+    "personalInfo": "个人信息",
+    "cargoDetails": "货物详情",
+    "route": "路线"
+  },
+  "labels": {
+    "whoAreYou": "您是谁？",
+    "companyName": "公司名称 / 全名",
+    "forwarderName": "货运代理名称",
+    "phone": "电话",
+    "email": "电子邮件",
+    "country": "国家",
+    "state": "州 / 省",
+    "termsCondition": "条款和条件",
+    "transportationMethod": "运输方式",
+    "origin": "起点",
+    "destination": "目的地"
+  },
+  "placeholders": {
+    "whoAreYou": "选择您的身份",
+    "companyName": "输入公司名称",
+    "forwarderName": "输入货运代理名称",
+    "phone": "请输入电话号码",
+    "phoneType": "选择电话类型",
+    "email": "请输入电子邮件",
+    "emailType": "选择电子邮件类型",
+    "country": "选择国家",
+    "state": "选择州/省",
+    "termsCondition": "输入条款和条件",
+    "origin": "选择起点",
+    "destination": "选择目的地"
+  },
+  "buttons": {
+    "next": "下一步",
+    "back": "返回",
+    "submit": "提交请求",
+    "processing": "处理中..."
+  },
+  "errors": {
+    "required": "此字段为必填项",
+    "invalidEmail": "无效的电子邮件格式",
+    "invalidPhone": "无效的电话号码格式",
+    "minLength": "最少 {count} 个字符",
+    "maxLength": "最多 {count} 个字符"
+  },
+  "tracking": {
+  "title": "追踪",
+  "label": "追踪号 / 集装箱号",
+  "placeholder": "请输入您的追踪号",
+  "button": "立即追踪"
+}
+
+}
+
 }

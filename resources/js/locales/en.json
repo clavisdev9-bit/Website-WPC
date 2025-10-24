@@ -12,7 +12,9 @@
     "userGuide": "User Guide",
     "language": "Language",
     "userName": "Username",
-    "back": "Back to Main Page"
+    "back": "Back to Main Page",
+    "profile": "Profile",
+    "logout": "Logout"
   },
   "footer": {
     "subscribePlaceholder": "Email address to subscribe",
@@ -71,5 +73,124 @@
       "connectingText": "Connecting you through our network of international branches and partners.",
       "noBranches": "No branches found.",
       "loadingGallery": "Loading branch gallery..."
+    },
+    "schedule": {
+    "tabs": {
+      "pointToPoint": "Point to Point Schedule",
+      "vessel": "Search Vessel",
+      "port": "Port",
+      "longRange": "Long Range"
+    },
+    "pointToPoint": {
+      "title": "Point to Point Search Schedule",
+      "origin": "Origin",
+      "destination": "Destination",
+      "originPlaceholder": "Input up to 3 Origins",
+      "destinationPlaceholder": "Input up to 3 Destinations",
+      "date": "Date",
+      "next": "Next",
+      "nextOptions": {
+        "oneWeek": "1 Week",
+        "twoWeeks": "2 Weeks",
+        "oneMonth": "1 Month"
+      },
+      "cargoType": "Cargo Type",
+      "cargoOptions": {
+        "dryGeneral": "Dry/General",
+        "reefer": "Reefer",
+        "dangerousGoods": "Dangerous Goods"
+      },
+      "humanCheck": "I am human",
+      "clear": "Clear",
+      "search": "Search"
+    },
+    "vessel": {
+      "title": "Vessel Schedule Search",
+      "vesselName": "Vessel Name",
+      "vesselPlaceholder": "Enter vessel name",
+      "cargoType": "Cargo Type",
+      "cargoOptions": {
+        "dryGeneral": "Dry/General",
+        "reefer": "Reefer",
+        "hazardous": "Hazardous"
+      },
+      "confirmCheck": "I confirm vessel name is correct",
+      "clear": "Clear",
+      "search": "Search",
+      "result": {
+        "service": "Service",
+        "status": "Departed from",
+        "totalPorts": "Total: {count} Calling Ports",
+        "currentPort": "Current Port",
+        "voyage": "Voyage",
+        "terminal": "Terminal",
+        "arrival": "Arrival",
+        "departure": "Departure",
+        "cutOff": "Cut off"
+      }
+    },
+    "placeholder": {
+      "portComingSoon": "Port schedule coming soon...",
+      "longRangeComingSoon": "Long range schedule coming soon..."
     }
+  },
+  "quotationForm": {
+  "tabs": {
+    "form": "Quotation Form",
+    "tracking": "Tracking"
+  },
+  "steps": {
+    "personalInfo": "Personal Information",
+    "cargoDetails": "Cargo Details",
+    "route": "Route"
+  },
+  "labels": {
+    "whoAreYou": "Who are you?",
+    "companyName": "Company Name / Full Name",
+    "forwarderName": "Forwarder Name",
+    "phone": "Phone",
+    "email": "Email",
+    "country": "Country",
+    "state": "State",
+    "termsCondition": "Terms & Conditions",
+    "transportationMethod": "Transportation Method",
+    "origin": "Origin",
+    "destination": "Destination"
+  },
+  "placeholders": {
+    "whoAreYou": "Select who you are",
+    "companyName": "Enter company name",
+    "forwarderName": "Enter forwarder name",
+    "phone": "Enter phone number",
+    "phoneType": "Select type",
+    "email": "Enter email address",
+    "emailType": "Select type",
+    "country": "Select country",
+    "state": "Select state",
+    "termsCondition": "Enter Terms & Conditions",
+    "origin": "Select origin",
+    "destination": "Select destination"
+  },
+  "buttons": {
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit Request",
+    "processing": "Processing..."
+  },
+  "errors": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email format",
+    "invalidPhone": "Invalid phone number format",
+    "minLength": "Minimum {count} characters",
+    "maxLength": "Maximum {count} characters"
+  },
+  "tracking": {
+  "title": "Tracking",
+  "label": "Tracking Number / Container Number",
+  "placeholder": "Enter your tracking number",
+  "button": "Track Now"
+}
+
+}
+
 }

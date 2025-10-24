@@ -12,7 +12,9 @@
     "userGuide": "ユーザーガイド",
     "language": "言語",
     "userName": "ユーザー名",
-    "back": "メインページに戻る"
+    "back": "メインページに戻る",
+    "profile": "プロフィール",
+    "logout": "ログアウト"
   },
   "footer": {
     "subscribePlaceholder": "購読用メールアドレス",
@@ -72,5 +74,124 @@
       "connectingText": "国際支店およびパートナーネットワークを通じて接続します。",
       "noBranches": "支店が見つかりません。",
       "loadingGallery": "支店ギャラリーを読み込み中..."
+    },
+    "schedule": {
+    "tabs": {
+      "pointToPoint": "区間別スケジュール",
+      "vessel": "船を検索",
+      "port": "港",
+      "longRange": "長期航路"
+    },
+    "pointToPoint": {
+      "title": "区間別スケジュール検索",
+      "origin": "出航地",
+      "destination": "目的地",
+      "originPlaceholder": "最大3つの出航地を入力",
+      "destinationPlaceholder": "最大3つの目的地を入力",
+      "date": "日付",
+      "next": "期間",
+      "nextOptions": {
+        "oneWeek": "1週間",
+        "twoWeeks": "2週間",
+        "oneMonth": "1ヶ月"
+      },
+      "cargoType": "貨物タイプ",
+      "cargoOptions": {
+        "dryGeneral": "ドライ/一般貨物",
+        "reefer": "リーファー",
+        "dangerousGoods": "危険物"
+      },
+      "humanCheck": "私は人間です",
+      "clear": "クリア",
+      "search": "検索"
+    },
+    "vessel": {
+      "title": "船名スケジュール検索",
+      "vesselName": "船名",
+      "vesselPlaceholder": "船名を入力",
+      "cargoType": "貨物タイプ",
+      "cargoOptions": {
+        "dryGeneral": "ドライ/一般貨物",
+        "reefer": "リーファー",
+        "hazardous": "危険物"
+      },
+      "confirmCheck": "船名が正しいことを確認します",
+      "clear": "クリア",
+      "search": "検索",
+      "result": {
+        "service": "サービス",
+        "status": "出航元",
+        "totalPorts": "合計：{count} 寄港地",
+        "currentPort": "現在港",
+        "voyage": "航海",
+        "terminal": "ターミナル",
+        "arrival": "入港",
+        "departure": "出港",
+        "cutOff": "締め切り"
+      }
+    },
+    "placeholder": {
+      "portComingSoon": "港スケジュールは近日公開予定です...",
+      "longRangeComingSoon": "長期航路スケジュールは近日公開予定です..."
     }
+  },
+  "quotationForm": {
+  "tabs": {
+    "form": "見積もりフォーム",
+    "tracking": "追跡"
+  },
+  "steps": {
+    "personalInfo": "個人情報",
+    "cargoDetails": "貨物の詳細",
+    "route": "ルート"
+  },
+  "labels": {
+    "whoAreYou": "あなたは誰ですか？",
+    "companyName": "会社名 / 氏名",
+    "forwarderName": "フォワーダー名",
+    "phone": "電話番号",
+    "email": "メール",
+    "country": "国",
+    "state": "州 / 都道府県",
+    "termsCondition": "利用規約",
+    "transportationMethod": "輸送方法",
+    "origin": "出発地",
+    "destination": "目的地"
+  },
+  "placeholders": {
+    "whoAreYou": "あなたの役割を選択",
+    "companyName": "会社名を入力",
+    "forwarderName": "フォワーダー名を入力",
+    "phone": "電話番号を入力してください",
+      "phoneType": "電話の種類を選択",
+      "email": "メールアドレスを入力してください",
+      "emailType": "メールの種類を選択",
+    "country": "国を選択",
+    "state": "州/都道府県を選択",
+    "termsCondition": "利用規約を入力",
+    "origin": "出発地を選択",
+    "destination": "目的地を選択"
+  },
+  "buttons": {
+    "next": "次へ",
+    "back": "戻る",
+    "submit": "リクエスト送信",
+    "processing": "処理中..."
+  },
+  "errors": {
+    "required": "必須項目です",
+    "invalidEmail": "無効なメール形式",
+    "invalidPhone": "無効な電話番号形式",
+    "minLength": "最低 {count} 文字",
+    "maxLength": "最大 {count} 文字"
+  },
+  "tracking": {
+  "title": "追跡",
+  "label": "追跡番号 / コンテナ番号",
+  "placeholder": "追跡番号を入力してください",
+  "button": "今すぐ追跡"
+ }
+
+}
+
 }

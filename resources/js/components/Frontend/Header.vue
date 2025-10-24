@@ -63,9 +63,9 @@
 
 
               <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <a href="" class="dropdown-item">Profile</a>
+                <a href="" class="dropdown-item"> {{ $t('navbar.profile') }} </a>
                 <div class="dropdown-divider"></div>
-                 <a href="#" @click.prevent="logout" class="dropdown-item">Logout</a>
+                 <a href="#" @click.prevent="logout" class="dropdown-item">{{ $t('navbar.logout') }}</a>
               </div>
             </div>
           </div>
