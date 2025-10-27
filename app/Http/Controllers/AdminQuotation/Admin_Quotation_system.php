@@ -35,8 +35,9 @@ class Admin_Quotation_system extends Controller
 
     // start code ambil data request list quotation
    public function List_Request_Quotation()  {
+       
         $data = [
-             'title' => 'List Request Quotation'
+             'title' => 'List Request Quotation',
         ];
         return view('admin-quotation/list-request-quotation/datatable/file', $data);
    }
@@ -46,11 +47,16 @@ class Admin_Quotation_system extends Controller
 {
    
     if ($request->ajax()) {
-        // Ambil data API
-        $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/quotes');
-        $result = $response->json();
+         $data = Cache::remember('quotations_data', 60, function () {
+            $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/quotes');
 
-        $data = $result['data'] ?? [];
+            if (!$response->successful()) {
+                return []; // Kalau gagal, return kosong
+            }
+
+            $result = $response->json();
+            return $result['data'] ?? [];
+        });
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -103,7 +109,6 @@ class Admin_Quotation_system extends Controller
                             $originId = $Pickuporigin[0] ?? '';
                             $originName = $Pickuporigin[1] ?? '';
 
-
                             $destinationPickup = $row['pickup_destination'] ?? null;
                             $destinationId = $destinationPickup[0] ?? '';
                             $destinationName = $destinationPickup[1] ?? '';
@@ -119,313 +124,60 @@ class Admin_Quotation_system extends Controller
                                     data-destination_origin="' . e($destinationName) . '"
                                     data-transportation_method="' . e($row['transportation_method']) . '"
                                     >
-                                    <i class="fas fa fa-file"> </i> Data Quotation Request
+                                    <i class="fas fa fa-file"> </i> Quotation Request
                                 </button>';
                     })
+
 
                     ->addColumn('agents_pickup', function ($row) {
-                        $origin = $row['pickup_origin'][1] ?? '-';
+                            $Pickuporigin = $row['pickup_origin'] ?? null;
+                            $originName = $Pickuporigin[1] ?? '';
+                            $methodPickup = strtolower($row['transportation_method'] ?? '');
+                            $codeRequest = $row['name'] ?? '';
+                       
                         return '<button type="button" 
                                     class="btn btn-outline-primary"
+                                    id="pickup"
                                     data-bs-toggle="modal" 
-                                    data-bs-target="#modal-agent-searching-origin"
-                                    data-origin="' . e($origin) . '">
-                                    <i class="fa fa-search"> </i> Agent Pickup
+                                    data-bs-target="#modal-pickup-agent"
+                                     data-pickup_origin_s="' . e($originName) . '"
+                                     data-code_req="' . $codeRequest . '"
+                                     data-tm="' . $methodPickup . '"
+                                    >
+                                    <i class="fa-solid fa-box-open"> </i> Pickup Agent
                                 </button>';
                     })
-
-
-                    ->addColumn('agents_destination', function ($row) {
-                        $destination = $row['pickup_destination'][1] ?? '-';
-                        return '<button type="button" 
-                                    class="btn btn-outline-warning"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#modal-agent-searching-destination"
-                                    data-destination="' . e($destination) . '">
-                                    <i class="fa fa-search"> </i> Agent Destination
-                                </button>';
-                    })
-            ->rawColumns(['data_customer','data_quotation','transportation_method','agents_pickup','agents_destination'])
-            ->make(true);
+                    ->rawColumns(['data_customer','data_quotation','transportation_method','agents_pickup','agents_destination'])
+                    ->make(true);
     }
 }
  // end code ambil data request list quotation
 
 
 
-  // ambil list countries dari API eksternal
-   public function countries()
-    {
-        try {
-        // Simpan cache 1 jam (3600 detik)
-        $countries = Cache::remember('countries', 3600, function () {
-            $response = Http::withOptions(['verify' => false]) // disable SSL kalau perlu
-                ->get('https://53794bb17cf4.ngrok-free.app/countries');
-
-            if ($response->successful()) {
-                return $response->json();
-            }
-
-            return null;
-        });
-
-        if ($countries) {
-            return response()->json([
-                'success' => true,
-                'data'    => $countries['data'] ?? [],
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to fetch countries from API',
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Server error: ' . $e->getMessage(),
-        ]);
-    }
-    }
-
-
-
-    //ambil states berdasarkan country_id
-  public function states($country_id)
-{
-    try {
-        // Cache per country id, simpan 1 jam (3600 detik)
-        $cacheKey = "states_{$country_id}";
-
-        $states = Cache::remember($cacheKey, 3600, function () use ($country_id) {
-            $response = Http::withOptions(['verify' => false])
-                ->get("https://53794bb17cf4.ngrok-free.app/states/country/{$country_id}");
-
-            if ($response->successful()) {
-                return $response->json();
-            }
-            return null;
-        });
-
-        if ($states) {
-            return response()->json([
-                'success' => true,
-                'data'    => $states['data'] ?? [],
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to fetch states from API',
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Server error: ' . $e->getMessage(),
-        ]);
-    }
-
-}
-
-
-
-public function getContactCities()
-{
-    try {
-        $cities = $this->ContactModel
-            ->whereNotNull('city')
-            ->pluck('city')
-            ->filter(function ($city) {
-                // Hapus spasi di awal/akhir dan buang yang kosong
-                return trim($city) !== '';
-            })
-            ->unique()
-            ->values();
-
-        if ($cities->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No cities found.'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $cities
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
-    }
-}
-
-
-public function getContactStreets()
-{
-    try {
-        $streets = $this->ContactModel
-            ->whereNotNull('street')
-            ->pluck('street')
-            ->filter(function ($street) {
-                // Hilangkan spasi dan kosongkan nilai yang tidak valid
-                return trim($street) !== '';
-            })
-            ->unique()
-            ->values();
-
-        if ($streets->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No streets found.'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $streets
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
-    }
-}
-
-
-
-public function getContactZips()
-{
-    try {
-        $zips = $this->ContactModel
-            ->whereNotNull('zip')
-            ->pluck('zip')
-            ->filter(function ($zip) {
-                return trim($zip) !== '';
-            })
-            ->unique()
-            ->values();
-
-        if ($zips->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No ZIP numbers found.'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $zips
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
-    }
-}
-
-
-
-
-public function getContactTags()
-{
-    try {
-        $tags = $this->ContactTagModel
-            ->whereNotNull('tag_name')
-            ->pluck('tag_name')
-            ->filter(function ($tags) {
-                return trim($tags) !== '';
-            })
-            ->unique()
-            ->values();
-
-        if ($tags->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No Tag Name found.'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $tags
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
-    }
-}
 
 
 
 
 
-public function search_contact_agent(Request $request)
-{
-    try {
-        $query = $this->ContactModel->query()
-            ->leftJoin('contact_tags', 'contacts.id', '=', 'contact_tags.contact_id');
 
-        // 🔍 Filter dinamis hanya jika field diisi
-        if ($request->filled('city')) {
-            $query->where('contacts.city', 'ILIKE', "%{$request->city}%");
-        }
 
-        if ($request->filled('street')) {
-            $query->where('contacts.street', 'ILIKE', "%{$request->street}%");
-        }
 
-        if ($request->filled('zip')) {
-            $query->where('contacts.zip', 'ILIKE', "%{$request->zip}%");
-        }
 
-        // if ($request->filled('company_type')) {
-        //     $query->where('contacts.company_type', 'ILIKE', "%{$request->company_type}%");
-        // }
 
-        if ($request->filled('tags')) {
-            // Filter berdasarkan tag_id atau tag_name
-            $query->where('contact_tags.tag_name', 'ILIKE', "%{$request->tags}%");
-        }
 
-        // Ambil hasil (maksimal 50 agar ringan)
-        $contacts = $query->select([
-            'contacts.id',
-            'contacts.name',
-            'contacts.email',
-            'contacts.phone',
-            'contacts.city',
-            'contacts.street',
-            'contacts.zip',
-            'contacts.company_type',
-            'contact_tags.tag_name'
-        ])
-        ->orderBy('contacts.name', 'asc')
-        ->limit(50)
-        ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $contacts
-        ]);
-    } catch (\Throwable $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

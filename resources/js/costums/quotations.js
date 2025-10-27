@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
             { data: "transportation_method", name: "transportation_method" },
             { data: "data_quotation", name: "data_quotation" },
             { data: "agents_pickup", name: "agents_pickup" },
-            { data: "agents_destination", name: "agents_destination" },
            
         ],
         responsive: true,
@@ -78,14 +77,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // quotation
  $(document).on('click', '#quotation', function() {
-    
     let no_request = $(this).data('no_request');
     let terms = $(this).data('terms');
     let pickup_origin = $(this).data('pickup_origin');
     let destination_origin = $(this).data('destination_origin');
     var transportation = ($(this).data('transportation_method') || '').toLowerCase();
-
-
      // mapping icons
     var icons = {
         'air': '<i class="fa fa-plane text-primary"></i> Air',
@@ -93,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
         'air & ocean': '<i class="fa fa-plane text-primary"></i> + <i class="fa fa-ship text-info"></i> Air & Ocean',
         'domestic ground transportation': '<i class="fa fa-truck text-warning"></i> Domestic Ground Transportation'
     };
-
     // isi modal
     $('#no_request').text(no_request);
     $('#terms').text(terms);
@@ -103,5 +98,20 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+ $(document).on('click', '#pickup', function() {
+    let pickup_origin_s  = $(this).data('pickup_origin_s');
+    let code_req      = $(this).data('code_req');
+    let tm = $(this).data('tm');
+var icons = {
+        'air': '<i class="fa fa-plane text-primary"></i> Air',
+        'ocean': '<i class="fa fa-ship text-info"></i> Ocean',
+        'air & ocean': '<i class="fa fa-plane text-primary"></i> + <i class="fa fa-ship text-info"></i> Air & Ocean',
+        'domestic ground transportation': '<i class="fa fa-truck text-warning"></i> Domestic Ground Transportation'
+    };
+    $('#pickup_origin_s').text(pickup_origin_s);
+    $('#code_req').text(code_req);
+    $('#tm').html(icons[tm] || tm);
+
+});
 });
 
