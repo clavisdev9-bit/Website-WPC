@@ -399,7 +399,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderResults(results) {
     resultsContainer.innerHTML = "";
     if (!results.length) {
-      resultsContainer.innerHTML = `<p class="text-muted">No agents found.</p>`;
+      resultsContainer.innerHTML = `<div class="alert alert-danger d-flex align-items-center" role="alert">
+                                    <i class="fa-solid fa-exclamation"></i>
+                                    <div>
+                                      No agents found.
+                                    </div>
+                                  </div>`;
       document.getElementById("pagination-controls")?.remove();
       return;
     }
@@ -512,6 +517,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+
+  // --- Fungsi untuk Menghapus Email Kontak di Modal Email ---
+function attachRemoveEmailContactButtons() {
+    document.querySelectorAll(".remove-email-contact").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const agentId = parseInt(btn.dataset.id);
+            selectedAgents.delete(agentId);
+            btn.closest(".email-chip").remove();
+            renderSelected();
+            renderResults(filteredResults);
+        });
+    });
+}
+
+
+// --- Kode untuk Menghilangkan Backdrop Sisa Saat Modal Send Email Ditutup ---
+const modalSendEmailEl = document.getElementById('modalSendEmail');
+modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
+    const openModals = document.querySelectorAll('.modal.show');
+    if (openModals.length === 0) {
+        document.body.classList.remove('modal-open'); 
+        document.querySelector('.modal-backdrop')?.remove(); 
+    }
+
+    // Optional: Pastikan modal pertama (modal-pickup-agent) dibuka kembali
+    // agar user bisa memilih agen lagi, jika mereka hanya menutup modal email
+    // const pickupAgentModalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-pickup-agent"));
+    // if (pickupAgentModalInstance) {
+    //      pickupAgentModalInstance.show();
+    // }
+});
+
   btnReset.addEventListener("click", () => {
     countrySelect.value = "";
     stateSelect.innerHTML = `<option value="">-- Select State --</option>`;
@@ -525,7 +562,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("pagination-controls")?.remove();
   });
 
-  // === Tombol Send Email ===
+  //  Tombol Send Email 
   const btnSendOffer = document.createElement("button");
   btnSendOffer.className = "btn btn-primary mt-3 w-100";
   btnSendOffer.id = "btn-open-send-email";
@@ -560,12 +597,15 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>`;
       }
     });
+    
 
+     
+    attachRemoveEmailContactButtons();
     const emailModal = new bootstrap.Modal(document.getElementById("modalSendEmail"));
     emailModal.show();
   });
 
-  // === Input CC dengan Validasi Email RFC 2822 ===
+  //  Input CC dengan Validasi Email RFC 2822 
   const ccInput = document.getElementById("ccInput");
   const ccList = document.getElementById("ccSelectedList");
   const ccEmails = new Set();
@@ -586,10 +626,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Cek jika email valid
     if (!isValidEmail(email)) {
-      alert("Invalid email format: " + email);
-      e.target.value = "";
-      return;
-    }
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Email",
+          text: `Email format is not valid: ${email}`,
+          confirmButtonText: "OK",
+        });
+        e.target.value = "";
+        return;
+      }
 
     if (email && !ccEmails.has(email)) {
       ccEmails.add(email);
@@ -613,19 +658,29 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-  // === Kirim ke Laravel ===
+  // logic kirim email
   document.getElementById("btnSendEmailNow").addEventListener("click", async () => {
     const subject = document.getElementById("emailSubject").value.trim();
     const message = document.getElementById("emailMessage").value.trim();
     const attachmentInput = document.getElementById("emailAttachment");
-
-    if (!subject || !message) {
-      alert("Please fill subject and message before sending.");
-      return;
-    }
+      if (!subject || !message) {
+          Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "Please fill subject and message before sending!",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
 
     if (selectedAgents.size === 0) {
-      alert("Please select at least one contact.");
+ 
+      Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "Please select at least one contact.!",
+          confirmButtonText: "OK",
+        });
       return;
     }
 
@@ -636,7 +691,13 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(a => ({ name: a.name, email: a.email }));
 
     if (!contactsToSend.length) {
-      alert("No valid email addresses to send.");
+      // alert("No valid email addresses to send.");
+      Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "No valid email addresses to send.!",
+          confirmButtonText: "OK",
+        });
       return;
     }
 
@@ -650,6 +711,17 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.append("attachment", attachmentInput.files[0]);
     }
 
+    //  TAMPILKAN SWEETALERT LOADING
+    Swal.fire({
+        title: 'Sending Email...',
+        text: 'Please wait, this may take a moment.',
+        icon: 'info',
+        allowOutsideClick: false, // Memblokir interaksi user lain
+        didOpen: () => {
+            Swal.showLoading(); // Menampilkan spinner
+        }
+    });
+
     try {
       const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
       const response = await fetch("/api/send-offer-email-pickup", {
@@ -659,27 +731,36 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const result = await response.json();
+       Swal.close(); 
+        // if (response.ok && result.success) {
+        //     Swal.fire({
+        //         title: "Success!",
+        //         text: "Email berhasil dikirim.",
+        //         icon: "success",
+        //         confirmButtonText: "OK",
+        //     });
+        //   }
+
       if (response.ok && result.success) {
-        // alert("Email sent successfully!");
         Swal.fire({
           title: "Success!",
-          text: "Email penawaran berhasil dikirim.",
+          text: "The offer email was sent successfully.",
           icon: "success",
           confirmButtonText: "OK",
           timer: 2500 // Opsi: menutup otomatis setelah 2.5 detik
           }).then(() => {
             
-            // 1. Sembunyikan modal kedua (modalSendEmail)
+            // Sembunyikan modal kedua (modalSendEmail)
             bootstrap.Modal.getInstance(document.getElementById("modalSendEmail")).hide();
 
-            // 2. Sembunyikan modal pertama (modal-pickup-agent)
+            // Sembunyikan modal pertama (modal-pickup-agent)
             const pickupAgentModalElement = document.getElementById("modal-pickup-agent");
             const pickupAgentModalInstance = bootstrap.Modal.getInstance(pickupAgentModalElement);
             if (pickupAgentModalInstance) {
                 pickupAgentModalInstance.hide();
             }
 
-            // 3. Hapus paksa backdrop yang tersisa
+            // Hapus paksa backdrop yang tersisa
             document.body.classList.remove('modal-open');
             document.querySelector('.modal-backdrop')?.remove();
 
@@ -689,24 +770,20 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("emailAttachment").value = "";
             ccEmails.clear();
             ccList.innerHTML = "";
-                        
             });
-
       } else {
-        // alert("❌ Failed to send email. Check server logs.");
         Swal.fire({
         title: "Error!",
-        text: result.message || "Gagal mengirim email. Silakan periksa log server.",
+        text: result.message || "Failed to send email. Please check the server log.",
         icon: "error",
         confirmButtonText: "Tutup"
         });
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      // alert("⚠️ Something went wrong while sending email.");
       Swal.fire({
-      title: "Koneksi Error!",
-      text: "Terjadi kesalahan saat mengirim permintaan ke server.",
+      title: "Connection Error!",
+      text: "An error occurred while sending the request to the server.",
       icon: "warning",
       confirmButtonText: "OK"
       });
@@ -716,6 +793,100 @@ document.addEventListener("DOMContentLoaded", () => {
 //  end code logic untuk pickup  
 </script>
 
+
+{{-- <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById('modalSendEmail');
+  const messageField = document.getElementById('emailMessage');
+  const subjectField = document.getElementById('emailSubject');
+
+  // Saat modal dibuka
+  modal.addEventListener('shown.bs.modal', () => {
+    // Jika kosong, isi default subject & message
+    if (!subjectField.value) {
+      subjectField.value = "Special Offers for Shipping Needs";
+    }
+
+    if (!messageField.value) {
+      messageField.value = `Dear Agent,
+
+We would like to offer you our latest shipping schedule and special rates.
+Please find the attached quotation for your reference.
+
+If you have any questions, feel free to reply to this email.
+
+Best regards,
+WPC Team IT Development`;
+    }
+  });
+});
+</script> --}}
+
+{{-- <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById('modalSendEmail');
+  const messageField = document.getElementById('emailMessage');
+  const subjectField = document.getElementById('emailSubject');
+
+  modal.addEventListener('shown.bs.modal', () => {
+    // hanya isi default kalau kosong
+    if (!subjectField.value) {
+      subjectField.value = "Special Offers for Shipping Needs";
+    }
+
+    if (!messageField.value) {
+      messageField.value = `Dear Agent,
+
+We would like to offer you our latest shipping schedule and special rates.
+Please find the attached quotation for your reference.
+
+If you have any questions, feel free to reply to this email.
+
+Best regards,
+WPC Team IT Development`;
+    }
+  });
+
+  // opsional: ubah baris baru ke <br> otomatis saat submit
+  const form = document.getElementById('formSendEmail');
+  form.addEventListener('submit', (e) => {
+    const message = messageField.value
+      .replace(/\n/g, '<br>') // ubah newline jadi <br>
+      .replace(/\s\s+/g, ' '); // rapikan spasi
+    messageField.value = message; // update sebelum dikirim
+  });
+});
+</script> --}}
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById('modalSendEmail');
+  const messageField = document.getElementById('emailMessage');
+  const subjectField = document.getElementById('emailSubject');
+
+  modal.addEventListener('shown.bs.modal', () => {
+    if (!subjectField.value) {
+      subjectField.value = "Special Offers for Shipping Needs";
+    }
+
+    if (!messageField.value) {
+      messageField.value = `Dear Agent,
+
+We would like to offer you our latest shipping schedule and special rates.
+Please find the attached quotation for your reference.
+
+If you have any questions, feel free to reply to this email.
+
+Best regards,
+WPC Team IT Development`;
+    }
+  });
+
+  // biarkan user menulis bebas — backend yang formatkan
+});
+</script>
 
 
 
@@ -866,8 +1037,17 @@ document.addEventListener("DOMContentLoaded", () => {
 .remove-btn i {
   font-size: 12px;
 }
+
+.ck-editor__editable_inline {
+        min-height: 200px; /* lebih tinggi ke bawah */
+    }
 /* end Styles for email chips (pickup) */
 </style>
-
+{{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+<script>
+  ClassicEditor.create(document.querySelector('#emailMessage')).catch(error => {
+      console.error(error);
+  });
+</script> --}}
 @endsection
 		
