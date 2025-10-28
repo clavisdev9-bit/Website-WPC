@@ -310,6 +310,8 @@
 </div>
 
 
+
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const countrySelect = document.getElementById("country_destination");
@@ -320,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultsContainer = document.getElementById("agent-search-results-destination");
   const selectedList = document.getElementById("selectedList");
 
-  // Tombol reset otomatis kalau belum ada
+  // --- Tombol Reset ---
   let btnReset = document.getElementById("btn-reset-agent");
   if (!btnReset) {
     btnReset = document.createElement("button");
@@ -331,24 +333,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let allContacts = [];
-  let selectedAgents = new Set();
-  let filteredResults = [];
+  const selectedAgents = new Set();
 
-  // Pagination variables
+  let filteredResults = [];
   let currentPage = 1;
   const itemsPerPage = 6;
 
-  // ✅ Ambil data dari API
+  // === Fetch Data Agent ===
   fetch("http://127.0.0.1:8000/api/contacts")
     .then(res => res.json())
     .then(data => {
       allContacts = data.data || [];
 
-      // --- isi dropdown country ---
+      // country
       const countries = [...new Set(allContacts.flatMap(c => c.countries?.map(ct => ct.country_name) || []))];
       countries.forEach(c => countrySelect.innerHTML += `<option value="${c}">${c}</option>`);
 
-      // --- isi dropdown tags global ---
+      // tags
       const allTags = [...new Set(allContacts.flatMap(c => c.tags?.map(t => t.tag_name) || []))];
       allTags.forEach(tag => {
         tagsSelect.innerHTML += `<option value="${tag}">${tag}</option>`;
@@ -356,7 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(err => console.error("Error fetching contacts:", err));
 
-  // ✅ Event chain: Country → State
+  // === Filter dropdown chain ===
   countrySelect.addEventListener("change", () => {
     const selectedCountry = countrySelect.value;
     const filtered = allContacts.filter(c => c.countries?.some(ct => ct.country_name === selectedCountry));
@@ -367,7 +368,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSearchButton();
   });
 
-  // ✅ Event chain: State → City
   stateSelect.addEventListener("change", () => {
     const selectedState = stateSelect.value;
     const filtered = allContacts.filter(c => c.states?.some(s => s.state_name === selectedState));
@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnSearch.disabled = !anySelected;
   }
 
-  // ✅ Tombol Search ditekan
+  // === Tombol Search ===
   btnSearch.addEventListener("click", () => {
     const country = countrySelect.value;
     const state = stateSelect.value;
@@ -402,7 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderResults(filteredResults);
   });
 
-  // ✅ Render hasil dengan pagination
+  // === Render Hasil ===
   function renderResults(results) {
     resultsContainer.innerHTML = "";
     if (!results.length) {
@@ -411,7 +411,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Pagination logic
     const totalPages = Math.ceil(results.length / itemsPerPage);
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
@@ -444,7 +443,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPaginationControls(totalPages);
   }
 
-  // ✅ Pagination control
   function renderPaginationControls(totalPages) {
     document.getElementById("pagination-controls")?.remove();
 
@@ -478,7 +476,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Fungsi pilih agent
   function attachSelectButtons() {
     document.querySelectorAll(".select-agent-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -493,7 +490,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Render selected list
   function renderSelected() {
     selectedList.innerHTML = "";
     selectedAgents.forEach(id => {
@@ -509,9 +505,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     attachRemoveButtons();
+    updateSendEmailButton();
   }
 
-  // ✅ Remove agent
   function attachRemoveButtons() {
     document.querySelectorAll(".remove-agent-btn").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -523,7 +519,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ✅ Reset
   btnReset.addEventListener("click", () => {
     countrySelect.value = "";
     stateSelect.innerHTML = `<option value="">-- Select State --</option>`;
@@ -537,237 +532,87 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("pagination-controls")?.remove();
   });
 
+  // === Tombol Send Email ===
+  const btnSendOffer = document.createElement("button");
+  btnSendOffer.className = "btn btn-primary mt-3 w-100";
+  btnSendOffer.id = "btn-open-send-email";
+  btnSendOffer.innerHTML = `<i class="fa fa-paper-plane"></i> Send Offer Email`;
+  btnSendOffer.disabled = true;
+  document.getElementById("selectedList").after(btnSendOffer);
 
-
-  // code untuk  kirim email ke agent pickup
-
-  // ✅ Tombol untuk kirim email (bisa dari modal select)
-const btnSendOffer = document.createElement("button");
-btnSendOffer.className = "btn btn-primary mt-3 w-100";
-btnSendOffer.id = "btn-open-send-email";
-btnSendOffer.innerHTML = `<i class="fa fa-paper-plane"></i> Send Offer Email`;
-btnSendOffer.disabled = true;
-document.getElementById("selectedList").after(btnSendOffer);
-
-// Aktifkan tombol send email hanya jika ada agent terpilih
-function updateSendEmailButton() {
-  btnSendOffer.disabled = selectedAgents.size === 0;
-}
-const originalRenderSelected = renderSelected;
-renderSelected = function() {
-  originalRenderSelected();
-  updateSendEmailButton();
-};
-
-// ✅ Ketika user klik "Send Offer Email"
-btnSendOffer.addEventListener("click", () => {
-  if (selectedAgents.size === 0) return;
-
-  // Tutup modal Select Agent
-  // Tutup modal aktif (otomatis cari modal yang terbuka)
-const openModalEl = document.querySelector('.modal.show');
-if (openModalEl) {
-  const openModal = bootstrap.Modal.getInstance(openModalEl);
-  if (openModal) openModal.hide();
-}
-
-  // Isi daftar kontak ke modal email
-  const emailList = document.getElementById("emailSelectedList");
-  emailList.innerHTML = "";
-
-
-// emailList.innerHTML = ""; // reset dulu
-selectedAgents.forEach(id => {
-  const agent = allContacts.find(a => a.id === id);
-  if (agent) {
-    emailList.innerHTML += `
-      <div class="email-chip d-flex align-items-center me-2 mb-2">
-        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(agent.name)}&background=random&color=fff" 
-             class="rounded-circle me-2" width="28" height="28" alt="avatar">
-        <span class="me-2">${agent.email ?? agent.name}</span>
-        <button class="btn-close btn-close-white remove-email-contact" data-id="${agent.id}" aria-label="Remove"></button>
-      </div>
-    `;
-  }
-});
-
-
-  // aktifkan tombol remove di modal email
-emailList.addEventListener("click", (e) => {
-  if (e.target.closest(".remove-email-contact")) {
-    const id = parseInt(e.target.closest(".remove-email-contact").dataset.id);
-    selectedAgents.delete(id);
-    e.target.closest(".email-chip").remove();
-  }
-});
-
-  // Tampilkan modal kirim email
-  const emailModal = new bootstrap.Modal(document.getElementById("modalSendEmail"));
-  emailModal.show();
-});
-
-// // ✅ Proses kirim email (dummy dulu)
-// document.getElementById("btnSendEmailNow").addEventListener("click", () => {
-//   const subject = document.getElementById("emailSubject").value.trim();
-//   const message = document.getElementById("emailMessage").value.trim();
-
-//   if (!subject || !message) {
-//     alert("Please fill subject and message before sending.");
-//     return;
-//   }
-
-//   const data = {
-//     subject,
-//     message,
-//     contacts: Array.from(selectedAgents).map(id => {
-//       const a = allContacts.find(c => c.id === id);
-//       return { name: a.name, email: a.email };
-//     }),
-//   };
-
-//   console.log("📨 Sending email to:", data);
-
-//   // TODO: Integrasikan dengan route backend kamu di sini
-//   // misal:
-//   // fetch('/api/send-offer', { method:'POST', body: JSON.stringify(data), headers:{'Content-Type':'application/json'} })
-
-//   alert("Email sent successfully!");
-//   bootstrap.Modal.getInstance(document.getElementById("modalSendEmail")).hide();
-// });
-
-
-// ✅ Proses kirim email (real logic)
-document.getElementById("btnSendEmailNow").addEventListener("click", async () => {
-  const subject = document.getElementById("emailSubject").value.trim();
-  const message = document.getElementById("emailMessage").value.trim();
-  const attachment = document.getElementById("emailAttachment").files[0];
-  const cc = document.getElementById("emailCc")?.value.trim() || "";
-
-  if (!subject || !message) {
-    alert("⚠️ Please fill subject and message before sending.");
-    return;
+  function updateSendEmailButton() {
+    btnSendOffer.disabled = selectedAgents.size === 0;
   }
 
-  // Ambil kontak terpilih
-  const contacts = Array.from(selectedAgents).map(id => {
-    const a = allContacts.find(c => c.id === id);
-    return { name: a.name, email: a.email };
-  });
+  btnSendOffer.addEventListener("click", () => {
+    if (selectedAgents.size === 0) return;
+    const openModalEl = document.querySelector('.modal.show');
+    if (openModalEl) {
+      const openModal = bootstrap.Modal.getInstance(openModalEl);
+      if (openModal) openModal.hide();
+    }
 
-  // 🔧 Siapkan data form
-  const formData = new FormData();
-  formData.append("subject", subject);
-  formData.append("message", message);
-  formData.append("cc", cc);
-  formData.append("contacts", JSON.stringify(contacts));
-  if (attachment) formData.append("attachment", attachment);
+    const emailList = document.getElementById("emailSelectedList");
+    emailList.innerHTML = "";
 
-  // 🔥 Kirim ke backend API kamu
-  try {
-    const res = await fetch("/api/send-offer", {
-      method: "POST",
-      body: formData,
+    selectedAgents.forEach(id => {
+      const agent = allContacts.find(a => a.id === id);
+      if (agent && isValidEmail(agent.email)) {
+        emailList.innerHTML += `
+          <div class="email-chip d-flex align-items-center me-2 mb-2">
+            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(agent.name)}&background=random&color=fff" 
+                 class="rounded-circle me-2" width="28" height="28" alt="avatar">
+            <span class="me-2">${agent.email}</span>
+            <button class="btn-close btn-close-white remove-email-contact" data-id="${agent.id}" aria-label="Remove"></button>
+          </div>`;
+      }
     });
 
-    if (!res.ok) throw new Error(`Server error: ${res.status}`);
-    const result = await res.json();
+    const emailModal = new bootstrap.Modal(document.getElementById("modalSendEmail"));
+    emailModal.show();
+  });
 
-    alert("✅ Email sent successfully!");
-    console.log("📨 Response:", result);
+  // === Input CC dengan Validasi Email RFC 2822 ===
+  const ccInput = document.getElementById("ccInput");
+  const ccList = document.getElementById("ccSelectedList");
+  const ccEmails = new Set();
 
-    // Tutup modal & reset form
-    const modal = bootstrap.Modal.getInstance(document.getElementById("modalSendEmail"));
-    modal.hide();
-    document.getElementById("emailSubject").value = "";
-    document.getElementById("emailMessage").value = "";
-    document.getElementById("emailCc").value = "";
-    document.getElementById("emailAttachment").value = "";
-    document.getElementById("emailSelectedList").innerHTML = "";
-    selectedAgents.clear();
-
-  } catch (err) {
-    console.error("❌ Failed to send email:", err);
-    alert("❌ Failed to send email. Please try again.");
-  }
-});
-
-
-
-
-
-// ✅ Perbaikan bug backdrop agar layar tidak tetap gelap setelah close modal
-document.addEventListener('hidden.bs.modal', function () {
-  // Kalau tidak ada modal yang masih terbuka, hapus backdrop manual
-  if (!document.querySelector('.modal.show')) {
-    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-    document.body.classList.remove('modal-open');
-    document.body.style.overflow = ''; // supaya bisa scroll lagi
-  }
-});
-
-
-
-// ✅ Reset semua data & tampilan kalau modal ditutup
-document.addEventListener('hidden.bs.modal', function (event) {
-  const modalId = event.target.id;
-
-  // --- Jika modal select agent ditutup ---
-  if (modalId === 'modal-pickup-agent') {
-    selectedAgents.clear(); // hapus semua agent yang sudah dipilih
-    document.getElementById('selectedList').innerHTML = '';
-    document.getElementById('agent-search-results-destination').innerHTML = '';
-    document.getElementById('country_destination').value = '';
-    document.getElementById('state_destination').value = '';
-    document.getElementById('city_destination').value = '';
-    document.getElementById('tags_destination').value = '';
-    document.getElementById('btn-search-agent').disabled = true;
+  function isValidEmail(email) {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+    return re.test(email);
   }
 
-  // --- Jika modal kirim email ditutup ---
-  if (modalId === 'modalSendEmail') {
-    document.getElementById('emailSelectedList').innerHTML = '';
-    document.getElementById('emailSubject').value = '';
-    document.getElementById('emailMessage').value = '';
-    document.getElementById('emailAttachment').value = '';
-  }
 
-  // --- Pastikan backdrop & scroll kembali normal ---
-  if (!document.querySelector('.modal.show')) {
-    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-    document.body.classList.remove('modal-open');
-    document.body.style.overflow = '';
-  }
-});
-
-
-
-const ccInput = document.getElementById("ccInput");
-const ccList = document.getElementById("ccSelectedList");
-const ccEmails = new Set();
-
-ccInput.addEventListener("keypress", (e) => {
+  ccInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
-    const email = e.target.value.trim();
+    let email = e.target.value.trim();
+
+    // Hapus tanda kurung siku atau kutip di awal/akhir
+    email = email.replace(/^[\[\]"']+|[\[\]"']+$/g, "").trim();
+
+    // Cek jika email valid
+    if (!isValidEmail(email)) {
+      alert("Invalid email format: " + email);
+      e.target.value = "";
+      return;
+    }
+
     if (email && !ccEmails.has(email)) {
       ccEmails.add(email);
-
-      const initials = email[0].toUpperCase();
       const chip = document.createElement("div");
       chip.className = "email-chip";
       chip.innerHTML = `
-        <div class="avatar">${initials}</div>
+        <div class="avatar">${email[0].toUpperCase()}</div>
         <span>${email}</span>
         <button class="remove-btn" aria-label="Remove">
           <i class="fa fa-times"></i>
         </button>
       `;
-
       chip.querySelector(".remove-btn").addEventListener("click", () => {
         ccEmails.delete(email);
         chip.remove();
       });
-
       ccList.appendChild(chip);
       e.target.value = "";
     }
@@ -775,8 +620,71 @@ ccInput.addEventListener("keypress", (e) => {
 });
 
 
+  // === Kirim ke Laravel ===
+  document.getElementById("btnSendEmailNow").addEventListener("click", async () => {
+    const subject = document.getElementById("emailSubject").value.trim();
+    const message = document.getElementById("emailMessage").value.trim();
+    const attachmentInput = document.getElementById("emailAttachment");
+
+    if (!subject || !message) {
+      alert("Please fill subject and message before sending.");
+      return;
+    }
+
+    if (selectedAgents.size === 0) {
+      alert("Please select at least one contact.");
+      return;
+    }
+
+    // Pastikan semua email valid
+    const contactsToSend = Array.from(selectedAgents)
+      .map(id => allContacts.find(c => c.id === id))
+      .filter(a => a && isValidEmail(a.email))
+      .map(a => ({ name: a.name, email: a.email }));
+
+    if (!contactsToSend.length) {
+      alert("No valid email addresses to send.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("subject", subject);
+    formData.append("message", message);
+    formData.append("cc", JSON.stringify([...ccEmails]));
+    formData.append("contacts", JSON.stringify(contactsToSend));
+
+    if (attachmentInput.files.length > 0) {
+      formData.append("attachment", attachmentInput.files[0]);
+    }
+
+    try {
+      const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      const response = await fetch("/api/send-offer-email-pickup", {
+        method: "POST",
+        headers: { "X-CSRF-TOKEN": token || "" },
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (response.ok && result.success) {
+        alert("✅ Email sent successfully!");
+        bootstrap.Modal.getInstance(document.getElementById("modalSendEmail")).hide();
+        document.getElementById("emailSubject").value = "";
+        document.getElementById("emailMessage").value = "";
+        document.getElementById("emailAttachment").value = "";
+        ccEmails.clear();
+        ccList.innerHTML = "";
+      } else {
+        alert("❌ Failed to send email. Check server logs.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("⚠️ Something went wrong while sending email.");
+    }
+  });
 });
 </script>
+
 
 
 

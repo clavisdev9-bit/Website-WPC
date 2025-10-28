@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\LogicApiExternal\Qoutation;
 use App\Http\Controllers\Api\ContactSyncApiExternal\ContactSyncApi;
 use App\Http\Controllers\AdminQuotation\Admin_Quotation_system;
 use App\Http\Controllers\Api\ApiInternal\NetworkAgentApi;
+use App\Http\Controllers\Api\ApiInternal\SendEmail;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -26,3 +27,5 @@ Route::get('/contacts/sync', [ContactSyncApi::class, 'syncFromApi'])->name('sync
 // route for Agents Network
 Route::get('/Agents/Network', [NetworkAgentApi::class, 'getNetworkAgent'])->name('api.agents.network');
 
+// route for send email internal system
+Route::post('/send-offer-email-pickup', [SendEmail::class, 'sendOfferEmailPickup'])->name('api.send.offer.email');
