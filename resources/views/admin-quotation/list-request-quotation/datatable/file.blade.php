@@ -223,11 +223,7 @@
 
       </div>
 
-      <div class="modal-footer">
-        {{-- <button id="send-offer-btn" class="btn btn-outline-primary" type="button">
-          <i class="fa fa-envelope me-1"></i> Send Offer
-        </button> --}}
-      </div>
+      
     </div>
   </div>
 </div>
@@ -235,9 +231,6 @@
 
 
 {{-- modal kirim email pickup --}}
-
-
-<!-- Modal: Send Offer Email -->
 <div class="modal fade" id="modalSendEmail" tabindex="-1" aria-labelledby="modalSendEmailLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content shadow-lg border-0 rounded-4">
@@ -311,8 +304,8 @@
 
 
 
-
 <script>
+  //  start code logic untuk pickup  
 document.addEventListener("DOMContentLoaded", () => {
   const countrySelect = document.getElementById("country_destination");
   const stateSelect = document.getElementById("state_destination");
@@ -667,28 +660,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await response.json();
       if (response.ok && result.success) {
-        alert("✅ Email sent successfully!");
-        bootstrap.Modal.getInstance(document.getElementById("modalSendEmail")).hide();
-        document.getElementById("emailSubject").value = "";
-        document.getElementById("emailMessage").value = "";
-        document.getElementById("emailAttachment").value = "";
-        ccEmails.clear();
-        ccList.innerHTML = "";
+        // alert("Email sent successfully!");
+        Swal.fire({
+          title: "Success!",
+          text: "Email penawaran berhasil dikirim.",
+          icon: "success",
+          confirmButtonText: "OK",
+          timer: 2500 // Opsi: menutup otomatis setelah 2.5 detik
+          }).then(() => {
+            
+            // 1. Sembunyikan modal kedua (modalSendEmail)
+            bootstrap.Modal.getInstance(document.getElementById("modalSendEmail")).hide();
+
+            // 2. Sembunyikan modal pertama (modal-pickup-agent)
+            const pickupAgentModalElement = document.getElementById("modal-pickup-agent");
+            const pickupAgentModalInstance = bootstrap.Modal.getInstance(pickupAgentModalElement);
+            if (pickupAgentModalInstance) {
+                pickupAgentModalInstance.hide();
+            }
+
+            // 3. Hapus paksa backdrop yang tersisa
+            document.body.classList.remove('modal-open');
+            document.querySelector('.modal-backdrop')?.remove();
+
+            // Reset formulir
+            document.getElementById("emailSubject").value = "";
+            document.getElementById("emailMessage").value = "";
+            document.getElementById("emailAttachment").value = "";
+            ccEmails.clear();
+            ccList.innerHTML = "";
+                        
+            });
+
       } else {
-        alert("❌ Failed to send email. Check server logs.");
+        // alert("❌ Failed to send email. Check server logs.");
+        Swal.fire({
+        title: "Error!",
+        text: result.message || "Gagal mengirim email. Silakan periksa log server.",
+        icon: "error",
+        confirmButtonText: "Tutup"
+        });
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      alert("⚠️ Something went wrong while sending email.");
+      // alert("⚠️ Something went wrong while sending email.");
+      Swal.fire({
+      title: "Koneksi Error!",
+      text: "Terjadi kesalahan saat mengirim permintaan ke server.",
+      icon: "warning",
+      confirmButtonText: "OK"
+      });
     }
   });
 });
+//  end code logic untuk pickup  
 </script>
 
 
 
 
 <style>
+  /* start Styles for email chips (pickup) */
   .email-chip {
   background-color: #0d6efd;
   color: #fff;
@@ -834,7 +866,7 @@ document.addEventListener("DOMContentLoaded", () => {
 .remove-btn i {
   font-size: 12px;
 }
-
+/* end Styles for email chips (pickup) */
 </style>
 
 @endsection
