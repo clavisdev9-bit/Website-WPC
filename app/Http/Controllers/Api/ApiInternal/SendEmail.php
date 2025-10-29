@@ -322,22 +322,26 @@ public function sendOfferEmailPickup(Request $request)
                 <p>' . $body . '</p>
             </div>
 
-             <div style="padding:35px 40px; color:#333; font-size:14px; line-height:1.7;">
-            <a href="https://edu-wpc.odoo.com/my/" target="_blank"
-                style="
-                background: linear-gradient(135deg, #004aad, #007bff);
-                color: #680000ff;
-                padding: 12px 28px;
-                text-decoration: none;
-                border-radius: 8px;
-                font-weight: 600;
-                display: inline-block;
-                font-family: Arial, Helvetica, sans-serif;
-                box-shadow: 0 4px 10px rgba(0, 74, 173, 0.3);
-                transition: all 0.3s ease;
-                ">
-                 View Quotation Online
-                </a>
+            <div style="padding:35px 40px; color:#333; font-size:14px; line-height:1.7;">
+               <p>Press the button below if you want to see the detailed list of quotations</p>
+            </div>
+
+            <div style="margin:30px 0;">
+            <table border="0" cellspacing="0" cellpadding="0" align="left">
+                <tr>
+                <td bgcolor="#004aad" style="border-radius:6px;">
+                    <a href="https://edu-wpc.odoo.com/my/" target="_blank"
+                    style="display:inline-block; padding:12px 28px; font-family:Arial,Helvetica,sans-serif;
+                    font-size:14px; color:#ffffff; text-decoration:none; font-weight:bold;">
+                    View Quotation Online
+                    </a>
+                </td>
+                </tr>
+            </table>
+            </div>
+
+            <div style="padding:35px 40px; color:#333; font-size:14px; line-height:1.7;">
+               <br><br>
             </div>
 
             <div style="padding:35px 40px; color:#333; font-size:14px; line-height:1.7;">
