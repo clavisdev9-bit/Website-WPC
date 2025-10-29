@@ -44,6 +44,7 @@
                         <th>Trasportation <br> Method</th>
                         <th>Data Quotation</th>
                         <th>Pickup</th>
+                        <th>Destination</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -147,13 +148,12 @@
 </div>
 
 
-
 {{-- modal Search Data Pickup contact --}}
 <div class="modal fade" id="modal-pickup-agent" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Page Search Agent Pickup</h3>
+        <h3 class="modal-title text-primary">Page Search Agent Pickup  <i class="fa-solid fa-box-open"></i></h3>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
@@ -172,7 +172,7 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label">Country</label>
-            <select id="country_destination" class="form-select country_pickup">
+            <select id="country_destination" class="form-select">
               <option value="">Select Country</option>
             </select>
           </div>
@@ -301,8 +301,663 @@
   </div>
 </div>
 
+{{-- ------------------------------------------------------------- --}}
+
+{{-- modal Search Data Destination contact --}}
+<div class="modal fade" id="modal-destination-agent" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title text-warning">Page Search Agent Destination <i class="fa-solid fa-warehouse"></i></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <h6 class="text-danger">data request destination</h6>
+        <article class="card">
+          <div class="card-body row">
+            <div class="col"> <strong>No Request:</strong> <br> <p id="code_req_destination"></p> </div>
+            <div class="col"> <strong>Methode Transportation:</strong> <br> <p id="dm"></p> </div>
+            <div class="col"> <strong>Destination Origin:</strong> <br> <p id="destination_origin_s"></p> </div>
+          </div>
+        </article>
+
+        <hr>
+        <h6 class="text-danger">search for contacts based on available parameters</h6>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Country</label>
+            <select id="country_destination_contact" class="form-select">
+              <option value="">Select Country</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">State</label>
+            <select id="state_destination_contact" class="form-select">
+              <option value="">Select State</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">City</label>
+            <select id="city_destination_contact" class="form-select">
+              <option value="">Select City</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Tags</label>
+            <select id="tags_destination_contact" class="form-select">
+              <option value="">Select Tags</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="text-end mb-3">
+          <button id="btn-reset-agent-destination" class="btn btn-outline-secondary me-2">
+            <i class="fa fa-rotate-left"></i> Reset
+          </button>
+          <button id="btn-search-agent-destination" class="btn btn-outline-primary" disabled>
+            <i class="fa fa-search"></i> Search Agent
+          </button>
+        </div>
+
+        <div>
+          <h6 class="text-danger">Available Agents</h6>
+          <div class="row" id="agent-search-results-destination-contact"></div>
+        </div>
+
+        <hr>
+
+        <div class="mt-4">
+          <h6 class="text-danger">Selected Agents</h6>
+          <ul id="selectedListContact" class="list-group small"></ul>
+        </div>
+
+      </div>
+
+      
+    </div>
+  </div>
+</div>
 
 
+
+{{-- modal kirim email destination --}}
+<div class="modal fade" id="modalSendEmailDestination" tabindex="-1" aria-labelledby="modalSendEmailDestinationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="modalSendEmailDestinationLabel">
+          <i class="fa fa-envelope"></i> Send Offer Email to Agent Destination
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Selected Contacts -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">To <small class="text-danger">(***)</small></label>
+          <div id="emailSelectedListDestination" class="d-flex flex-wrap gap-2 p-2 border rounded bg-light-subtle"></div>
+        </div>
+
+        <!-- CC -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Cc <small class="text-danger">(optional)</small></label>
+          <div id="ccSelectedListDestination" class="d-flex flex-wrap gap-2"></div>
+          <input type="text" id="ccInputDestination" class="form-control mt-2" placeholder="Add CC email and press Enter">
+        </div>
+
+        <!-- Subject -->
+        <div class="mb-3">
+          <label for="emailSubject" class="form-label fw-bold">Subject <small class="text-danger">(***)</small></label>
+          <input type="text" class="form-control" id="emailSubjectDestination" placeholder="Enter subject">
+        </div>
+
+        <!-- Message -->
+        <div class="mb-3">
+          <label for="emailMessage" class="form-label fw-bold">Message <small class="text-danger">(***)</small></label>
+          <textarea id="emailMessageDestination" class="form-control" rows="6" placeholder="Write your message..."></textarea>
+        </div>
+
+        <!-- Attachment -->
+        <div class="mb-3">
+          <label for="emailAttachment" class="form-label fw-bold">Attachment <small class="text-danger">(optional | Max Size File 10MB | PDF)</small></label>
+          <input type="file" class="form-control" id="emailAttachmentDestination" accept=".pdf">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fa fa-times"></i> Cancel
+        </button>
+        <button class="btn btn-danger" id="btnSendEmailDestinationNow">
+          <i class="fa fa-paper-plane"></i> Send Email
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{{-- code js --}}
+<script>
+  //  start code logic untuk Destination 
+  
+document.addEventListener("DOMContentLoaded", () => {
+  const countrySelectContact = document.getElementById("country_destination_contact");
+  const stateSelectContact = document.getElementById("state_destination_contact");
+  const citySelectContact = document.getElementById("city_destination_contact");
+  const tagsSelectContact = document.getElementById("tags_destination_contact");
+  const btnSearchContact = document.getElementById("btn-search-agent-destination");
+  const resultsContainerContact = document.getElementById("agent-search-results-destination-contact");
+  const selectedListContact = document.getElementById("selectedListContact");
+
+
+  // --- Tombol Reset Destination---
+  let btnReset = document.getElementById("btn-reset-agent-destination");
+  if (!btnReset) {
+    btnReset = document.createElement("button");
+    btnReset.className = "btn btn-outline-danger ms-2";
+    btnReset.id = "btn-reset-agent-destination";
+    btnReset.innerHTML = `<i class="fa fa-rotate-left"></i> Reset`;
+    btnSearchContact.parentElement.appendChild(btnReset);
+  }
+
+  let allContactsDestination = [];
+  const selectedAgentsDestination = new Set();
+
+  let filteredResultsDestination = [];
+  let currentPageDestination = 1;
+  const itemsPerPageDestination = 6;
+
+  // === Fetch Data Agent ===
+  fetch("http://127.0.0.1:8000/api/contacts")
+    .then(res => res.json())
+    .then(data => {
+      allContactsDestination = data.data || [];
+
+      // country
+      const countriesContact = [...new Set(allContactsDestination.flatMap(c => c.countries?.map(ct => ct.country_name) || []))];
+      countriesContact.forEach(c => countrySelectContact.innerHTML += `<option value="${c}">${c}</option>`);
+
+      // tags
+      const allTagsContact = [...new Set(allContactsDestination.flatMap(c => c.tags?.map(t => t.tag_name) || []))];
+      allTagsContact.forEach(tag => {
+        tagsSelectContact.innerHTML += `<option value="${tag}">${tag}</option>`;
+      });
+    })
+    .catch(err => console.error("Error fetching contacts:", err));
+
+  // === Filter dropdown chain ===
+  countrySelectContact.addEventListener("change", () => {
+    const selectedCountry = countrySelectContact.value;
+    const filtered = allContactsDestination.filter(c => c.countries?.some(ct => ct.country_name === selectedCountry));
+    const states = [...new Set(filtered.flatMap(c => c.states?.map(s => s.state_name) || []))];
+    stateSelectContact.innerHTML = `<option value=""> Select State </option>`;
+    states.forEach(s => stateSelectContact.innerHTML += `<option value="${s}">${s}</option>`);
+    citySelectContact.innerHTML = `<option value=""> Select City </option>`;
+    updateSearchButton();
+  });
+
+  stateSelectContact.addEventListener("change", () => {
+    const selectedState = stateSelectContact.value;
+    const filtered = allContactsDestination.filter(c => c.states?.some(s => s.state_name === selectedState));
+    const cities = [...new Set(filtered.map(c => c.city).filter(Boolean))];
+    citySelectContact.innerHTML = `<option value=""> Select City </option>`;
+    cities.forEach(c => citySelectContact.innerHTML += `<option value="${c}">${c}</option>`);
+    updateSearchButton();
+  });
+
+  [citySelectContact, tagsSelectContact].forEach(sel => sel.addEventListener("change", updateSearchButton));
+
+  function updateSearchButton() {
+    const anySelected = countrySelectContact.value || stateSelectContact.value || citySelectContact.value || tagsSelectContact.value;
+    btnSearchContact.disabled = !anySelected;
+  }
+
+  // === Tombol Search  Destination===
+  btnSearchContact.addEventListener("click", () => {
+    const countryContact = countrySelectContact.value;
+    const stateContact = stateSelectContact.value;
+    const cityContact = citySelectContact.value;
+    const tag = tagsSelectContact.value;
+
+    filteredResults = allContactsDestination.filter(c =>
+      (!countryContact || c.countries?.some(ct => ct.country_name === countryContact)) &&
+      (!stateContact || c.states?.some(s => s.state_name === stateContact)) &&
+      (!cityContact || c.city === cityContact) &&
+      (!tag || c.tags?.some(t => t.tag_name === tag))
+    );
+
+    currentPage = 1;
+    renderResults(filteredResults);
+  });
+
+  // === Render Hasil ===
+  function renderResults(results) {
+    resultsContainerContact.innerHTML = "";
+    if (!results.length) {
+      resultsContainerContact.innerHTML = `<div class="alert alert-danger d-flex align-items-center" role="alert">
+                                    <i class="fa-solid fa-exclamation"></i>
+                                    <div>
+                                      No agents found.
+                                    </div>
+                                  </div>`;
+      document.getElementById("pagination-controls")?.remove();
+      return;
+    }
+
+    const totalPages = Math.ceil(results.length / itemsPerPageDestination);
+    const start = (currentPage - 1) * itemsPerPageDestination;
+    const end = start + itemsPerPageDestination;
+    const pageResults = results.slice(start, end);
+
+    pageResults.forEach(agent => {
+      const disabled = selectedAgentsDestination.has(agent.id) ? "disabled" : "";
+      const waLink = agent.phone
+        ? `<a href="https://wa.me/${agent.phone.replace(/\D/g, '')}" target="_blank" class="btn btn-sm btn-outline-success w-100 mt-1">
+             <i class="fa-brands fa-whatsapp"></i> WhatsApp
+           </a>` : "";
+
+      resultsContainerContact.innerHTML += `
+        <div class="col-md-6 mb-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h6>${agent.name}</h6>
+              <p class="mb-1"><i class="fa fa-envelope"></i> ${agent.email ?? "-"}</p>
+              <p class="mb-2"><i class="fa fa-phone"></i> ${agent.phone ?? "-"}</p>
+              ${waLink}
+              <button class="btn btn-sm btn-outline-primary w-100 mt-2 select-agent-btn" data-id="${agent.id}" ${disabled}>
+                <i class="fa fa-plus"></i> Select
+              </button>
+            </div>
+          </div>
+        </div>`;
+    });
+
+    attachSelectButtonsDestination();
+    renderPaginationControlsDestination(totalPages);
+  }
+
+    function renderPaginationControlsDestination(totalPages) {
+    document.getElementById("pagination-controls")?.remove();
+
+    if (totalPages <= 1) return;
+
+    const pagination = document.createElement("div");
+    pagination.id = "pagination-controls";
+    pagination.className = "d-flex justify-content-center mt-3";
+    pagination.innerHTML = `
+      <button class="btn btn-sm btn-outline-secondary me-2" id="prev-page" ${currentPage === 1 ? "disabled" : ""}>
+        <i class="fa fa-chevron-left"></i> Prev
+      </button>
+      <span class="align-self-center">Page ${currentPage} of ${totalPages}</span>
+      <button class="btn btn-sm btn-outline-secondary ms-2" id="next-page" ${currentPage === totalPages ? "disabled" : ""}>
+        Next <i class="fa fa-chevron-right"></i>
+      </button>
+    `;
+    resultsContainerContact.after(pagination);
+
+    document.getElementById("prev-page").addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderResults(filteredResults);
+      }
+    });
+    document.getElementById("next-page").addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderResults(filteredResults);
+      }
+    });
+  }
+
+  function attachSelectButtonsDestination() {
+    document.querySelectorAll(".select-agent-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = parseInt(btn.dataset.id);
+        const agent = allContactsDestination.find(a => a.id === id);
+        if (!selectedAgentsDestination.has(id)) {
+          selectedAgentsDestination.add(id);
+          renderSelectedDestination();
+          btn.disabled = true;
+        }
+      });
+    });
+  }
+
+
+    function renderSelectedDestination() {
+    selectedListContact.innerHTML = "";
+    selectedAgentsDestination.forEach(id => {
+      const agent = allContactsDestination.find(a => a.id === id);
+      if (agent) {
+        selectedListContact.innerHTML += `
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            ${agent.name} (${agent.email ?? "-"})
+            <button class="btn btn-sm btn-danger remove-agent-btn" data-id="${id}">
+              <i class="fa fa-trash"></i>
+            </button>
+          </li>`;
+      }
+    });
+    attachRemoveButtonsDestination();
+    updateSendEmailButtonDestination();
+  }
+
+  function attachRemoveButtonsDestination() {
+    document.querySelectorAll(".remove-agent-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = parseInt(btn.dataset.id);
+        selectedAgentsDestination.delete(id);
+        renderSelectedDestination();
+        renderResults(filteredResults);
+      });
+    });
+  }
+
+  
+  
+// start code tombol send email destination
+  // --- Fungsi untuk Menghapus Email Kontak di Modal Email ---
+function attachRemoveEmailContactButtons() {
+    document.querySelectorAll(".remove-email-contact").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const agentId = parseInt(btn.dataset.id);
+            selectedAgentsDestination.delete(agentId);
+            btn.closest(".email-chip").remove();
+            renderSelectedDestination();
+            renderResults(filteredResults);
+        });
+    });
+}
+
+
+// --- Kode untuk Menghilangkan Backdrop Sisa Saat Modal Send Email Ditutup ---
+const modalSendEmailEl = document.getElementById('modalSendEmailDestination');
+modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
+    const openModals = document.querySelectorAll('.modal.show');
+    if (openModals.length === 0) {
+        document.body.classList.remove('modal-open'); 
+        document.querySelector('.modal-backdrop')?.remove(); 
+    }
+
+    // Optional: Pastikan modal pertama (modal-pickup-agent) dibuka kembali
+    // agar user bisa memilih agen lagi, jika mereka hanya menutup modal email
+    // const pickupAgentModalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-pickup-agent"));
+    // if (pickupAgentModalInstance) {
+    //      pickupAgentModalInstance.show();
+    // }
+});
+
+
+  //  Tombol Send Email 
+  const btnSendOfferDestination = document.createElement("button");
+  btnSendOfferDestination.className = "btn btn-primary mt-3 w-100";
+  btnSendOfferDestination.id = "btn-open-send-email-destination";
+  btnSendOfferDestination.innerHTML = `<i class="fa fa-paper-plane"></i> Send Offer Email To Agent Destination`;
+  btnSendOfferDestination.disabled = true;
+  document.getElementById("selectedListContact").after(btnSendOfferDestination);
+
+  function updateSendEmailButtonDestination() {
+    btnSendOfferDestination.disabled = selectedAgentsDestination.size === 0;
+  }
+
+  btnSendOfferDestination.addEventListener("click", () => {
+    if (selectedAgentsDestination.size === 0) return;
+    const openModalEl = document.querySelector('.modal.show');
+    if (openModalEl) {
+      const openModal = bootstrap.Modal.getInstance(openModalEl);
+      if (openModal) openModal.hide();
+    }
+
+    const emailList = document.getElementById("emailSelectedListDestination");
+    emailList.innerHTML = "";
+
+    selectedAgentsDestination.forEach(id => {
+      const agent = allContactsDestination.find(a => a.id === id);
+      if (agent && isValidEmail(agent.email)) {
+        emailList.innerHTML += `
+          <div class="email-chip d-flex align-items-center me-2 mb-2">
+            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(agent.name)}&background=random&color=fff" 
+                 class="rounded-circle me-2" width="28" height="28" alt="avatar">
+            <span class="me-2">${agent.email}</span>
+            <button class="btn-close btn-close-white remove-email-contact" data-id="${agent.id}" aria-label="Remove"></button>
+          </div>`;
+      }
+    });
+    
+
+     
+    attachRemoveEmailContactButtons();
+    const emailModal = new bootstrap.Modal(document.getElementById("modalSendEmailDestination"));
+    emailModal.show();
+  });
+
+  //  Input CC dengan Validasi Email RFC 2822 
+  const ccInputDestination = document.getElementById("ccInputDestination");
+  const ccListDestination = document.getElementById("ccSelectedListDestination");
+  const ccEmailsDestination = new Set();
+
+  function isValidEmail(email) {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+    return re.test(email);
+  }
+
+
+  ccInputDestination.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    let email = e.target.value.trim();
+
+    // Hapus tanda kurung siku atau kutip di awal/akhir
+    email = email.replace(/^[\[\]"']+|[\[\]"']+$/g, "").trim();
+
+    // Cek jika email valid
+    if (!isValidEmail(email)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Email",
+          text: `Email format is not valid: ${email}`,
+          confirmButtonText: "OK",
+        });
+        e.target.value = "";
+        return;
+      }
+
+    if (email && !ccEmailsDestination.has(email)) {
+      ccEmailsDestination.add(email);
+      const chip = document.createElement("div");
+      chip.className = "email-chip";
+      chip.innerHTML = `
+        <div class="avatar">${email[0].toUpperCase()}</div>
+        <span>${email}</span>
+        <button class="remove-btn" aria-label="Remove">
+          <i class="fa fa-times"></i>
+        </button>
+      `;
+      chip.querySelector(".remove-btn").addEventListener("click", () => {
+        ccEmailsDestination.delete(email);
+        chip.remove();
+      });
+      ccListDestination.appendChild(chip);
+      e.target.value = "";
+    }
+  }
+});
+
+
+  // logic kirim email
+  document.getElementById("btnSendEmailDestinationNow").addEventListener("click", async () => {
+    const subject = document.getElementById("emailSubjectDestination").value.trim();
+    const message = document.getElementById("emailMessageDestination").value.trim();
+    const attachmentInput = document.getElementById("emailAttachmentDestination");
+      if (!subject || !message) {
+          Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "Please fill subject and message before sending!",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+    if (selectedAgentsDestination.size === 0) {
+ 
+      Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "Please select at least one contact.!",
+          confirmButtonText: "OK",
+        });
+      return;
+    }
+
+    // Pastikan semua email valid
+    const contactsToSend = Array.from(selectedAgentsDestination)
+      .map(id => allContactsDestination.find(c => c.id === id))
+      .filter(a => a && isValidEmail(a.email))
+      .map(a => ({ name: a.name, email: a.email }));
+
+    if (!contactsToSend.length) {
+      // alert("No valid email addresses to send.");
+      Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "No valid email addresses to send.!",
+          confirmButtonText: "OK",
+        });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("subject", subject);
+    formData.append("message", message);
+    formData.append("cc", JSON.stringify([...ccEmailsDestination]));
+    formData.append("contacts", JSON.stringify(contactsToSend));
+
+    if (attachmentInput.files.length > 0) {
+      formData.append("attachment", attachmentInput.files[0]);
+    }
+
+    //  TAMPILKAN SWEETALERT LOADING
+    Swal.fire({
+        title: 'Sending Email...',
+        text: 'Please wait, this may take a moment.',
+        icon: 'info',
+        allowOutsideClick: false, // Memblokir interaksi user lain
+        didOpen: () => {
+            Swal.showLoading(); // Menampilkan spinner
+        }
+    });
+
+    try {
+      const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      const response = await fetch("/api/send-offer-email-destination", {
+        method: "POST",
+        headers: { "X-CSRF-TOKEN": token || "" },
+        body: formData,
+      });
+
+      const result = await response.json();
+       Swal.close(); 
+        // if (response.ok && result.success) {
+        //     Swal.fire({
+        //         title: "Success!",
+        //         text: "Email berhasil dikirim.",
+        //         icon: "success",
+        //         confirmButtonText: "OK",
+        //     });
+        //   }
+
+      if (response.ok && result.success) {
+        Swal.fire({
+          title: "Success!",
+          text: "The offer email was sent successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+          timer: 2500 // Opsi: menutup otomatis setelah 2.5 detik
+          }).then(() => {
+            
+            // Sembunyikan modal kedua (modalSendEmailDestination)
+            bootstrap.Modal.getInstance(document.getElementById("modalSendEmailDestination")).hide();
+
+            // Sembunyikan modal pertama modal-destination-agent)
+            const pickupAgentModalElement = document.getElementById("modal-destination-agent");
+            const pickupAgentModalInstance = bootstrap.Modal.getInstance(pickupAgentModalElement);
+            if (pickupAgentModalInstance) {
+                pickupAgentModalInstance.hide();
+            }
+
+            // Hapus paksa backdrop yang tersisa
+            document.body.classList.remove('modal-open');
+            document.querySelector('.modal-backdrop')?.remove();
+
+            // Reset formulir
+            document.getElementById("emailSubjectDestination").value = "";
+            document.getElementById("emailMessageDestination").value = "";
+            document.getElementById("emailAttachmentDestination").value = "";
+            ccEmails.clear();
+            ccList.innerHTML = "";
+            });
+      } else {
+        Swal.fire({
+        title: "Error!",
+        text: result.message || "Failed to send email. Please check the server log.",
+        icon: "error",
+        confirmButtonText: "Tutup"
+        });
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      Swal.fire({
+      title: "Connection Error!",
+      text: "An error occurred while sending the request to the server.",
+      icon: "warning",
+      confirmButtonText: "OK"
+      });
+    }
+  });
+
+  });
+</script>
+
+
+
+{{-- batas --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{-- code js --}}
 <script>
   //  start code logic untuk pickup  
 document.addEventListener("DOMContentLoaded", () => {
@@ -731,15 +1386,7 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
 
       const result = await response.json();
        Swal.close(); 
-        // if (response.ok && result.success) {
-        //     Swal.fire({
-        //         title: "Success!",
-        //         text: "Email berhasil dikirim.",
-        //         icon: "success",
-        //         confirmButtonText: "OK",
-        //     });
-        //   }
-
+      
       if (response.ok && result.success) {
         Swal.fire({
           title: "Success!",
@@ -794,7 +1441,7 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
 
 
 
-
+{{-- default inputan untuk pickup --}}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById('modalSendEmail');
@@ -807,12 +1454,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!messageField.value) {
-      messageField.value = `Dear Agent,
+      messageField.value = `Dear Pickup Partner,
 
-We would like to offer you our latest shipping schedule and special rates.
-Please find the attached quotation for your reference.
+We’re excited to share our latest pickup schedule and exclusive rates with you.  
+Please find the attached quotation for your review.
 
-If you have any questions, feel free to reply to this email.
+We look forward to your feedback and continued collaboration.
 
 `;
     }
@@ -820,6 +1467,36 @@ If you have any questions, feel free to reply to this email.
 
 });
 </script>
+
+
+
+{{-- default inputan untuk destination --}}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById('modalSendEmailDestination');
+  const messageField = document.getElementById('emailMessageDestination');
+  const subjectField = document.getElementById('emailSubjectDestination');
+
+  modal.addEventListener('shown.bs.modal', () => {
+    if (!subjectField.value) {
+      subjectField.value = "Special Offers for Shipping Needs (Destination Services)";
+    }
+
+    if (!messageField.value) {
+      messageField.value = `Dear Destination Partner,
+
+We’re excited to share our latest shipping schedule and exclusive destination rates with you.  
+Please find the attached quotation for your review.
+
+We look forward to your feedback and hope to continue our successful cooperation.
+
+`;
+    }
+  });
+
+});
+</script>
+
 
 
 

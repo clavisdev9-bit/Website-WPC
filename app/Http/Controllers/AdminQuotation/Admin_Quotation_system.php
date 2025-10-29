@@ -64,7 +64,7 @@ class Admin_Quotation_system extends Controller
                 return $row['name'] ?? '-';
             })
             ->addColumn('date_request', function ($row) {
-                return \Carbon\Carbon::parse($row['create_date'])->format('d M Y H:i');
+                return \Carbon\Carbon::parse($row['create_date'])->format('d M Y');
             })
             ->addColumn('data_customer', function ($row) {
                         $customer = $row['customer'] ?? null;
@@ -145,6 +145,25 @@ class Admin_Quotation_system extends Controller
                                      data-tm="' . $methodPickup . '"
                                     >
                                     <i class="fa-solid fa-box-open"> </i> Pickup Agent
+                                </button>';
+                    })
+
+                    ->addColumn('agents_destination', function ($row) {
+                            $Destinationorigin = $row['pickup_destination'] ?? null;
+                            $originNameDestination = $Destinationorigin[1] ?? '';
+                            $methodDestination = strtolower($row['transportation_method'] ?? '');
+                            $codeRequestDestination = $row['name'] ?? '';
+                       
+                        return '<button type="button" 
+                                    class="btn btn-outline-warning"
+                                    id="destination"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#modal-destination-agent"
+                                      data-destination_origin_s="' . e($originNameDestination) . '"
+                                     data-code_req_destination="' . $codeRequestDestination . '"
+                                     data-dm="' . $methodDestination . '"
+                                    >
+                                   <i class="fa-solid fa-warehouse"></i> Destination Agent
                                 </button>';
                     })
                     ->rawColumns(['data_customer','data_quotation','transportation_method','agents_pickup','agents_destination'])

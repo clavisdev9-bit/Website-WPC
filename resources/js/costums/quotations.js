@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             { data: "transportation_method", name: "transportation_method" },
             { data: "data_quotation", name: "data_quotation" },
             { data: "agents_pickup", name: "agents_pickup" },
+            { data: "agents_destination", name: "agents_destination" },
            
         ],
         responsive: true,
@@ -102,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let pickup_origin_s  = $(this).data('pickup_origin_s');
     let code_req      = $(this).data('code_req');
     let tm = $(this).data('tm');
-var icons = {
+    var icons = {
         'air': '<i class="fa fa-plane text-primary"></i> Air',
         'ocean': '<i class="fa fa-ship text-info"></i> Ocean',
         'air & ocean': '<i class="fa fa-plane text-primary"></i> + <i class="fa fa-ship text-info"></i> Air & Ocean',
@@ -111,6 +112,23 @@ var icons = {
     $('#pickup_origin_s').text(pickup_origin_s);
     $('#code_req').text(code_req);
     $('#tm').html(icons[tm] || tm);
+
+});
+
+
+$(document).on('click', '#destination', function() {
+    let destination_origin_s  = $(this).data('destination_origin_s');
+    let code_req_destination  = $(this).data('code_req_destination');
+    let dm = $(this).data('dm');
+    var icons = {
+        'air': '<i class="fa fa-plane text-primary"></i> Air',
+        'ocean': '<i class="fa fa-ship text-info"></i> Ocean',
+        'air & ocean': '<i class="fa fa-plane text-primary"></i> + <i class="fa fa-ship text-info"></i> Air & Ocean',
+        'domestic ground transportation': '<i class="fa fa-truck text-warning"></i> Domestic Ground Transportation'
+    };
+    $('#destination_origin_s').text(destination_origin_s);
+    $('#code_req_destination').text(code_req_destination);
+    $('#dm').html(icons[dm] || dm);
 
 });
 });
