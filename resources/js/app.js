@@ -50,10 +50,12 @@ import { createI18n } from 'vue-i18n'
 // Import Tabler JS from the new location in 'resources/vendor'
 import '../vendor/dist/js/tabler.min.js';
 import '../vendor/dist/js/demo.min.js';
-import '../vendor/dist/libs/apexcharts/dist/apexcharts.min.js';
-import '../vendor/dist/libs/jsvectormap/dist/jsvectormap.min.js';
-import '../vendor/dist/libs/jsvectormap/dist/maps/world.js';
-import '../vendor/dist/libs/jsvectormap/dist/maps/world-merc.js';
+import '../vendor/dist/libs/select2/js/select2.full.min.js';
+
+// import '../vendor/dist/libs/apexcharts/dist/apexcharts.min.js';
+// import '../vendor/dist/libs/jsvectormap/dist/jsvectormap.min.js';
+// import '../vendor/dist/libs/jsvectormap/dist/maps/world.js';
+// import '../vendor/dist/libs/jsvectormap/dist/maps/world-merc.js';
 
 // Import Vue Toastification
 import Toast, { POSITION } from 'vue-toastification'

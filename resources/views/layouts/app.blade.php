@@ -71,6 +71,7 @@
 	<script src="{{ asset('assets/backend/dist/libs/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
 	<script src="{{ asset('assets/backend/dist/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 	<script src="{{ asset('assets/backend/dist/libs/select2/js/select2.full.min.js') }}"></script>
+	<script src="{{ asset('assets/backend/dist/libs/select2/js/select2.min.js') }}"></script>
 	<script src="{{ asset('assets/backend/dist/libs/jquery-ui/jquery-ui.min.js') }}"></script>
 	<link href="{{ asset('assets/backend/dist/libs/jquery-ui/jquery-ui.css') }}" rel="stylesheet">
 

@@ -3,13 +3,11 @@
     <div class="page page-center">
       <div class="container container-tight py-4">
         <div class="text-center mb-4">
-          <a href="." class="navbar-brand">
-                <img src="/images/logo.png" alt="Logo Perusahaan" width="310" height="32" viewBox="0 0 232 68" class=" navbar-brand-image">
-               </a>
-               <br>
-               <a href="." class="navbar-brand">
-                <h3 class="h3 text-center mb-0">WPC Logistic</h3> 
-               </a>
+          <a href="{{ route('users.home') }}" class="navbar-brand">
+            <img src="/images/logo.png" 
+                alt="Logo Perusahaan" 
+                class="navbar-brand-image">
+          </a>
         </div>
         <form class="card card-md" action="./" method="get" autocomplete="off" novalidate>
           <div class="card-body">
@@ -63,5 +61,12 @@
     </div>
     </div>
 
+
+    <style>
+      .navbar-brand-image {
+      width: 70px;   /* ubah sesuai kebutuhan */
+      height: auto;   /* biar proporsional */
+    }
+</style>
 
 @include('auth.partials.footer')

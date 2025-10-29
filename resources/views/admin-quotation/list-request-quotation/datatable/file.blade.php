@@ -149,17 +149,16 @@
 
 
 {{-- modal Search Data Pickup contact --}}
-{{-- modal Search Data Pickup contact --}}
 <div class="modal fade" id="modal-pickup-agent" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Search Agent Pickup</h3>
+        <h3 class="modal-title">Page Search Agent Pickup</h3>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <div class="modal-body">
-
+        <h6 class="text-danger">data request pickup</h6>
         <article class="card">
           <div class="card-body row">
             <div class="col"> <strong>No Request:</strong> <br> <p id="code_req"></p> </div>
@@ -169,33 +168,33 @@
         </article>
 
         <hr>
-
+        <h6 class="text-danger">search for contacts based on available parameters</h6>
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label">Country</label>
-            <select id="country_destination" class="form-select">
-              <option value="">-- Select Country --</option>
+            <select id="country_destination" class="form-select country_pickup">
+              <option value="">Select Country</option>
             </select>
           </div>
 
           <div class="col-md-6">
             <label class="form-label">State</label>
             <select id="state_destination" class="form-select">
-              <option value="">-- Select State --</option>
+              <option value="">Select State</option>
             </select>
           </div>
 
           <div class="col-md-6">
             <label class="form-label">City</label>
             <select id="city_destination" class="form-select">
-              <option value="">-- Select City --</option>
+              <option value="">Select City</option>
             </select>
           </div>
 
           <div class="col-md-6">
             <label class="form-label">Tags</label>
             <select id="tags_destination" class="form-select">
-              <option value="">-- Select Tags --</option>
+              <option value="">Select Tags</option>
             </select>
           </div>
         </div>
@@ -210,14 +209,14 @@
         </div>
 
         <div>
-          <h6 class="mb-3">Available Agents</h6>
+          <h6 class="text-danger">Available Agents</h6>
           <div class="row" id="agent-search-results-destination"></div>
         </div>
 
         <hr>
 
         <div class="mt-4">
-          <h6>Selected Agents</h6>
+          <h6 class="text-danger">Selected Agents</h6>
           <ul id="selectedList" class="list-group small"></ul>
         </div>
 
@@ -242,62 +241,62 @@
       </div>
 
       <div class="modal-body">
-  <!-- Selected Contacts -->
-  <div class="mb-3">
-    <label class="form-label fw-bold">To</label>
-    <div id="emailSelectedList" class="d-flex flex-wrap gap-2"></div>
-  </div>
+          <!-- Selected Contacts -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">To <small class="text-danger">(***)</small></label>
+            <div id="emailSelectedList" class="d-flex flex-wrap gap-2"></div>
+          </div>
 
-  <!-- CC -->
-  <div class="mb-3">
-    <label class="form-label fw-bold">Cc</label>
-    <div id="ccSelectedList" class="d-flex flex-wrap gap-2"></div>
-    <input 
-      type="text" 
-      id="ccInput" 
-      class="form-control mt-2" 
-      placeholder="Add CC email and press Enter" 
-    />
-  </div>
+          <!-- CC -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Cc <small class="text-danger">(optional)</small></label>
+            <div id="ccSelectedList" class="d-flex flex-wrap gap-2"></div>
+            <input 
+              type="text" 
+              id="ccInput" 
+              class="form-control mt-2" 
+              placeholder="Add CC email and press Enter" 
+            />
+          </div>
 
-  <!-- Subject -->
-  <div class="mb-3">
-    <label for="emailSubject" class="form-label fw-bold">Subject</label>
-    <input 
-      type="text" 
-      class="form-control" 
-      id="emailSubject" 
-      placeholder="Enter subject"
-    />
-  </div>
+          <!-- Subject -->
+          <div class="mb-3">
+            <label for="emailSubject" class="form-label fw-bold">Subject <small class="text-danger">(***)</small></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="emailSubject" 
+              placeholder="Enter subject"
+            />
+          </div>
 
-  <!-- Message -->
-  <div class="mb-3">
-    <label for="emailMessage" class="form-label fw-bold">Message</label>
-    <textarea 
-      id="emailMessage" 
-      class="form-control" 
-      rows="6" 
-      placeholder="Write your message..."
-    ></textarea>
-  </div>
+          <!-- Message -->
+          <div class="mb-3">
+            <label for="emailMessage" class="form-label fw-bold">Message <small class="text-danger">(***)</small></label>
+            <textarea 
+              id="emailMessage" 
+              class="form-control" 
+              rows="6" 
+              placeholder="Write your message..."
+            ></textarea>
+          </div>
 
-  <!-- Attachment -->
-  <div class="mb-3">
-    <label for="emailAttachment" class="form-label fw-bold">Attachment</label>
-    <input type="file" class="form-control" id="emailAttachment">
-  </div>
-</div>
+          <!-- Attachment -->
+          <div class="mb-3">
+            <label for="emailAttachment" class="form-label fw-bold">Attachment <small class="text-danger">(optional | Max Size File 10MB | Pdf)</small></label>
+            <input type="file" class="form-control" id="emailAttachment"  accept=".pdf">
+          </div>
+        </div>
 
 
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">
-          <i class="fa fa-times"></i> Cancel
-        </button>
-        <button class="btn btn-danger" id="btnSendEmailNow">
-          <i class="fa fa-paper-plane"></i> Send Email
-        </button>
-      </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+            <button class="btn btn-danger" id="btnSendEmailNow">
+              <i class="fa fa-paper-plane"></i> Send Email
+            </button>
+          </div>
     </div>
   </div>
 </div>
@@ -355,9 +354,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedCountry = countrySelect.value;
     const filtered = allContacts.filter(c => c.countries?.some(ct => ct.country_name === selectedCountry));
     const states = [...new Set(filtered.flatMap(c => c.states?.map(s => s.state_name) || []))];
-    stateSelect.innerHTML = `<option value="">-- Select State --</option>`;
+    stateSelect.innerHTML = `<option value=""> Select State </option>`;
     states.forEach(s => stateSelect.innerHTML += `<option value="${s}">${s}</option>`);
-    citySelect.innerHTML = `<option value="">-- Select City --</option>`;
+    citySelect.innerHTML = `<option value=""> Select City </option>`;
     updateSearchButton();
   });
 
@@ -795,6 +794,7 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
 
 
 
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById('modalSendEmail');
@@ -803,7 +803,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   modal.addEventListener('shown.bs.modal', () => {
     if (!subjectField.value) {
-      subjectField.value = "Special Offers for Shipping Needs";
+      subjectField.value = "Special Offers for Shipping Needs (Pickup Services)";
     }
 
     if (!messageField.value) {
@@ -814,12 +814,10 @@ Please find the attached quotation for your reference.
 
 If you have any questions, feel free to reply to this email.
 
-Best regards,
-WPC Team IT Development`;
+`;
     }
   });
 
-  // biarkan user menulis bebas — backend yang formatkan
 });
 </script>
 
@@ -978,11 +976,6 @@ WPC Team IT Development`;
     }
 /* end Styles for email chips (pickup) */
 </style>
-{{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
-<script>
-  ClassicEditor.create(document.querySelector('#emailMessage')).catch(error => {
-      console.error(error);
-  });
-</script> --}}
+
 @endsection
 		

@@ -10,25 +10,18 @@
           <div class="col-lg">
             <div class="container-tight">
               <div class="text-center mb-4">
-               
-
-				 <a href="." class="navbar-brand">
-                <img src="/images/logo.png" alt="Logo Perusahaan" width="310" height="32" viewBox="0 0 232 68" class=" navbar-brand-image">
-               </a>
-               <br>
-               <a href="." class="navbar-brand">
-                <h3 class="h3 text-center mb-0">WPC Logistic</h3> 
-               </a>
+                <a href="{{ route('users.home') }}" class="navbar-brand">
+                  <img src="/images/logo.png" 
+                      alt="Logo Perusahaan" 
+                      class="navbar-brand-image">
+                </a>
               </div>
               <div class="card card-md">
                 <div class="card-body">
                   <h2 class="h2 text-center mb-4">Login to your account</h2>
 
 
-
-                 
-
-		<form id="loginForm" action="{{ route('Auth.checks.authentication') }}" method="post" autocomplete="off" novalidate>
+	      	<form id="loginForm" action="{{ route('Auth.checks.authentication') }}" method="post" autocomplete="off" novalidate>
             @csrf
 
             <div class="select-role">
@@ -59,42 +52,38 @@
                 @endif
                     </div> 
 
-	<div class="mb-3">
-		<label class="form-label">Email address</label>
-		<input type="text" class="form-control" name="email" placeholder="email" autocomplete="off">
-        
-        @error('email')
-        <div class="text-danger">{{ $message }}</div>
-        @enderror
-	</div>
+                <div class="mb-3">
+                  <label class="form-label">Email address</label>
+                  <input type="text" class="form-control" name="email" placeholder="email" autocomplete="off">
+                      
+                      @error('email')
+                      <div class="text-danger">{{ $message }}</div>
+                      @enderror
+                </div>
 
 
-	<div class="mb-2">
-		<label class="form-label">
-			Password
-		</label>
-		<div class="input-group input-group-flat">
-	<input type="password" class="form-control" name="password"  placeholder="Your password"  autocomplete="off">
-	<span class="input-group-text">
-        <a class="link-secondary" data-bs-toggle="tooltip">
-		<i class="fa fa-lock" aria-hidden="true"></i>
-	</span>
-    </div>
-    @error('password')
-    <div class="text-danger">{{ $message }}</div>
-    @enderror
-        </div>
+                <div class="mb-2">
+                  <label class="form-label">
+                    Password
+                  </label>
+                  <div class="input-group input-group-flat">
+                    <input type="password" class="form-control" name="password"  placeholder="Your password"  autocomplete="off">
+                    <span class="input-group-text">
+                          <a class="link-secondary" data-bs-toggle="tooltip">
+                      <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                  @error('password')
+                  <div class="text-danger">{{ $message }}</div>
+                  @enderror
+                      </div>
        
 
-        <div class="form-footer">
-            <button type="submit" class="btn btn-primary w-100">Sign in</button>
-        </div>
-    </form>
-
-
-                </div>
-               
-               
+                  <div class="form-footer">
+                      <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                  </div>
+              </form>
+            </div>
               </div>
               <div class="text-center text-secondary mt-3">Don't have account yet? <a href="{{ route('Auth.register') }}" tabindex="-1">Sign up</a></div>
             </div>
@@ -104,5 +93,12 @@
           </div>
         </div>
 </div>
+
+<style>
+  .navbar-brand-image {
+  width: 70px;   /* ubah sesuai kebutuhan */
+  height: auto;   /* biar proporsional */
+}
+</style>
 @include('auth.partials.footer')
 
