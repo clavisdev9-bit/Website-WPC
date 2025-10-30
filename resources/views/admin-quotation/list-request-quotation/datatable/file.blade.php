@@ -235,7 +235,7 @@
     <div class="modal-content shadow-lg border-0 rounded-4">
       <div class="modal-header bg-danger text-white">
         <h5 class="modal-title" id="modalSendEmailLabel">
-          <i class="fa fa-envelope"></i> Send Offer Email
+          <i class="fa fa-envelope"></i> Send Offer Email to Agent Pickup
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -443,10 +443,9 @@
 
 
 
-{{-- code js --}}
+{{-- code js untuk Destination --}}
 <script>
   //  start code logic untuk Destination 
-  
 document.addEventListener("DOMContentLoaded", () => {
   const countrySelectContact = document.getElementById("country_destination_contact");
   const stateSelectContact = document.getElementById("state_destination_contact");
@@ -458,14 +457,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // --- Tombol Reset Destination---
-  let btnReset = document.getElementById("btn-reset-agent-destination");
-  if (!btnReset) {
-    btnReset = document.createElement("button");
-    btnReset.className = "btn btn-outline-danger ms-2";
-    btnReset.id = "btn-reset-agent-destination";
-    btnReset.innerHTML = `<i class="fa fa-rotate-left"></i> Reset`;
-    btnSearchContact.parentElement.appendChild(btnReset);
+  let btnResetDestination = document.getElementById("btn-reset-agent-destination");
+  if (!btnResetDestination) {
+    btnResetDestination = document.createElement("button");
+    btnResetDestination.className = "btn btn-outline-danger ms-2";
+    btnResetDestination.id = "btn-reset-agent-destination";
+    btnResetDestination.innerHTML = `<i class="fa fa-rotate-left"></i> Reset`;
+    btnSearchContact.parentElement.appendChild(btnResetDestination);
   }
+
+  // === Fungsi tombol Reset Destination ===
+btnResetDestination.addEventListener("click", () => {
+  // Kosongkan semua dropdown
+  countrySelectContact.value = "";
+  stateSelectContact.innerHTML = `<option value="">Select State</option>`;
+  citySelectContact.innerHTML = `<option value="">Select City</option>`;
+  tagsSelectContact.value = "";
+
+  // Kosongkan hasil dan pilihan
+  resultsContainerContact.innerHTML = "";
+  selectedListContact.innerHTML = "";
+  selectedAgentsDestination.clear();
+
+  // Nonaktifkan tombol Search
+  btnSearchContact.disabled = true;
+
+  Swal.fire({
+    icon: "info",
+    title: "Form Reset!",
+    text: "All filters and selected agents have been cleared.",
+    timer: 2000,
+    showConfirmButton: false
+  });
+});
+
 
   let allContactsDestination = [];
   const selectedAgentsDestination = new Set();
@@ -686,12 +711,12 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
         document.querySelector('.modal-backdrop')?.remove(); 
     }
 
-    // Optional: Pastikan modal pertama (modal-pickup-agent) dibuka kembali
+    // Optional: Pastikan modal pertama (modal-destination-agent) dibuka kembali
     // agar user bisa memilih agen lagi, jika mereka hanya menutup modal email
-    // const pickupAgentModalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-pickup-agent"));
-    // if (pickupAgentModalInstance) {
-    //      pickupAgentModalInstance.show();
-    // }
+    const destinationAgentModalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-destination-agent"));
+    if (destinationAgentModalInstance) {
+         destinationAgentModalInstance.show();
+    }
 });
 
 
@@ -865,15 +890,7 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
 
       const result = await response.json();
        Swal.close(); 
-        // if (response.ok && result.success) {
-        //     Swal.fire({
-        //         title: "Success!",
-        //         text: "Email berhasil dikirim.",
-        //         icon: "success",
-        //         confirmButtonText: "OK",
-        //     });
-        //   }
-
+     
       if (response.ok && result.success) {
         Swal.fire({
           title: "Success!",
@@ -887,22 +904,21 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
             bootstrap.Modal.getInstance(document.getElementById("modalSendEmailDestination")).hide();
 
             // Sembunyikan modal pertama modal-destination-agent)
-            const pickupAgentModalElement = document.getElementById("modal-destination-agent");
-            const pickupAgentModalInstance = bootstrap.Modal.getInstance(pickupAgentModalElement);
-            if (pickupAgentModalInstance) {
-                pickupAgentModalInstance.hide();
+            const destinationAgentModalElement = document.getElementById("modal-destination-agent");
+            const destinationAgentModalInstance = bootstrap.Modal.getInstance(destinationAgentModalElement);
+            if (destinationAgentModalInstance) {
+                destinationAgentModalInstance.hide();
             }
 
             // Hapus paksa backdrop yang tersisa
             document.body.classList.remove('modal-open');
             document.querySelector('.modal-backdrop')?.remove();
 
-            // Reset formulir
             document.getElementById("emailSubjectDestination").value = "";
             document.getElementById("emailMessageDestination").value = "";
             document.getElementById("emailAttachmentDestination").value = "";
-            ccEmails.clear();
-            ccList.innerHTML = "";
+            ccEmailsDestination.clear();
+            ccListDestination.innerHTML = "";
             });
       } else {
         Swal.fire({
@@ -978,6 +994,8 @@ document.addEventListener("DOMContentLoaded", () => {
     btnReset.innerHTML = `<i class="fa fa-rotate-left"></i> Reset`;
     btnSearch.parentElement.appendChild(btnReset);
   }
+
+
 
   let allContacts = [];
   const selectedAgents = new Set();
@@ -1197,10 +1215,10 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
 
     // Optional: Pastikan modal pertama (modal-pickup-agent) dibuka kembali
     // agar user bisa memilih agen lagi, jika mereka hanya menutup modal email
-    // const pickupAgentModalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-pickup-agent"));
-    // if (pickupAgentModalInstance) {
-    //      pickupAgentModalInstance.show();
-    // }
+    const pickupAgentModalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-pickup-agent"));
+    if (pickupAgentModalInstance) {
+         pickupAgentModalInstance.show();
+    }
 });
 
   btnReset.addEventListener("click", () => {
@@ -1220,7 +1238,7 @@ modalSendEmailEl.addEventListener('hidden.bs.modal', function () {
   const btnSendOffer = document.createElement("button");
   btnSendOffer.className = "btn btn-primary mt-3 w-100";
   btnSendOffer.id = "btn-open-send-email";
-  btnSendOffer.innerHTML = `<i class="fa fa-paper-plane"></i> Send Offer Email`;
+  btnSendOffer.innerHTML = `<i class="fa fa-paper-plane"></i> Send Offer Email To Agent Pickup`;
   btnSendOffer.disabled = true;
   document.getElementById("selectedList").after(btnSendOffer);
 

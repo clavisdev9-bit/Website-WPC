@@ -28,4 +28,5 @@ Route::get('/contacts/sync', [ContactSyncApi::class, 'syncFromApi'])->name('sync
 Route::get('/Agents/Network', [NetworkAgentApi::class, 'getNetworkAgent'])->name('api.agents.network');
 
 // route for send email internal system
-Route::post('/send-offer-email-pickup', [SendEmail::class, 'sendOfferEmailPickup'])->name('api.send.offer.email');
+Route::post('/send-offer-email-pickup', [SendEmail::class, 'sendOfferEmailPickup'])->name('api.send.offer.email.pickup');
+Route::post('/send-offer-email-destination', [SendEmail::class, 'sendOfferEmailDestination'])->name('api.send.offer.email.destination');
