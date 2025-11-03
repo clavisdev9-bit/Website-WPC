@@ -121,7 +121,10 @@ Route::delete('menu-delete-management/{id}', [Administrator::class, 'DeleteMenu'
 });
 
 
-
+// Route::prefix('Administrator')->name('Administrator.')
+// ->middleware('check.access.menu')
+// ->middleware('check.access.submenu')
+// ->group(function () {
 Route::get('Administrator/Sub-Menu-management', [Administrator::class, 'submenuManagement'])->name('Administrator.sub.menu.management');
 Route::get('Administrator/Get-submenu-management', [Administrator::class, 'getSubMenu'])->name('Administrator.get.submenu.management');
 Route::get('Administrator/create-submenu-management', [Administrator::class, 'createSubmenu'])->name('Administrator.create.submenu.management');
@@ -129,18 +132,26 @@ Route::post('Administrator/Store-submenu-management', [Administrator::class, 'st
 Route::get('Administrator/view-submenu-update/{id}', [Administrator::class, 'showSubmenu'])->name('Administrator.submenu.view.update');
 Route::put('Administrator/store-update-submenu-management', [Administrator::class, 'UpdateSubMenu'])->name('Administrator.update.submenu.management');
 Route::delete('Administrator/submenu-delete-management/{id}', [Administrator::class, 'DeleteSubMenu'])->name('Administrator.delete.submenu.management');
+// });
 
 
-Route::get('Administrator/Roles-management', [Administrator::class, 'RoleManagement'])->name('Administrator.role.management');
-Route::get('Administrator/Get-role-management', [Administrator::class, 'getRole'])->name('Administrator.get.role.management');
-Route::get('Administrator/create-role-management', [Administrator::class, 'createRole'])->name('Administrator.create.role.management');
-Route::post('Administrator/Store-role-management', [Administrator::class, 'storeRole'])->name('Administrator.store.role.management');
-Route::get('Administrator/view-role-update/{id}', [Administrator::class, 'showRole'])->name('Administrator.role.view.update');
-Route::put('Administrator/store-update-role-management', [Administrator::class, 'UpdateRole'])->name('Administrator.update.role.management');
-Route::delete('Administrator/role-delete-management/{id}', [Administrator::class, 'DeleteRole'])->name('Administrator.delete.role.management');
-Route::get('Administrator/role-access-menu/{id}', [Administrator::class, 'AccessRoleMenu'])->name('Administrator.role.access.menu');
-Route::post('Administrator/change-access-menu', [Administrator::class, 'ChangeAccessMenu'])->name('Administrator.change.access.menu');
+Route::prefix('Administrator')->name('Administrator.')
+->middleware('check.access.menu')
+->middleware('check.access.submenu')
+->group(function () {
+Route::get('Roles-management', [Administrator::class, 'RoleManagement'])->name('role.management');
+Route::get('Get-role-management', [Administrator::class, 'getRole'])->name('get.role.management');
+Route::get('create-role-management', [Administrator::class, 'createRole'])->name('create.role.management');
+Route::post('Store-role-management', [Administrator::class, 'storeRole'])->name('store.role.management');
+Route::get('view-role-update/{id}', [Administrator::class, 'showRole'])->name('role.view.update');
+Route::put('store-update-role-management', [Administrator::class, 'UpdateRole'])->name('update.role.management');
+Route::delete('role-delete-management/{id}', [Administrator::class, 'DeleteRole'])->name('delete.role.management');
+Route::get('role-access-menu/{id}', [Administrator::class, 'AccessRoleMenu'])->name('role.access.menu');
+Route::post('change-access-menu', [Administrator::class, 'ChangeAccessMenu'])->name('change.access.menu');
+});
 
+
+// route for user
 Route::get('/avatar/{filename}', function ($filename) {
     $path = storage_path('app/public/profile/' . $filename);
     if (!File::exists($path)) {
@@ -152,17 +163,20 @@ Route::get('/avatar/{filename}', function ($filename) {
     return response($file, 200)->header("Content-Type", $type);
 })->name('avatar.show');
 
-// route for user
-Route::get('Administrator/Users-management', [Administrator::class, 'UserManagement'])->name('Administrator.user.management');
-Route::get('Administrator/Get-user-management', [Administrator::class, 'getUser'])->name('Administrator.get.user.management');
-Route::get('Administrator/create-user-management', [Administrator::class, 'createUser'])->name('Administrator.create.user.management');
-Route::post('Administrator/Store-user-management', [Administrator::class, 'storeUser'])->name('Administrator.store.user.management');
-Route::get('Administrator/view-user-update/{id}', [Administrator::class, 'showUser'])->name('Administrator.user.view.update');
-Route::put('Administrator/update-user-management', [Administrator::class, 'UpdateUser'])->name('Administrator.update.user.management');
-Route::delete('Administrator/user-delete-management/{id}', [Administrator::class, 'DeleteUser'])->name('Administrator.delete.user.management');
-Route::get('Administrator/access-user-submenu/{id}', [Administrator::class, 'AccessUser'])->name('Administrator.user.access.submenu');
-Route::post('Administrator/change-access-submenu', [Administrator::class, 'ChangeAccessSubMenu'])->name('Administrator.change.access.submenu');
-
+Route::prefix('Administrator')->name('Administrator.')
+->middleware('check.access.menu')
+->middleware('check.access.submenu')
+->group(function () {
+Route::get('Users-management', [Administrator::class, 'UserManagement'])->name('user.management');
+Route::get('Get-user-management', [Administrator::class, 'getUser'])->name('get.user.management');
+Route::get('create-user-management', [Administrator::class, 'createUser'])->name('create.user.management');
+Route::post('Store-user-management', [Administrator::class, 'storeUser'])->name('store.user.management');
+Route::get('view-user-update/{id}', [Administrator::class, 'showUser'])->name('user.view.update');
+Route::put('update-user-management', [Administrator::class, 'UpdateUser'])->name('update.user.management');
+Route::delete('user-delete-management/{id}', [Administrator::class, 'DeleteUser'])->name('delete.user.management');
+Route::get('access-user-submenu/{id}', [Administrator::class, 'AccessUser'])->name('user.access.submenu');
+Route::post('change-access-submenu', [Administrator::class, 'ChangeAccessSubMenu'])->name('change.access.submenu');
+});
 
 // route for Continent
 Route::get('Administrator/Master-continent-agent', [Administrator::class, 'AgentNetworkContinent'])->name('Administrator.agent.network.continent');
