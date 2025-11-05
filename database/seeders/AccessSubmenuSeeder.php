@@ -16,7 +16,7 @@ class AccessSubmenuSeeder extends Seeder
         $now = Carbon::now();
 
         // Semua submenu (1 sampai 40)
-        $submenuIds = range(1, 64);
+        $submenuIds = range(1, 70);
 
         foreach ($submenuIds as $submenuId) {
             DB::table('access_submenus')->insert([

@@ -326,6 +326,74 @@ class SubmenuSeeder extends Seeder
                 'parent_id' => null,
             ],
 
+
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Master-network',
+                'icon' => 'nav-icon fa fa-network-wired',
+                'title' => 'Master Network',
+                'noted' => '(main) Master Network',
+                'is_active' => true,
+                'parent_id' => null,
+            ],
+
+
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Master-continent-agent',
+                'icon' => 'nav-icon fa fa-minus',
+                'title' => 'Master Continent',
+                'noted' => '(main) Master Continent',
+                'is_active' => true,
+                'parent_id' => 34,
+            ],
+
+
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Master-subcontinent-agent',
+                'icon' => 'nav-icon fa fa-minus',
+                'title' => 'Master SubContinent',
+                'noted' => '(main) Master SubContinent',
+                'is_active' => true,
+                'parent_id' => 34,
+            ],
+
+
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Agent-network-country',
+                'icon' => 'nav-icon fa fa-minus',
+                'title' => 'Master Country ',
+                'noted' => '(main) Master Country',
+                'is_active' => true,
+                'parent_id' => 34,
+            ],
+
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Agent-network-city',
+                'icon' => 'nav-icon fa fa-minus',
+                'title' => 'Master City',
+                'noted' => '(main) Master City',
+                'is_active' => true,
+                'parent_id' => 34,
+            ],
+
+
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Master-agent-network',
+                'icon' => 'nav-icon fa fa-minus',
+                'title' => 'Master Agent',
+                'noted' => '(main) Master Agent',
+                'is_active' => true,
+                'parent_id' => 34,
+            ],
+
+
+
+
              // ================================
             // General Menu Setting MANAGEMENT
             // ================================
@@ -381,28 +449,8 @@ class SubmenuSeeder extends Seeder
 
 
             // ================================
-            //  Admins webs submenu
+            //  Costumers submenu
             // ================================
-
-            // [
-            //     'id_menu' => 2,
-            //     'url' => 'Admins/Homes',
-            //     'icon' => 'nav-icon fa fa-home',
-            //     'title' => 'Home Admin Website',
-            //     'noted' => '(main) Home Page Admin Website',
-            //     'is_active' => true,
-            //     'parent_id' => null,
-            // ],
-
-            // [
-            //     'id_menu' => 2,
-            //     'url' => 'Admins/Master-Category-Blogs',
-            //     'icon' => 'nav-icon fa fa-table',
-            //     'title' => 'Master Category Blogs',
-            //     'noted' => '(main) Master-Category-Blogs',
-            //     'is_active' => true,
-            //     'parent_id' => null,
-            // ],
 
             [
                 'id_menu' => 4,

@@ -1,5 +1,5 @@
 
-
+//ini untuk setting vite di local
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
 import vue from '@vitejs/plugin-vue'
@@ -20,8 +20,33 @@ export default defineConfig({
 })
 
 
-// untuk akses dari luar di lokal
 
+// ini untuk setting vite di server
+// import { defineConfig } from 'vite'
+// import laravel from 'laravel-vite-plugin'
+// import vue from '@vitejs/plugin-vue'
+
+// export default defineConfig({
+//     plugins: [
+//         laravel({
+//             input: [
+//                 'resources/css/app.css',
+//                 'resources/js/app.js',
+//             ],
+//             refresh: true,
+//         }),
+//         vue(),
+//     ],
+//     resolve: {
+//         alias: {
+//             '@': '/resources/js',
+//         },
+//     },
+// })
+
+
+
+// untuk akses dari luar di lokal
 // import { defineConfig } from 'vite'
 // import laravel from 'laravel-vite-plugin'
 // import vue from '@vitejs/plugin-vue'

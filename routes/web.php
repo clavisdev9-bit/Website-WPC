@@ -94,6 +94,8 @@ Route::get('Auth/Registeration',[Auth::class,'register_page'])->name('Auth.regis
 Route::post('Auth/Login-Checks',[Auth::class,'login_checks_auth'])->name('Auth.checks.authentication');
 
 
+
+// start route backend
 // Route  Administrator
 Route::prefix('Administrator')->name('Administrator.')
 ->middleware('check.access.menu')
@@ -129,6 +131,8 @@ Route::get('Administrator/view-submenu-update/{id}', [Administrator::class, 'sho
 Route::put('Administrator/store-update-submenu-management', [Administrator::class, 'UpdateSubMenu'])->name('Administrator.update.submenu.management');
 Route::delete('Administrator/submenu-delete-management/{id}', [Administrator::class, 'DeleteSubMenu'])->name('Administrator.delete.submenu.management');
 });
+
+
 
 
 Route::prefix('Administrator')->name('Administrator.')
@@ -175,6 +179,8 @@ Route::post('change-access-submenu', [Administrator::class, 'ChangeAccessSubMenu
 });
 
 
+
+
 // route for Continent
 Route::get('Administrator/Master-continent-agent', [Administrator::class, 'AgentNetworkContinent'])->name('Administrator.agent.network.continent');
 Route::get('Administrator/Get-agent-network-continent', [Administrator::class, 'getDataAgentContinentNetwork'])->name('Administrator.get.agent.network.continent');
@@ -183,7 +189,6 @@ Route::post('Administrator/Store-agent-network-continent', [Administrator::class
 Route::get('Administrator/view-agent-network-continent-update/{id}', [Administrator::class, 'showDataAgentContinentNetwork'])->name('Administrator.agent.network.continent.view.update');
 Route::put('Administrator/agent-network-continent/update/{id}', [Administrator::class, 'updateDataAgentNetworkContinent'])->name('Administrator.update.agent.network.continent');
 Route::delete('Administrator/delete-agent-network-continent/{id}', [Administrator::class, 'DeleteDataAgentContinentNetwork'])->name('Administrator.delete.agent.network.continent');
-
 
 // route for SubContinent
 Route::get('Administrator/Master-subcontinent-agent', [Administrator::class, 'AgentNetworkSubContinent'])->name('Administrator.agent.network.subcontinent');
