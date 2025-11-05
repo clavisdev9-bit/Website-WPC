@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_submenu', true); // auto increment
             $table->unsignedBigInteger('id_menu');          // relasi ke menu
             $table->string('url');
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->string('title');
             $table->string('noted')->nullable();
             $table->boolean('is_active')->default(1);

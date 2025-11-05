@@ -30,7 +30,6 @@ Route::get('Error/CheckAccessMenu',[Error::class,'ErrorCheckAccessMenu'])->name(
 Route::get('Error/CheckAccessSubMenu',[Error::class,'ErrorCheckAccessSubMenu'])->name('error.check.access.sub.menu');
 
 
-
 // web Front Route
 Route::get('/',[Users::class,'index'])->name('users.home');
 Route::get('/About',[Users::class,'about'])->name('users.about');
@@ -69,14 +68,12 @@ Route::get('/Logistic/Rate-Classification',[Users::class,'rate_classification'])
 Route::get('/Logistic/Vendor-Management',[Users::class,'vendor_management'])->name('users.vendor.management');
 Route::get('/Logistic/Freight-Management',[Users::class,'freight_management'])->name('users.freight.management');
 
-
 Route::get('/Transportation',[Users::class,'transportation'])->name('users.transportation');
 Route::get('/Transportation/Tracking-System',[Users::class,'tracking_system'])->name('users.tracking.system');
 Route::get('/Transportation/Consolidation-Service',[Users::class,'consolidation_service'])->name('users.consolidation.service');
 Route::get('/Transportation/Freight-Forwarder',[Users::class,'freight_forwarder'])->name('users.freight.forwarder');
 Route::get('/Transportation/Rail-Service',[Users::class,'rail_service'])->name('users.rail.service');
 Route::get('/Transportation/Inter-Model',[Users::class,'inter_model'])->name('users.inter.model');
-
 
 Route::get('/Warehouse',[Users::class,'warehouse'])->name('users.warehouse');
 Route::get('/Warehouse/dedicated-warehouse',[Users::class,'dedicated_warehouse'])->name('users.dedicated.warehouse');
@@ -95,7 +92,6 @@ Route::get('Auth/Login',[Auth::class,'login_page'])->name('Auth.login');
 Route::get('Auth/Logout',[Auth::class,'Logout'])->name('Auth.logout');
 Route::get('Auth/Registeration',[Auth::class,'register_page'])->name('Auth.register');
 Route::post('Auth/Login-Checks',[Auth::class,'login_checks_auth'])->name('Auth.checks.authentication');
-
 
 
 // Route  Administrator
@@ -121,10 +117,10 @@ Route::delete('menu-delete-management/{id}', [Administrator::class, 'DeleteMenu'
 });
 
 
-// Route::prefix('Administrator')->name('Administrator.')
-// ->middleware('check.access.menu')
-// ->middleware('check.access.submenu')
-// ->group(function () {
+Route::prefix('Administrator')->name('Administrator.')
+->middleware('check.access.menu')
+->middleware('check.access.submenu')
+->group(function () {
 Route::get('Administrator/Sub-Menu-management', [Administrator::class, 'submenuManagement'])->name('Administrator.sub.menu.management');
 Route::get('Administrator/Get-submenu-management', [Administrator::class, 'getSubMenu'])->name('Administrator.get.submenu.management');
 Route::get('Administrator/create-submenu-management', [Administrator::class, 'createSubmenu'])->name('Administrator.create.submenu.management');
@@ -132,7 +128,7 @@ Route::post('Administrator/Store-submenu-management', [Administrator::class, 'st
 Route::get('Administrator/view-submenu-update/{id}', [Administrator::class, 'showSubmenu'])->name('Administrator.submenu.view.update');
 Route::put('Administrator/store-update-submenu-management', [Administrator::class, 'UpdateSubMenu'])->name('Administrator.update.submenu.management');
 Route::delete('Administrator/submenu-delete-management/{id}', [Administrator::class, 'DeleteSubMenu'])->name('Administrator.delete.submenu.management');
-// });
+});
 
 
 Route::prefix('Administrator')->name('Administrator.')
@@ -177,6 +173,7 @@ Route::delete('user-delete-management/{id}', [Administrator::class, 'DeleteUser'
 Route::get('access-user-submenu/{id}', [Administrator::class, 'AccessUser'])->name('user.access.submenu');
 Route::post('change-access-submenu', [Administrator::class, 'ChangeAccessSubMenu'])->name('change.access.submenu');
 });
+
 
 // route for Continent
 Route::get('Administrator/Master-continent-agent', [Administrator::class, 'AgentNetworkContinent'])->name('Administrator.agent.network.continent');
@@ -248,9 +245,6 @@ Route::delete('/Administrator/agent-network/delete/{id}', [Administrator::class,
 
 
 
-
-
-
 // Admin Cms Website Route (blogs)
 Route::get('Admins/Homes',[Admins::class,'Homes_Admins'])->name('Admins.homes');
 Route::get('/blogs/{filename}', function ($filename) {
@@ -262,8 +256,6 @@ Route::get('/blogs/{filename}', function ($filename) {
     $type = File::mimeType($path);
     return response($file, 200)->header("Content-Type", $type);
 })->name('blogs.image.show');
-
-
 
 // Admin-Web route
 // route blog admin
@@ -295,6 +287,7 @@ Route::delete('Admins/Contact-form-delete/{id}', [Admins::class, 'Contact_messag
 Route::get('Admin_Quotation_system/Home', [Admin_Quotation_system::class, 'Home'])->name('Request.Quotation.Dashboard');
 Route::get('Admin_Quotation_system/List-Request-Quotation',[Admin_Quotation_system::class,'List_Request_Quotation'])->name('List.Request.Quotation.quotation');
 Route::get('Admin_Quotation_system/Get-quotation', [Admin_Quotation_system::class, 'Get_Quotations'])->name('get.quotation');
+
 // Api get Country, state From Oddo (bisa di pakai untuk controller lainya)
 Route::get('/external/api/countries', [Admin_Quotation_system::class, 'countries'])->name('api.countries');
 Route::get('/external/api/states/{countryId}', [Admin_Quotation_system::class, 'states'])->name('api.states');
@@ -303,8 +296,6 @@ Route::get('/external/api/contact/city/street', [Admin_Quotation_system::class, 
 Route::get('/external/api/contact/city/street/zip', [Admin_Quotation_system::class, 'getContactZips'])->name('api.city.street.zip');
 Route::get('/external/api/contact/tags', [Admin_Quotation_system::class, 'getContactTags'])->name('api.tags.contact');
 Route::post('/agent/search', [Admin_Quotation_system::class, 'search_contact_agent'])->name('api.agent.contact.search');
-
-
 
 // Admin Quotation system (Contact)
 Route::get('Admin_Quotation_system/System-contact-sync',[Admin_Quotation_system::class,'List_System_contact_sync'])->name('Admin.quotation.system.contact.sync');

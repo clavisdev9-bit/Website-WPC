@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             AppSettingsBackendSeeder::class,
             AppSettingsFrontendSeeder::class,
             SocialMediaSeeder::class,
+            ContinentNetworkAgentSeeder::class,
+            SubcontinentNetworkAgentSeeder::class,
             NetworkAgentSeeder::class
         ]);
     }

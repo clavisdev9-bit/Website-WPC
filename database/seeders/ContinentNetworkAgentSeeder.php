@@ -11,10 +11,10 @@ class ContinentNetworkAgentSeeder extends Seeder
     {
         DB::table('continents_network_agent')->insert([
             ['name' => 'Asia', 'code' => 'AS', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Eropa', 'code' => 'EU', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Afrika', 'code' => 'AF', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Amerika', 'code' => 'AM', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Oseania', 'code' => 'OC', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Europe', 'code' => 'EU', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Africa', 'code' => 'AF', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'America', 'code' => 'AM', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Oceania', 'code' => 'OC', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

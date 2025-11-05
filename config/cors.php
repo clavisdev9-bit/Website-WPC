@@ -23,6 +23,7 @@ return [
         'http://localhost:5173',
         'http://localhost:8000',
         'http://127.0.0.1:8000',
+        'http://72.60.76.201:8080',
         'http://wpc_website.test',
         'http://192.168.132.12:8000',
         'http://political-gerard-uncertainly.ngrok-free.app',
