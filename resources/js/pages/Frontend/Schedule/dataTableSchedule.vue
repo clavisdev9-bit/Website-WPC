@@ -1,5 +1,17 @@
 <template>
   <FrontendLayout>
+
+     <div class="container my-4">
+    <div class="alert alert-warning alert-dismissible fade show rounded-3 shadow-sm d-flex align-items-center" role="alert">
+      <i class="fa-solid fa-circle-info me-2 fs-5"></i>
+      <div>
+        <strong>⚙️ Currently under development.</strong> This feature will be available soon!
+      </div>
+      <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+
     <div class="container py-4">
       <ul class="nav nav-tabs mb-4" id="scheduleTabs" role="tablist">
 
@@ -420,6 +432,62 @@
         </div>
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+    <div class="container my-5">
+    <div class="row g-4">
+      <!-- 🟦 Card 1 -->
+      <div class="col-12 col-md-6">
+        <div class="card text-white border-0 shadow-sm rounded-4 modern-bg-1 p-4 h-100">
+          <div class="row align-items-center">
+            <div class="col">
+              <h2 class="h4 fw-bold mb-2">Want to make fast delivery?</h2>
+              <p class="mb-0 text-white">
+                We send your package quickly and it will arrive at its destination safely!
+              </p>
+            </div>
+            <div class="col-auto">
+              <RouterLink
+                to="/wpc-esys/qoutation-request"
+                class="btn btn-light fw-semibold px-4 rounded-pill"
+              >
+                Make a Quotation Offer Now
+              </RouterLink>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🟣 Card 2 -->
+      <div class="col-12 col-md-6">
+        <div class="card text-white border-0 shadow-sm rounded-4 modern-bg-2 p-4 h-100">
+          <div class="row align-items-center">
+            <div class="col">
+              <h2 class="h4 fw-bold mb-2">Want to Check Shipping Schedule?</h2>
+              <p class="mb-0 text-white">
+                Easily find the latest shipping schedules to ensure your deliveries are always on time and efficiently managed!
+              </p>
+            </div>
+            <div class="col-auto">
+              <RouterLink
+                to="/check-schedule"
+                class="btn btn-light fw-semibold px-4 rounded-pill"
+              >
+                Check Schedule Now
+              </RouterLink>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   </FrontendLayout>
 </template>
 
@@ -644,4 +712,77 @@ function goToPage(page) {
   border-radius: 8px;
   margin: 0 3px;
 }
+
+
+
+
+.card {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* 🩵 Modern Gradient Blue */
+.modern-bg-1 {
+  background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+}
+.modern-bg-1::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent 70%);
+  filter: blur(60px);
+  z-index: 0;
+}
+
+/* 💜 Modern Gradient Purple-Pink */
+.modern-bg-2 {
+  background: linear-gradient(135deg, #9333ea, #ec4899);
+}
+.modern-bg-2::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle at 60% 60%, rgba(255, 255, 255, 0.25), transparent 70%);
+  filter: blur(60px);
+  z-index: 0;
+}
+
+/* Pastikan konten dan tombol di atas efek */
+.modern-bg-1 > *,
+.modern-bg-2 > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn {
+  position: relative;
+  z-index: 2;
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+  .card {
+    text-align: center;
+  }
+  .col-auto {
+    margin-top: 1rem;
+  }
+}
+
+
 </style>

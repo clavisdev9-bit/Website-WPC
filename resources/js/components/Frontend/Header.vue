@@ -36,15 +36,25 @@
           <div class="navbar-nav flex-row order-md-last">
             <div class="nav-item d-none d-md-flex me-3">
               <div class="btn-list">
-                <a href="" class="btn btn-primary btn-5" target="_blank" rel="noreferrer" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
-                  <i class="fa-solid fa-headset"> </i>
+                <router-link
+                  to="/wpc-esys/support-wpc"
+                  class="btn btn-primary btn-5"
+                  style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;"
+                >
+                  <i class="fa-solid fa-headset"></i>
                   {{ $t('navbar.support') }}
-                </a>
+                </router-link>
 
-                <a href="" class="btn btn-primary btn-6" target="_blank" rel="noreferrer" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">
-                  <i class="fa-solid fa-book"> </i>
-                  {{ $t('navbar.userGuide') }}
-                </a>
+
+               <RouterLink
+                  to="/wpc-esys/informations-wpc"
+                  class="btn btn-primary btn-6"
+                  style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;"
+                >
+                <i class="fa-solid fa-info"></i>
+                {{ $t('navbar.Information') }}
+              </RouterLink>
+
                 <NavbarLanguage />
               </div>
             </div>

@@ -7,7 +7,8 @@ import FormQout from '../pages/Frontend/Qoutations/Form.vue';
 import networkNew from '../pages/Frontend/Network/networkNew.vue';
 import networkHighLevel from '../pages/Frontend/Network/networkHighLevel.vue';
 import dataTableSchedule from '../pages/Frontend/Schedule/dataTableSchedule.vue';
-
+import information from '../pages/Frontend/Information/information.vue';
+import support from '../pages/Frontend/Support/support.vue';
 
 
 
@@ -38,11 +39,23 @@ const routes = [
     // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
    },
 
-   { 
+  { 
     path: '/wpc-esys/schedule', 
      component: dataTableSchedule, 
     // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
-   },
+  },
+
+  { 
+    path: '/wpc-esys/informations-wpc', 
+     component: information, 
+    // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
+  },
+
+  { 
+    path: '/wpc-esys/support-wpc', 
+     component: support, 
+    // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
+  },
 
   
 
