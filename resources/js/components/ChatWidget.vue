@@ -104,7 +104,9 @@ function scrollToBottom() {
   cursor: pointer;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   transition: all 0.3s;
+  z-index: 9999;
 }
+
 .chat-button:hover {
   transform: scale(1.1);
 }
@@ -115,6 +117,7 @@ function scrollToBottom() {
   bottom: 100px;
   right: 24px;
   width: 360px;
+  max-height: 70vh;
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
@@ -122,6 +125,7 @@ function scrollToBottom() {
   flex-direction: column;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
+  z-index: 9999;
 }
 
 /* ===== Header ===== */
@@ -152,7 +156,7 @@ function scrollToBottom() {
   flex-direction: column;
 }
 
-/* Message bubbles */
+/* ===== Message bubbles ===== */
 .msg {
   max-width: 80%;
   margin: 6px 0;
@@ -175,7 +179,7 @@ function scrollToBottom() {
   border-radius: 16px 16px 16px 0;
 }
 
-/* ===== Input ===== */
+/* ===== Input Area ===== */
 .chat-input {
   display: flex;
   padding: 10px;
@@ -188,6 +192,7 @@ function scrollToBottom() {
   border-radius: 12px;
   padding: 8px 10px;
   outline: none;
+  font-size: 0.95rem;
 }
 .chat-input button {
   background: #007bff;
@@ -200,4 +205,58 @@ function scrollToBottom() {
   cursor: pointer;
   font-size: 16px;
 }
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  .chat-window {
+    width: 90%;
+    right: 5%;
+    bottom: 90px;
+    max-height: 75vh;
+  }
+
+  .chat-button {
+    width: 60px;
+    height: 60px;
+    font-size: 26px;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* ===== MOBILE HALF-SCREEN (≤480px) ===== */
+@media (max-width: 480px) {
+  .chat-window {
+    width: 95%;
+    right: 2.5%;
+    bottom: 80px;
+    height: 60vh; /* ✅ setengah layar */
+    border-radius: 16px 16px 0 0;
+    max-height: none;
+  }
+
+  .chat-header {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .chat-input {
+    padding: 8px;
+  }
+
+  .chat-input input {
+    font-size: 0.9rem;
+  }
+
+  .chat-input button {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .msg {
+    font-size: 0.9rem;
+  }
+}
+
 </style>
