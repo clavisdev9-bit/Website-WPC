@@ -197,7 +197,7 @@
                       </textarea>
                        <small class="text-danger">{{ errors.termsCondition }}</small>
                       </div>
-                      <!-- <div class="row">
+                      <div class="row">
                         <div class="col-md-4 mb-3">
                           <label class="form-label">Pieces <small class="text-danger">(now opsional)</small></label>
                           <input type="number" class="form-control" placeholder="e.g. 10">
@@ -210,7 +210,7 @@
                           <label class="form-label">Volume (CBM) <small class="text-danger">(now opsional)</small></label>
                           <input type="number" class="form-control" placeholder="e.g. 2.5">
                         </div>
-                      </div> -->
+                      </div>
                     </div>
 
                     <!-- STEP 3: Route -->

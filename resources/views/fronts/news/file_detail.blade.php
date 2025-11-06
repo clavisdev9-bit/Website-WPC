@@ -81,18 +81,18 @@
     <!-- Sidebar -->
     <div class="col-lg-4">
       <!-- Search -->
-      <div class="mb-5">
+      {{-- <div class="mb-5">
         <form action="#" method="GET">
           <div class="input-group">
             <input type="text" name="q" class="form-control" placeholder="Search keyword">
             <button class="btn btn-primary" type="submit">Search</button>
           </div>
         </form>
-      </div>
+      </div> --}}
 
       
 
-      <div class="mb-5">
+      {{-- <div class="mb-5">
     <h4 class="fw-bold mb-3">Category</h4>
     <ul class="list-unstyled">
         @foreach($categories as $category)
@@ -104,7 +104,7 @@
             </li>
         @endforeach
     </ul>
-</div>
+</div> --}}
 
 
       <!-- Recent Post -->
@@ -133,9 +133,8 @@
         <div class="d-flex flex-wrap gap-2">
           <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Project</a>
           <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Company</a>
-          <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Technology</a>
           <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Brands</a>
-          <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Design</a>
+          <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Logistics</a>
         </div>
       </div>
     </div>

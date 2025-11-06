@@ -56,7 +56,7 @@ Route::post('/qoutation/send-data', [Users::class, 'store_qoutation'])->name('us
 Route::get('/News',[Users::class,'news'])->name('users.news');
 Route::get('/News-show/{slug}',[Users::class,'news_detail'])->name('users.news.show');
 
-Route::get('/Network',[Users::class,'network'])->name('users.network');
+// Route::get('/Network',[Users::class,'network'])->name('users.network');
 
 Route::get('/Logistic',[Users::class,'logistic'])->name('users.logistic');
 Route::get('/Logistic/Regulation-Services',[Users::class,'regulation_services'])->name('users.regulation.services');
@@ -119,10 +119,10 @@ Route::delete('menu-delete-management/{id}', [Administrator::class, 'DeleteMenu'
 });
 
 
-Route::prefix('Administrator')->name('Administrator.')
-->middleware('check.access.menu')
-->middleware('check.access.submenu')
-->group(function () {
+// Route::prefix('Administrator')->name('Administrator.')
+// ->middleware('check.access.menu')
+// ->middleware('check.access.submenu')
+// ->group(function () {
 Route::get('Administrator/Sub-Menu-management', [Administrator::class, 'submenuManagement'])->name('Administrator.sub.menu.management');
 Route::get('Administrator/Get-submenu-management', [Administrator::class, 'getSubMenu'])->name('Administrator.get.submenu.management');
 Route::get('Administrator/create-submenu-management', [Administrator::class, 'createSubmenu'])->name('Administrator.create.submenu.management');
@@ -130,7 +130,7 @@ Route::post('Administrator/Store-submenu-management', [Administrator::class, 'st
 Route::get('Administrator/view-submenu-update/{id}', [Administrator::class, 'showSubmenu'])->name('Administrator.submenu.view.update');
 Route::put('Administrator/store-update-submenu-management', [Administrator::class, 'UpdateSubMenu'])->name('Administrator.update.submenu.management');
 Route::delete('Administrator/submenu-delete-management/{id}', [Administrator::class, 'DeleteSubMenu'])->name('Administrator.delete.submenu.management');
-});
+// });
 
 
 

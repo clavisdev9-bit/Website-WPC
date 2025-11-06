@@ -21,7 +21,7 @@ class MsUserSeeder extends Seeder
             'username' => 'administrator',
             'email' => 'administrator@example.com',
             'password' => Hash::make('password123'), // password default
-            'image' => 'default.png',
+            'image' => 'default.jpg',
             'role_id' => 1,      // sesuai id role dari RoleSeeder
             'group_id' => 1,     // sesuai id group dari GroupCompanySeeder
             'divisi_id' => 1,    // sesuai id divisi dari DivisionSeeder
@@ -34,7 +34,7 @@ class MsUserSeeder extends Seeder
                 'username' => 'admincmswebsiteaccount',
                 'email' => 'admincmswebsiteaccount@example.com',
                 'password' => Hash::make('password123'),
-                'image' => 'default.png',
+                'image' => 'default.jpg',
                 'role_id' => 2, // misalnya role berbeda
                 'group_id' => 1,
                 'divisi_id' => 1,
@@ -48,7 +48,7 @@ class MsUserSeeder extends Seeder
                 'username' => 'adminquotationsystemaccount',
                 'email' => 'adminquotationsystemaccount@example.com',
                 'password' => Hash::make('password123'),
-                'image' => 'default.png',
+                'image' => 'default.jpg',
                 'role_id' => 3, // misalnya role berbeda
                 'group_id' => 1,
                 'divisi_id' => 3,
@@ -62,7 +62,7 @@ class MsUserSeeder extends Seeder
                 'username' => 'costumersaccount',
                 'email' => 'costumersaccount@example.com',
                 'password' => Hash::make('password123'),
-                'image' => 'default.png',
+                'image' => 'default.jpg',
                 'role_id' => 4, // misalnya role berbeda
                 'group_id' => 1,
                 'divisi_id' => 3,

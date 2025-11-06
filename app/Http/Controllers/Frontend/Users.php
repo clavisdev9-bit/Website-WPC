@@ -57,12 +57,7 @@ class Users extends Controller
         return view('fronts/contact/file', $data);
     }
 
-   public function tracking()  {
-         $data = [
-             'title' => 'Tracking'
-        ];
-        return view('fronts/tracking/file', $data);
-    }
+  
 
 // Start code Quotation
     public function qoute()  {
@@ -289,9 +284,7 @@ class Users extends Controller
     }
 
 
-        public function news_detail($slug)  {
-        
-            
+    public function news_detail($slug)  {
         $categories = CategoryModelsBlogs::withCount('blogs')->get();
         $recentPosts = Blogs::orderBy('created_at', 'desc')
             ->take(5) // ambil 5 postingan terbaru
