@@ -142,7 +142,7 @@
                       active-class="active-link"
                     >
                       <span class="nav-link-icon d-md-none d-lg-inline-block">
-                        <i class="nav-icon fa fa-map-location-dot"></i>
+                        <i class="nav-icon fa fa-calendar-days"></i>
                       </span>
                       <span class="nav-link-title">{{ $t('navbar.schedule') }}</span>
                     </RouterLink>

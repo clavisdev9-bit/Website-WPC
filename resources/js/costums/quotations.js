@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#terms').text(terms);
     $('#pickup_origin').text(pickup_origin);
     $('#destination_origin').text(destination_origin);
+    $('#termsDest').text(termsDest);
    $('#transportation_method').html(icons[transportation] || transportation);
 });
 
@@ -103,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let pickup_origin_s  = $(this).data('pickup_origin_s');
     let code_req      = $(this).data('code_req');
     let tm = $(this).data('tm');
+    let termsPick = $(this).data('terms-condition-pick');
     var icons = {
         'air': '<i class="fa fa-plane text-primary"></i> Air',
         'ocean': '<i class="fa fa-ship text-info"></i> Ocean',
@@ -111,15 +113,17 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     $('#pickup_origin_s').text(pickup_origin_s);
     $('#code_req').text(code_req);
+    $('#termsPick').text(termsPick);
     $('#tm').html(icons[tm] || tm);
 
 });
-
+ 
 
 $(document).on('click', '#destination', function() {
     let destination_origin_s  = $(this).data('destination_origin_s');
     let code_req_destination  = $(this).data('code_req_destination');
     let dm = $(this).data('dm');
+    let termsDest = $(this).data('terms-condition-dest');
     var icons = {
         'air': '<i class="fa fa-plane text-primary"></i> Air',
         'ocean': '<i class="fa fa-ship text-info"></i> Ocean',
@@ -129,7 +133,17 @@ $(document).on('click', '#destination', function() {
     $('#destination_origin_s').text(destination_origin_s);
     $('#code_req_destination').text(code_req_destination);
     $('#dm').html(icons[dm] || dm);
+    $('#termsDest').text(termsDest);
 
 });
+
+
+//  $(document).on('click', '#dataExample', function() {
+//     let po  = $(this).data('po');
+   
+//     // isi modal
+//     $('#po').text(po);
+// });
+
 });
 

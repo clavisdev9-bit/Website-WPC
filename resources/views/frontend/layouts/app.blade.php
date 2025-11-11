@@ -92,7 +92,7 @@
 	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
     
 	createChat({
-		webhookUrl: 'https://workflow-clavis-flow.vwfini.easypanel.host/webhook/9ba92abb-8cd8-42b6-a18d-1ed83952cc54/chat'
+		webhookUrl: 'https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat'
 	});
 
 	

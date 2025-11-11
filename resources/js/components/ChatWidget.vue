@@ -8,7 +8,7 @@
     <!-- Chat Window -->
     <div v-if="isOpen" class="chat-window">
       <div class="chat-header">
-        <span>WPC Chatbot  <i class="fa-regular fa-comments"></i></span>
+        <span>WPC Chatbot <i class="fa-regular fa-comments"></i></span>
         <button class="close-btn" @click="toggleChat">×</button>
       </div>
 
@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ref, nextTick } from 'vue'
 
 const isOpen = ref(false)
@@ -42,9 +42,7 @@ const chatBody = ref(null)
 
 const toggleChat = () => {
   isOpen.value = !isOpen.value
-  nextTick(() => {
-    scrollToBottom()
-  })
+  nextTick(scrollToBottom)
 }
 
 async function sendMessage() {
@@ -57,20 +55,100 @@ async function sendMessage() {
   scrollToBottom()
 
   try {
-    const res = await fetch(
-      'https://workflow-clavis-flow.vwfini.easypanel.host/webhook/9ba92abb-8cd8-42b6-a18d-1ed83952cc54/chat',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg }),
-      }
-    )
+   const response = await fetch(
+  "https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message }),
+  }
+);
+
+
+
     const data = await res.json()
+
     messages.value.push({
       sender: 'bot',
-      text: data.text || 'Maaf, saya tidak mengerti 😅',
+      text:
+        data.text ||
+        data.reply ||
+        data.answer ||
+        'Maaf, saya tidak mengerti 😅',
     })
   } catch (err) {
+    console.error(err)
+    messages.value.push({
+      sender: 'bot',
+      text: '⚠️ Terjadi kesalahan koneksi.',
+    })
+  }
+
+  scrollToBottom()
+}
+
+function scrollToBottom() {
+  nextTick(() => {
+    const el = chatBody.value
+    if (el) el.scrollTop = el.scrollHeight
+  })
+}
+</script> -->
+
+<script setup>
+import { ref, nextTick } from 'vue'
+
+const isOpen = ref(false)
+const input = ref('')
+const messages = ref([
+  { sender: 'bot', text: 'Halo! Ada yang bisa saya bantu hari ini?' },
+])
+const chatBody = ref(null)
+
+const toggleChat = () => {
+  isOpen.value = !isOpen.value
+  nextTick(scrollToBottom)
+}
+
+async function sendMessage() {
+  if (!input.value.trim()) return
+
+  const userMsg = input.value.trim()
+  messages.value.push({ sender: 'user', text: userMsg })
+  input.value = ''
+
+  scrollToBottom()
+
+  try {
+    const response = await fetch(
+  "https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chatInput: userMsg,   // bukan "message"
+      sessionId: "vue-chat-session", // optional, bisa random
+    }),
+  }
+);
+
+
+    const data = await response.json()
+
+    messages.value.push({
+      sender: 'bot',
+      text:
+        data.text ||
+        data.reply ||
+        data.answer ||
+        'Maaf, saya tidak mengerti 😅',
+    })
+  } catch (err) {
+    console.error(err)
     messages.value.push({
       sender: 'bot',
       text: '⚠️ Terjadi kesalahan koneksi.',
@@ -87,6 +165,7 @@ function scrollToBottom() {
   })
 }
 </script>
+
 
 <style scoped>
 /* ===== Floating Button ===== */
@@ -138,6 +217,7 @@ function scrollToBottom() {
   justify-content: space-between;
   align-items: center;
 }
+
 .close-btn {
   background: none;
   border: none;
@@ -166,12 +246,14 @@ function scrollToBottom() {
   font-size: 0.95rem;
   word-wrap: break-word;
 }
+
 .user {
   align-self: flex-end;
   background: #007bff;
   color: white;
   border-radius: 16px 16px 0 16px;
 }
+
 .bot {
   align-self: flex-start;
   background: #e9ecef;
@@ -186,6 +268,7 @@ function scrollToBottom() {
   border-top: 1px solid #dee2e6;
   background: white;
 }
+
 .chat-input input {
   flex: 1;
   border: 1px solid #ccc;
@@ -194,6 +277,7 @@ function scrollToBottom() {
   outline: none;
   font-size: 0.95rem;
 }
+
 .chat-input button {
   background: #007bff;
   border: none;
@@ -206,7 +290,7 @@ function scrollToBottom() {
   font-size: 16px;
 }
 
-/* ===== RESPONSIVE ADJUSTMENTS ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .chat-window {
     width: 90%;
@@ -224,13 +308,13 @@ function scrollToBottom() {
   }
 }
 
-/* ===== MOBILE HALF-SCREEN (≤480px) ===== */
+/* ===== MOBILE (≤480px) ===== */
 @media (max-width: 480px) {
   .chat-window {
     width: 95%;
     right: 2.5%;
     bottom: 80px;
-    height: 60vh; /* ✅ setengah layar */
+    height: 60vh;
     border-radius: 16px 16px 0 0;
     max-height: none;
   }
@@ -258,5 +342,4 @@ function scrollToBottom() {
     font-size: 0.9rem;
   }
 }
-
 </style>

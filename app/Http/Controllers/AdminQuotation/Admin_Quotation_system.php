@@ -66,6 +66,7 @@ class Admin_Quotation_system extends Controller
             ->addColumn('date_request', function ($row) {
                 return \Carbon\Carbon::parse($row['create_date'])->format('d M Y');
             })
+
             ->addColumn('data_customer', function ($row) {
                         $customer = $row['customer'] ?? null;
                         if (!$customer) return '-';
@@ -87,7 +88,6 @@ class Admin_Quotation_system extends Controller
 
                  ->addColumn('transportation_method', function ($row) {
                         $method = strtolower($row['transportation_method'] ?? '');
-
                         switch ($method) {
                             case 'air':
                                 return '<i class="fa fa-plane text-primary"></i> Air';
@@ -140,9 +140,10 @@ class Admin_Quotation_system extends Controller
                                     id="pickup"
                                     data-bs-toggle="modal" 
                                     data-bs-target="#modal-pickup-agent"
-                                     data-pickup_origin_s="' . e($originName) . '"
-                                     data-code_req="' . $codeRequest . '"
-                                     data-tm="' . $methodPickup . '"
+                                    data-pickup_origin_s="' . e($originName) . '"
+                                    data-code_req="' . $codeRequest . '"
+                                    data-tm="' . $methodPickup . '"
+                                    data-terms-condition-pick="' . e($row['terms_condition']) . '"
                                     >
                                     <i class="fa-solid fa-box-open"> </i> Pickup Agent
                                 </button>';
@@ -159,13 +160,20 @@ class Admin_Quotation_system extends Controller
                                     id="destination"
                                     data-bs-toggle="modal" 
                                     data-bs-target="#modal-destination-agent"
-                                      data-destination_origin_s="' . e($originNameDestination) . '"
-                                     data-code_req_destination="' . $codeRequestDestination . '"
-                                     data-dm="' . $methodDestination . '"
+                                    data-destination_origin_s="' . e($originNameDestination) . '"
+                                    data-code_req_destination="' . $codeRequestDestination . '"
+                                    data-dm="' . $methodDestination . '"
+                                    data-terms-condition-dest="' . e($row['terms_condition']) . '"
                                     >
                                    <i class="fa-solid fa-warehouse"></i> Destination Agent
                                 </button>';
                     })
+
+
+                    
+
+
+
                     ->rawColumns(['data_customer','data_quotation','transportation_method','agents_pickup','agents_destination'])
                     ->make(true);
     }

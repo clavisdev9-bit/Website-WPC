@@ -112,7 +112,6 @@
             <header class="card-header"> Details Quotation Request  </header>
             <div class="card-body">
                 <h2>Code Quotation Request: <span id="no_request"></span></h2>
-
                 <article class="card">
                     <div class="card-body row">
                         <div class="col"> <strong>Transportation Methode:</strong> <br> <p id="transportation_method"></p> </div>
@@ -136,6 +135,21 @@
                     </div>
                 </article>
                 <hr>
+
+                 <article class="card">
+                    <div class="card-body row">
+                    <div class="col"> <strong>terms condition for pickup mail:</strong> <br> <textarea class="form-control" id="termsPick" cols="10" rows="5" readonly></textarea> </div>
+                    </div>
+                </article>
+
+                <article class="card" hidden>
+                    <div class="card-body row">
+                    <div class="col"> <strong>terms condition for destination mail:</strong> <br> <textarea class="form-control" id="termsDest" cols="10" rows="5" readonly></textarea> </div>
+                    </div>
+                </article>
+
+               
+             
             </div>
         </article>
     </div>
@@ -241,6 +255,8 @@
       </div>
 
       <div class="modal-body">
+
+       
           <!-- Selected Contacts -->
           <div class="mb-3">
             <label class="form-label fw-bold">To <small class="text-danger">(***)</small></label>
@@ -258,6 +274,8 @@
               placeholder="Add CC email and press Enter" 
             />
           </div>
+
+          
 
           <!-- Subject -->
           <div class="mb-3">
@@ -1465,10 +1483,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById('modalSendEmail');
   const messageField = document.getElementById('emailMessage');
   const subjectField = document.getElementById('emailSubject');
+  const codeReq = document.getElementById('code_req');
+  const fromPickup = document.getElementById('pickup_origin_s');
+  // const termsPickup = document.getElementById('terms');
+  const termsPickup = document.getElementById('termsPick');
+  const tm = document.getElementById('tm'); 
 
   modal.addEventListener('shown.bs.modal', () => {
+    const reqValue = codeReq.textContent.trim();
+    const reqValuePickup = fromPickup.textContent.trim();
+    const termsValue = termsPickup.textContent.trim();
+    const tmValue = tm.textContent.trim();
+
+
     if (!subjectField.value) {
-      subjectField.value = "Special Offers for Shipping Needs (Pickup Services)";
+        subjectField.value = `Special Offer for Shipping Needs (Pickup Service) with No Request ${reqValue}`;
     }
 
     if (!messageField.value) {
@@ -1476,6 +1505,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 We’re excited to share our latest pickup schedule and exclusive rates with you.  
 Please find the attached quotation for your review.
+
+These are the details of the pickup we offer.
+No Request: ${reqValue}
+Transportation Methode: ${tmValue}
+Pickup Origin From: ${reqValuePickup}
+Terms Condition: ${termsValue}
+
 
 We look forward to your feedback and continued collaboration.
 
@@ -1488,16 +1524,34 @@ We look forward to your feedback and continued collaboration.
 
 
 
+
+
+
+
+
 {{-- default inputan untuk destination --}}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById('modalSendEmailDestination');
   const messageField = document.getElementById('emailMessageDestination');
   const subjectField = document.getElementById('emailSubjectDestination');
+  
+  const toDestination = document.getElementById('destination_origin_s');
+  const codeReqDestination = document.getElementById('code_req_destination');
+  const dmDestination = document.getElementById('dm');
+  const termsDestination = document.getElementById('termsDest');
 
   modal.addEventListener('shown.bs.modal', () => {
+
+    const reqValueToDestination = toDestination.textContent.trim();
+    const reqValueCodeReqDestination = codeReqDestination.textContent.trim();
+    const reqValueDmDestination = dmDestination.textContent.trim();
+    const reqValueTermsDestination = termsDestination.textContent.trim();
+
+
     if (!subjectField.value) {
-      subjectField.value = "Special Offers for Shipping Needs (Destination Services)";
+      
+      subjectField.value = `Special Offers for Shipping Needs (Destination Services) with No Request ${reqValueCodeReqDestination}`;
     }
 
     if (!messageField.value) {
@@ -1505,6 +1559,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 We’re excited to share our latest shipping schedule and exclusive destination rates with you.  
 Please find the attached quotation for your review.
+
+No Request: ${reqValueCodeReqDestination}
+Transportation Methode: ${reqValueDmDestination}
+Pickup Origin From: ${reqValueToDestination}
+Terms Condition: ${reqValueTermsDestination}
+
 
 We look forward to your feedback and hope to continue our successful cooperation.
 
@@ -1514,7 +1574,6 @@ We look forward to your feedback and hope to continue our successful cooperation
 
 });
 </script>
-
 
 
 
