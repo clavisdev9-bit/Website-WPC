@@ -56,6 +56,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    
+    $(document).on('click', '#sets', function() {
+       var name = $(this).data('name');
+       var email = $(this).data('email');
+       var phone = $(this).data('phone');
+       var countryName = $(this).data('country-name');
+       var stateName = $(this).data('state-name');
+       var streetName = $(this).data('street-name');
+       var streetTwoName = $(this).data('street-two-name');
+       var zipName = $(this).data('zip-name');
+       
+
+      $('#name').text(name);  
+      $('#email').text(email);  
+      $('#phone').text(phone);  
+      $('#countryName').text(countryName);  
+      $('#stateName').text(stateName);  
+      $('#streetName').text(streetName);  
+      $('#streetTwoName').text(streetTwoName);  
+      $('#zipName').text(zipName);  
+      
+    })
 });
 

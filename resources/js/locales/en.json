@@ -152,7 +152,7 @@
     "email": "Email",
     "country": "Country",
     "state": "State",
-    "termsCondition": "Terms & Conditions",
+    "termsOtherNotes": "Enter Other Notes",
     "transportationMethod": "Transportation Method",
     "origin": "Origin",
     "destination": "Destination"
@@ -167,7 +167,7 @@
     "emailType": "Select type",
     "country": "Select country",
     "state": "Select state",
-    "termsCondition": "Enter Terms & Conditions",
+    "termsCondition": "Enter Other Notes",
     "origin": "Select origin",
     "destination": "Select destination"
   },

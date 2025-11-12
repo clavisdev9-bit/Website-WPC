@@ -168,12 +168,6 @@ class Admin_Quotation_system extends Controller
                                    <i class="fa-solid fa-warehouse"></i> Destination Agent
                                 </button>';
                     })
-
-
-                    
-
-
-
                     ->rawColumns(['data_customer','data_quotation','transportation_method','agents_pickup','agents_destination'])
                     ->make(true);
     }
@@ -263,13 +257,21 @@ public function Get_data_contact_fix_sync(Request $request)
                 }
                 return '-';
             })
-            ->addColumn('details', function ($row) {
-                $btn = '<a href="#" class="btn btn-outline-warning me-1">
-                            <i class="fa fa-eye"></i>
-                        </a>';
 
-                return $btn;
-            })
+            ->addColumn('details', function ($row) {
+                return '<a id="sets" class="btn btn-pill btn-outline-orange btn-sm" data-bs-toggle="modal" data-bs-target="#modal-large"
+                             data-name="' . htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8') . '"
+                             data-email="' . htmlspecialchars($row->email, ENT_QUOTES, 'UTF-8') . '"
+                             data-phone="' . htmlspecialchars($row->phone, ENT_QUOTES, 'UTF-8') . '"
+                             data-country-name="' . htmlspecialchars($row->countries->pluck('country_name'), ENT_QUOTES, 'UTF-8') . '"
+                             data-state-name="' . htmlspecialchars($row->states->pluck('state_name'), ENT_QUOTES, 'UTF-8') . '"
+                             data-street-name="' . htmlspecialchars($row->street, ENT_QUOTES, 'UTF-8') . '"
+                             data-street-two-name="' . htmlspecialchars($row->street2, ENT_QUOTES, 'UTF-8') . '"
+                             data-zip-name="' . htmlspecialchars($row->zip, ENT_QUOTES, 'UTF-8') . '"
+                             >
+                            <i class="fa fa-sticky-note"> </i> Details
+                        </a>';
+            }) 
             ->rawColumns(['details'])
             ->make(true);
     }

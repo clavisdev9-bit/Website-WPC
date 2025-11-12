@@ -136,7 +136,7 @@
                 </article>
                 <hr>
 
-                 <article class="card">
+                 <article class="card" hidden>
                     <div class="card-body row">
                     <div class="col"> <strong>terms condition for pickup mail:</strong> <br> <textarea class="form-control" id="termsPick" cols="10" rows="5" readonly></textarea> </div>
                     </div>
@@ -1574,6 +1574,10 @@ We look forward to your feedback and hope to continue our successful cooperation
 
 });
 </script>
+
+
+
+
 
 
 

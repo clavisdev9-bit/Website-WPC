@@ -153,7 +153,7 @@
     "email": "البريد الإلكتروني",
     "country": "الدولة",
     "state": "المحافظة / الولاية",
-    "termsCondition": "الشروط والأحكام",
+    "termsOtherNotes": "ملاحظات أخرى",
     "transportationMethod": "طريقة النقل",
     "origin": "المنشأ",
     "destination": "الوجهة"
@@ -168,7 +168,7 @@
     "emailType": "اختر نوع البريد الإلكتروني",
     "country": "اختر الدولة",
     "state": "اختر المحافظة / الولاية",
-    "termsCondition": "أدخل الشروط والأحكام",
+    "termsCondition": "ملاحظات أخرى",
     "origin": "اختر المنشأ",
     "destination": "اختر الوجهة"
   },

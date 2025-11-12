@@ -153,7 +153,7 @@
     "email": "メール",
     "country": "国",
     "state": "州 / 都道府県",
-    "termsCondition": "利用規約",
+    "termsOtherNotes": "その他の注意事項",
     "transportationMethod": "輸送方法",
     "origin": "出発地",
     "destination": "目的地"
@@ -168,7 +168,7 @@
       "emailType": "メールの種類を選択",
     "country": "国を選択",
     "state": "州/都道府県を選択",
-    "termsCondition": "利用規約を入力",
+    "termsCondition": "その他の注意事項",
     "origin": "出発地を選択",
     "destination": "目的地を選択"
   },

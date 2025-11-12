@@ -152,7 +152,7 @@
     "email": "Email",
     "country": "Negara",
     "state": "Provinsi",
-    "termsCondition": "Syarat & Ketentuan",
+    "termsOtherNotes": "Catatan Lainya",
     "transportationMethod": "Metode Transportasi",
     "origin": "Asal",
     "destination": "Tujuan"
@@ -167,7 +167,7 @@
     "emailType": "Pilih tipe email",
     "country": "Pilih negara",
     "state": "Pilih provinsi",
-    "termsCondition": "Masukkan Syarat & Ketentuan",
+    "termsCondition": "Catatan Lainya",
     "origin": "Pilih asal",
     "destination": "Pilih tujuan"
   },

@@ -187,7 +187,7 @@
                         Cargo Details <i class="fa fa-box"></i>
                       </h3>
                       <div class="mb-3">
-                        <label class="form-label fw-bold">{{ $t("quotationForm.labels.termsCondition") }} <small class="text-danger">*</small></label>
+                        <label class="form-label fw-bold">{{ $t("quotationForm.labels.termsOtherNotes") }} <small class="text-danger">*</small></label>
                         <textarea
                           v-model="termsCondition"
                           :class="['form-control', errors.termsCondition ? 'is-invalid' : '']"

@@ -153,7 +153,7 @@
     "email": "电子邮件",
     "country": "国家",
     "state": "州 / 省",
-    "termsCondition": "条款和条件",
+    "termsOtherNotes": "其他注意事项",
     "transportationMethod": "运输方式",
     "origin": "起点",
     "destination": "目的地"
@@ -168,7 +168,7 @@
     "emailType": "选择电子邮件类型",
     "country": "选择国家",
     "state": "选择州/省",
-    "termsCondition": "输入条款和条件",
+    "termsCondition": "其他注意事项",
     "origin": "选择起点",
     "destination": "选择目的地"
   },

@@ -307,7 +307,7 @@ if ($request->has('search') && !empty($request->input('search')['value'])) {
                             >
                             <i class="fa fa-sticky-note"> </i> Details
                         </a>';
-            })
+            }) 
 
             ->addColumn('action', function ($row) {
                 $getIdSubmenu = Crypt::encrypt($row->id_submenu);

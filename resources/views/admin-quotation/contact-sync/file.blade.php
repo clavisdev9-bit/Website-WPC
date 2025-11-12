@@ -43,7 +43,7 @@
                 <thead>
                     <tr>
                         <th style="width: 5%">No.</th>
-                        <th>Name Kontak</th>
+                        <th>Name Contacts</th>
                         <th>Email</th>
                         <th>Phone Number</th>
                         <th>Roles / Tags</th>
@@ -85,6 +85,68 @@
     </div>
 </div>
 </div>
+
+
+
+
+<div class="modal modal-blur fade" id="modal-large" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+	<h5 class="modal-title">Data Submenu</h5>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+	
+
+
+    <div class="container">
+        <article class="card">
+            <header class="card-header"> Details Contacts </header>
+            <div class="card-body">
+
+                <article class="card">
+                    <div class="card-body row">
+                        <div class="col"> <strong>Name:</strong> <br> <p id="name"></p> </div>
+                        <div class="col"> <strong>Email:</strong> <br> <p id="email"></p> </div>
+                        <div class="col"> <strong>Phone:</strong> <br> <p id="phone"></p></div>
+                    </div>
+                </article>
+                <hr>
+
+                <article class="card">
+                    <div class="card-body row">
+                        <div class="col"> <strong>Country:</strong> <br> <p id="countryName"></p> </div>
+                        <div class="col"> <strong>State:</strong> <br> <p id="stateName"></p> </div>
+                        <div class="col"> <strong>Street 1:</strong> <br> <p id="streetName"></p></div>
+                    </div>
+                </article>
+                <hr>
+
+                <article class="card">
+                    <div class="card-body row">
+                        <div class="col"> <strong>Street 2:</strong> <br> <p id="streetTwoName"></p> </div>
+                        <div class="col"> <strong>Zip:</strong> <br> <p id="zipName"></p> </div>
+                    </div>
+                </article>
+                <hr>
+
+            </div>
+        </article>
+    </div>
+        
+          </div>
+          
+<div class="modal-footer">
+	<button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+</div>
+		</div>
+	</div>
+</div>
+
+
+
+
 <meta name="route-contact-sync-get" content="{{ route('Admin.quotation.get.system.contact.sync') }}">
 <meta name="route-contact-sync-get-log" content="{{ route('Admin.quotation.get.system.contact.sync.log') }}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
