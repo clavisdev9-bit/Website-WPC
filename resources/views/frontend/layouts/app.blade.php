@@ -89,7 +89,7 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
         <script type="module">
-	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+	import { createChat } from '/js/chat.js';
     
 	createChat({
 		webhookUrl: 'https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat'
