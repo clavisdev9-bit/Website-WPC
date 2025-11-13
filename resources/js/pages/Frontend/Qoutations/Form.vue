@@ -27,19 +27,6 @@
               <div class="tab-pane fade show active" id="quotation">
                 <div class="p-3">
 
-                  <!-- Stepper indicator -->
-                   <!-- <ul class="stepper justify-content-center mb-4">
-                        <li
-                        v-for="(step, index) in steps"
-                        :key="index"
-                        class="step-item"
-                        :class="{ active: currentStep === index, completed: currentStep > index }"
-                        @click="goToStep(index)"
-                        >
-                        <div class="step-circle">{{ index + 1 }}</div>
-                        <div class="step-label">{{ step }}</div>
-                        </li>
-                    </ul> -->
                     <ul class="stepper justify-content-center mb-4">
                       <li
                         v-for="(step, index) in steps"
@@ -181,11 +168,90 @@
                       </div>
                     </div>
 
+
                     <!-- STEP 2: Cargo Details -->
                     <div v-if="currentStep === 1">
                       <h3 class="fw-bold text-primary mb-3">
                         Cargo Details <i class="fa fa-box"></i>
                       </h3>
+
+                      <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label">Commodity <small class="text-danger">*</small></label>
+                          <Multiselect
+                            v-model="selectedCommodity"
+                            :options="commodityDataSelected"
+                            track-by="value"
+                            label="label"
+                            placeholder="Select-Commodity"
+                            @close="validateField('selectedCommodity')" 
+                            @select="validateField('selectedCommodity')"
+                            :class="errors.selectedCommodity ? 'is-invalid' : ''"
+                          />
+                          <small class="text-danger">{{ errors.selectedCommodity }}</small>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
+                          <Multiselect
+                            v-model="selectedUom"
+                            :options="uomDataSelected"
+                            track-by="value"
+                            label="label"
+                            placeholder="Select UOM"
+                            @close="validateField('selectedUom')" 
+                            @select="validateField('selectedUom')"
+                            :class="errors.selectedUom ? 'is-invalid' : ''"
+                          />
+                          <small class="text-danger">{{ errors.selectedUom }}</small>
+                          
+                        </div>
+
+                        <!-- Ratio -->
+                          <div class="col-md-4 mb-3">
+                            <label class="form-label">Ratio <small class="text-danger">*</small></label>
+                            <input type="number" v-model="ratio"
+                             step="0.01" 
+                             :class="['form-control', errors.ratio ? 'is-invalid' : '']" 
+                             name="ratio" 
+                             placeholder="e.g. 1.5">
+                              <small class="text-danger">{{ errors.ratio }}</small>
+                          </div>
+
+                        <!-- Quantity -->
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label">Quantity <small class="text-danger">*</small></label>
+                          <input type="number" v-model="qty"
+                           :class="['form-control', errors.qty ? 'is-invalid' : '']" 
+                            name="qty"
+                            placeholder="e.g. 10">
+                             <small class="text-danger">{{ errors.qty }}</small>
+                        </div>
+
+                        <!-- KGS CHG -->
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label"> Chargeable Weight (KGS) <small class="text-danger">*</small></label>
+                          <input type="number" v-model="kgs_chg"
+                             :class="['form-control', errors.kgs_chg ? 'is-invalid' : '']" 
+                            name="kgs_chg"
+                            placeholder="e.g. 50"
+                            >
+                             <small class="text-danger">{{ errors.kgs_chg }}</small>
+                        </div>
+
+                        <!-- KGS WT -->
+                        <div class="col-md-4 mb-3">
+                          <label class="form-label">Actual Weight (KGS) <small class="text-danger">*</small></label>
+                          <input type="number"
+                           v-model="kgs_wt"
+                           :class="['form-control', errors.kgs_wt ? 'is-invalid' : '']"
+                           name="kgs_wt" 
+                           placeholder="e.g. 75">
+                           <small class="text-danger">{{ errors.kgs_wt }}</small>
+                        </div>
+                      </div>
+
                       <div class="mb-3">
                         <label class="form-label fw-bold">{{ $t("quotationForm.labels.termsOtherNotes") }} <small class="text-danger">*</small></label>
                         <textarea
@@ -197,20 +263,7 @@
                       </textarea>
                        <small class="text-danger">{{ errors.termsCondition }}</small>
                       </div>
-                      <div class="row">
-                        <div class="col-md-4 mb-3">
-                          <label class="form-label">Pieces <small class="text-danger">(now opsional)</small></label>
-                          <input type="number" class="form-control" placeholder="e.g. 10">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                          <label class="form-label">Weight (kg) <small class="text-danger">(now opsional)</small></label>
-                          <input type="number" class="form-control" placeholder="e.g. 500">
-                        </div>
-                        <div class="col-md-4 mb-3">
-                          <label class="form-label">Volume (CBM) <small class="text-danger">(now opsional)</small></label>
-                          <input type="number" class="form-control" placeholder="e.g. 2.5">
-                        </div>
-                      </div>
+
                     </div>
 
                     <!-- STEP 3: Route -->
@@ -416,7 +469,13 @@ const selectedTransportation1 = ref(null);
 const selectedTransportation2 = ref(null);
 const selectedPickupOrigin = ref(null);
 const selectedPickupDestination = ref(null);
-const termsCondition = ref("")
+const termsCondition = ref("");
+const selectedCommodity = ref(null); 
+const selectedUom = ref(null); 
+const ratio = ref("");
+const qty = ref("");
+const kgs_chg = ref("");
+const kgs_wt = ref("");
 
 
 // --- Error per field ---
@@ -431,7 +490,11 @@ const errors = ref({
   selectedTransportation1: '',
   selectedTransportation2: '',
   selectedPickupOrigin: '',
-  selectedPickupDestination: ''
+  selectedPickupDestination: '',
+  ratio: '',
+  qty:'',
+  kgs_chg:'',
+  kgs_wt:'',
 });
 
 
@@ -464,12 +527,53 @@ const validateField = (name) => {
     case 'selectedState':
       errors.value.selectedState = selectedState.value ? '' : 'State is required';
       break;
-    // case 'termsCondition':
-    //   errors.value.termsCondition = termsCondition.value ? '' : 'Please fill in the terms';
-    //   break;
+
+    case 'ratio':
+    if (!ratio.value) {
+      errors.value.ratio = 'Ratio is required';
+    } else if (isNaN(ratio.value)) {
+      errors.value.ratio = 'Ratio must be a number';
+    } else {
+      errors.value.ratio = '';
+    }
+    break;
+
+    case 'qty':
+    if (!qty.value) {
+      errors.value.qty = 'Quantity is required';
+    } else if (isNaN(ratio.value)) {
+      errors.value.qty = 'Quantity must be a number';
+    } else {
+      errors.value.qty = '';
+    }
+    break;
+
+
+    case 'kgs_chg':
+    if (!kgs_chg.value) {
+      errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
+    } else if (isNaN(ratio.value)) {
+      errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
+    } else {
+      errors.value.kgs_chg = '';
+    }
+    break;
+
+
+    case 'kgs_wt':
+    if (!kgs_wt.value) {
+      errors.value.kgs_wt = 'Actual Weight (KGS) is required';
+    } else if (isNaN(ratio.value)) {
+      errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
+    } else {
+      errors.value.kgs_wt = '';
+    }
+    break;
+
+
     case 'termsCondition':
       if (!termsCondition.value || termsCondition.value.trim() === '') {
-        errors.value.termsCondition = 'Terms & Conditions cannot be empty';
+        errors.value.termsCondition = 'Other Notes cannot be empty';
       } else if (termsCondition.value.trim().length < 10) {
         errors.value.termsCondition = 'Please enter at least 10 characters';
       } else if (termsCondition.value.trim().length > 800) {
@@ -478,6 +582,8 @@ const validateField = (name) => {
         errors.value.termsCondition = '';
       }
       break;
+
+
     case 'selectedTransportation1':
       errors.value.selectedTransportation1 = selectedTransportation1.value ? '' : 'Required';
       break;
@@ -517,40 +623,17 @@ const transportationMethods = [
   { value: "Ocean", label: "Ocean" }
 ];
 
-// --- Validasi per step ---
-// const validateStep = (step) => {
-//   if (step === 0) {
-//     if (
-//       !selectedBusinessType.value ||
-//       !fullnameOrCompanyName.value ||
-//       !email.value ||
-//       !phone.value ||
-//       !selectedCountry.value ||
-//       !selectedState.value
-//     ) {
-//       toast.error("Please complete all Personal Information fields!");
-//       return false;
-//     }
-//   }
-//   if (step === 1) {
-//     if (!termsCondition.value) {
-//       toast.error("Please fill Cargo Details before continuing!");
-//       return false;
-//     }
-//   }
-//   if (step === 2) {
-//     if (
-//       !selectedTransportation1.value ||
-//       !selectedTransportation2.value ||
-//       !selectedPickupOrigin.value ||
-//       !selectedPickupDestination.value
-//     ) {
-//       toast.error("Please complete all Route fields!");
-//       return false;
-//     }
-//   }
-//   return true;
-// };
+// data sementara Commodity
+const commodityDataSelected = [
+  { value: "AgelocMIR", label: "AgelocMIR" },
+  { value: "Cosmetic", label: "Cosmetic" }
+];
+
+// data sementara Uom
+const uomDataSelected = [
+  { value: "Days", label: "Days" },
+  { value: "Hour", label: "Hour" }
+];
 
 const validateStep = (step) => {
   let valid = true;
@@ -564,9 +647,13 @@ const validateStep = (step) => {
   }
 
   if (step === 1) {
-    validateField('termsCondition');
-    if (errors.value.termsCondition) valid = false;
+    ['termsCondition', 'ratio','qty','kgs_chg','kgs_wt']
+      .forEach((f) => {
+        validateField(f);
+        if (errors.value[f]) valid = false;
+      });
   }
+
 
   if (step === 2) {
     ['selectedTransportation1', 'selectedTransportation2', 'selectedPickupOrigin', 'selectedPickupDestination']
