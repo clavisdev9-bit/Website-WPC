@@ -1,32 +1,7 @@
 <template>
   <div>
-    <!-- Floating Chat Button -->
-    <button class="chat-button" @click="toggleChat">
-      <i class="fa-regular fa-comments"></i>
-    </button>
-
-    <!-- Chat Window -->
-    <div v-if="isOpen" class="chat-window">
-      <div class="chat-header">
-        <span>WPC Chatbot <i class="fa-regular fa-comments"></i></span>
-        <button class="close-btn" @click="toggleChat">×</button>
-      </div>
-
-      <div class="chat-body" ref="chatBody">
-        <div v-for="(msg, i) in messages" :key="i" :class="['msg', msg.sender]">
-          {{ msg.text }}
-        </div>
-      </div>
-
-      <div class="chat-input">
-        <input
-          v-model="input"
-          placeholder="Ketik pesan..."
-          @keyup.enter="sendMessage"
-        />
-        <button @click="sendMessage">➤</button>
-      </div>
-    </div>
+    <p>Webhook URL saat ini:</p>
+    <code>{{ webhookUrl }}</code>
   </div>
 </template>
 
@@ -98,8 +73,16 @@ function scrollToBottom() {
 </script> -->
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
+import { createChat } from '@public/js/chat.js';
+import '@public/assets/frontend/css/chat.css';
+// 1️⃣ Buat variabel reaktif
+const webhookUrl = ref('https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat')
 
+// 2️⃣ Gunakan di lifecycle hook
+onMounted(() => {
+  createChat({ webhookUrl: webhookUrl.value })
+})
 const isOpen = ref(false)
 const input = ref('')
 const messages = ref([

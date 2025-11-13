@@ -8,7 +8,8 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
-       <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+       <!-- <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" /> -->
+        <link href="{{ asset('assets/frontend/css/chat.css')}}" rel="stylesheet">
 
         <!-- Apple Touch Icons -->
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
@@ -89,6 +90,7 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
         <script type="module">
+	// import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 	import { createChat } from '/js/chat.js';
     
 	createChat({

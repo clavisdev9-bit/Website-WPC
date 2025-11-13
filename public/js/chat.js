@@ -3176,10 +3176,10 @@ const defaultOptions = {
 	chatSessionKey: "sessionId",
 	defaultLanguage: "en",
 	showWelcomeScreen: !1,
-	initialMessages: ["Hi there! 👋", "WPC"],
+	initialMessages: ["Hello, How can I help you today?"],
 	i18n: { en: {
-		title: "Hi there! 👋",
-		subtitle: "Halo ",
+		title: "WPC Chatbot💬",
+		subtitle: "",
 		footer: "",
 		getStarted: "New Conversation",
 		inputPlaceholder: "Type your question..",
