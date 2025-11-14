@@ -86,7 +86,6 @@ class Master extends Controller
 
 
 
-
         // ambil pickup origin
         public function pickupOrigins(Request $request)
             {
@@ -203,4 +202,79 @@ class Master extends Controller
             ], 503);
         }
     }
+
+
+
+     public function commodity()
+        {
+          
+            $externalUrl = "https://53794bb17cf4.ngrok-free.app/lookups/commodities";
+
+            try {
+                // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+                $response = Http::withOptions([
+                    'verify' => false, 
+                    'timeout' => 15
+                ])->get($externalUrl); 
+
+                if ($response->failed()) {
+                    return response()->json([
+                        "success" => false,
+                        "message" => "Failed to fetch commodities from external API"
+                    ], $response->status() ?: 500);
+                }
+
+                $data = $response->json();
+                $commodities = $data['data'] ?? $data;
+
+                return response()->json([
+                    "success" => true,
+                    "data" => $commodities,
+                    "count" => count($commodities)
+                ]);
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "External service unavailable: " . $e->getMessage()
+                ], 503);
+            }
+        }
+
+
+        public function uom()
+        {
+          
+            $externalUrl = "https://53794bb17cf4.ngrok-free.app/lookups/uoms";
+
+            try {
+                // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+                $response = Http::withOptions([
+                    'verify' => false, 
+                    'timeout' => 15
+                ])->get($externalUrl); 
+
+                if ($response->failed()) {
+                    return response()->json([
+                        "success" => false,
+                        "message" => "Failed to fetch uoms from external API"
+                    ], $response->status() ?: 500);
+                }
+
+                $data = $response->json();
+                $uoms = $data['data'] ?? $data;
+
+                return response()->json([
+                    "success" => true,
+                    "data" => $uoms,
+                    "count" => count($uoms)
+                ]);
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "External service unavailable: " . $e->getMessage()
+                ], 503);
+            }
+        }
 }

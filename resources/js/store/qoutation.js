@@ -4,8 +4,12 @@ import axios from "axios";
 
 export const useQuotation = defineStore("QuotationFitur", () => {
 
-    // code untuk ambil data country
+    // code url Api
   const baseUrlApiExternalCountry ="/api/country";
+  const baseUrlApiExternalCommodity ="/api/master/commodities";
+  const baseUrlApiExternalUom ="/api/master/uoms";
+
+  
   // state
   const dataCountry = ref([]);
   const dataState = ref([]);
@@ -13,6 +17,53 @@ export const useQuotation = defineStore("QuotationFitur", () => {
   const dataPickupDestinations = ref([]);
   const loading = ref(false);
   const error = ref(null);
+  const dataCommodities = ref([]);
+  const dataUoms = ref([]);
+
+
+  // fetch commodities
+  const fetchCommodities = async () => {
+  loading.value = true;
+  error.value = null;
+  try {
+    // const { data } = await axios.get(`/api/master/commodities`);
+    const { data } = await axios.get(`${baseUrlApiExternalCommodity}`);
+    dataCommodities.value = (data?.data ?? []).map(item => ({
+      value: item.id,                
+      label: item.name,  
+    }));
+
+  } catch (err) {
+    console.error("Error fetching commodities:", err);
+    error.value = err.response?.data?.message || err.message || "Unknown error";
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+  // fetch Uoms
+const fetchUoms = async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const { data } = await axios.get(baseUrlApiExternalUom);
+
+    dataUoms.value = (data?.data ?? []).map(item => ({
+      value: item.id,
+      label: item.name,
+      factor: item.factor,
+    }));
+  } catch (err) {
+    console.error("Error fetching uoms:", err);
+    error.value = err.response?.data?.message || err.message || "Unknown error";
+  } finally {
+    loading.value = false;
+  }
+};
+
+
 
   // action untuk fetch data
   const fetchCountries = async () => {
@@ -106,12 +157,16 @@ const createQuote = async (payload) => {
     dataState,
     dataPickupOrigins,
     dataPickupDestinations,
+    dataCommodities,
+    dataUoms,
     loading,
     error,
     fetchCountries,
     fetchStatesByCountry,
     fetchPickupOrigins,
     fetchPickupDestinations,
+    fetchCommodities,
+    fetchUoms,
     createQuote
   };
 });

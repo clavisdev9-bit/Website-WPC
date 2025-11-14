@@ -1,76 +1,13 @@
 <template>
-  <div>
+  <!-- <div>
+    <p>Webhook URL saat ini:</p>
+    <code>{{ webhookUrl }}</code>
+  </div> -->
+   <div v-if="debug">
     <p>Webhook URL saat ini:</p>
     <code>{{ webhookUrl }}</code>
   </div>
 </template>
-
-<!-- <script setup>
-import { ref, nextTick } from 'vue'
-
-const isOpen = ref(false)
-const input = ref('')
-const messages = ref([
-  { sender: 'bot', text: 'Halo! Ada yang bisa saya bantu hari ini?' },
-])
-const chatBody = ref(null)
-
-const toggleChat = () => {
-  isOpen.value = !isOpen.value
-  nextTick(scrollToBottom)
-}
-
-async function sendMessage() {
-  if (!input.value.trim()) return
-
-  const userMsg = input.value
-  messages.value.push({ sender: 'user', text: userMsg })
-  input.value = ''
-
-  scrollToBottom()
-
-  try {
-   const response = await fetch(
-  "https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ message }),
-  }
-);
-
-
-
-    const data = await res.json()
-
-    messages.value.push({
-      sender: 'bot',
-      text:
-        data.text ||
-        data.reply ||
-        data.answer ||
-        'Maaf, saya tidak mengerti 😅',
-    })
-  } catch (err) {
-    console.error(err)
-    messages.value.push({
-      sender: 'bot',
-      text: '⚠️ Terjadi kesalahan koneksi.',
-    })
-  }
-
-  scrollToBottom()
-}
-
-function scrollToBottom() {
-  nextTick(() => {
-    const el = chatBody.value
-    if (el) el.scrollTop = el.scrollHeight
-  })
-}
-</script> -->
 
 <script setup>
 import { ref, nextTick, onMounted } from 'vue'
@@ -149,7 +86,7 @@ function scrollToBottom() {
 }
 </script>
 
-
+<!-- 
 <style scoped>
 /* ===== Floating Button ===== */
 .chat-button {
@@ -325,4 +262,4 @@ function scrollToBottom() {
     font-size: 0.9rem;
   }
 }
-</style>
+</style> -->

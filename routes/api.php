@@ -19,6 +19,11 @@ Route::get('/states/country/{countryId}', [Master::class, 'statesByCountry'])->n
 Route::get('/pickup-origins', [Master::class, 'pickupOrigins']);
 Route::get('/pickup-destinations', [Master::class, 'pickupDestinations']);
 Route::post('/quote/create', [Qoutation::class, 'createQuotation']);
+Route::get('/master/commodities', [Master::class, 'commodity']);
+Route::get('/master/uoms', [Master::class, 'uom']);
+
+
+
 
 // route for syncron contacts Manual
 Route::get('/contacts', [ContactSyncApi::class, 'index'])->name('get.data.contact.fix.');

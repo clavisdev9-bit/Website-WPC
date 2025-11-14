@@ -181,10 +181,10 @@
                           <label class="form-label">Commodity <small class="text-danger">*</small></label>
                           <Multiselect
                             v-model="selectedCommodity"
-                            :options="commodityDataSelected"
+                            :options="quotationStore.dataCommodities"
                             track-by="value"
                             label="label"
-                            placeholder="Select-Commodity"
+                            placeholder="Select Commodities"
                             @close="validateField('selectedCommodity')" 
                             @select="validateField('selectedCommodity')"
                             :class="errors.selectedCommodity ? 'is-invalid' : ''"
@@ -196,7 +196,7 @@
                           <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
                           <Multiselect
                             v-model="selectedUom"
-                            :options="uomDataSelected"
+                            :options="quotationStore.dataUoms"
                             track-by="value"
                             label="label"
                             placeholder="Select UOM"
@@ -210,14 +210,19 @@
 
                         <!-- Ratio -->
                           <div class="col-md-4 mb-3">
-                            <label class="form-label">Ratio <small class="text-danger">*</small></label>
-                            <input type="number" v-model="ratio"
-                             step="0.01" 
-                             :class="['form-control', errors.ratio ? 'is-invalid' : '']" 
-                             name="ratio" 
-                             placeholder="e.g. 1.5">
-                              <small class="text-danger">{{ errors.ratio }}</small>
+                            <label class="form-label">Ratio <small class="text-danger">* (automatic)</small></label>
+                            <input 
+                              type="number" 
+                              v-model="ratio"
+                              step="0.01"
+                              :readonly="true"
+                              :class="['form-control', errors.ratio ? 'is-invalid' : '']"
+                              name="ratio"
+                              placeholder="e.g. 1.5"
+                            >
+                            <small class="text-danger">{{ errors.ratio }}</small>
                           </div>
+
 
                         <!-- Quantity -->
                         <div class="col-md-4 mb-3">
@@ -263,14 +268,13 @@
                       </textarea>
                        <small class="text-danger">{{ errors.termsCondition }}</small>
                       </div>
-
                     </div>
 
                     <!-- STEP 3: Route -->
                     <div v-if="currentStep === 2">
                       <h3 class="fw-bold text-primary mb-3">
                         Route <i class="fa fa-route"></i>
-                      </h3>
+                      </h3> 
                       <div class="row">
                         <div class="col-md-6 mb-3">
                           <label class="form-label fw-bold">{{ $t("quotationForm.labels.transportationMethod") }} <span class="text-danger">*</span></label>
@@ -377,12 +381,6 @@
               </div>
 
 
-
-              
-
-
-
-
               <!-- Tracking Tab -->
               <div class="tab-pane fade" id="tracking" role="tabpanel">
                             <div class="card shadow-sm p-4">
@@ -409,8 +407,7 @@
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
-
-  </FrontendLayout>
+</FrontendLayout>
 </template>
 
 
@@ -426,11 +423,13 @@ import { useToast } from 'vue-toastification'
 const toast = useToast();
 const quotationStore = useQuotation();
 
+
+
+
 // --- Stepper Control ---
 const currentStep = ref(0);
 // const steps = ["Personal Information", "Cargo Details", "Route"];
 const steps = ['personalInfo', 'cargoDetails', 'route']
-
 
 // animation spinner
 const isSubmitting = ref(false);
@@ -450,7 +449,7 @@ const resetForm = () => {
   selectedPickupOrigin.value = null;
   selectedPickupDestination.value = null;
   termsCondition.value = "";
-  currentStep.value = 0; // ⬅️ kembali ke step pertama
+  currentStep.value = 0; 
 };
 
 
@@ -498,6 +497,7 @@ const errors = ref({
 });
 
 
+
 // untuk Error per field  
 const validateField = (name) => {
   switch (name) {
@@ -527,6 +527,16 @@ const validateField = (name) => {
     case 'selectedState':
       errors.value.selectedState = selectedState.value ? '' : 'State is required';
       break;
+
+
+      case 'selectedCommodity':
+      errors.value.selectedCommodity = selectedCommodity.value ? '' : 'Commodity is Required ';
+      break;
+
+       case 'selectedUom':
+      errors.value.selectedUom = selectedUom.value ? '' : 'UOM is Required ';
+      break;
+
 
     case 'ratio':
     if (!ratio.value) {
@@ -583,6 +593,8 @@ const validateField = (name) => {
       }
       break;
 
+     
+
 
     case 'selectedTransportation1':
       errors.value.selectedTransportation1 = selectedTransportation1.value ? '' : 'Required';
@@ -623,12 +635,6 @@ const transportationMethods = [
   { value: "Ocean", label: "Ocean" }
 ];
 
-// data sementara Commodity
-const commodityDataSelected = [
-  { value: "AgelocMIR", label: "AgelocMIR" },
-  { value: "Cosmetic", label: "Cosmetic" }
-];
-
 // data sementara Uom
 const uomDataSelected = [
   { value: "Days", label: "Days" },
@@ -647,7 +653,7 @@ const validateStep = (step) => {
   }
 
   if (step === 1) {
-    ['termsCondition', 'ratio','qty','kgs_chg','kgs_wt']
+    ['termsCondition', 'ratio','qty','kgs_chg','kgs_wt','selectedCommodity','selectedUom']
       .forEach((f) => {
         validateField(f);
         if (errors.value[f]) valid = false;
@@ -689,7 +695,15 @@ const goToStep = (index) => {
 // --- Load data ---
 onMounted(() => {
   quotationStore.fetchCountries();
+  quotationStore.fetchCommodities();
+  quotationStore.fetchUoms();
 });
+
+watch(selectedUom, (uom) => {
+  ratio.value = uom?.factor ?? "";
+});
+
+
 
 watch(selectedCountry, (newCountry) => {
   if (newCountry) {
@@ -723,14 +737,65 @@ watch(selectedTransportation2, (newVal) => {
 });
 
 
+  
 
 const submitQuote = async () => {
   if (!validateStep(2)) return;
 
-  isSubmitting.value = true; // mulai loading
+    // const ratioValue = ratio.value;
+    // const qtyValue = qty.value;
+    // const kgsChgValue = kgs_chg.value;
+    // const kgsWtValue = kgs_wt.value;
+    const selectedCommodityValue = selectedCommodity.value;
+    const selectedUomValue = selectedUom.value;
+
+    // console.log(`isi ratio : ${ratioValue}`);
+    // console.log(`isi qtyValue : ${qtyValue}`);
+    // console.log(`isi kgsChgValue : ${kgsChgValue}`);
+    // console.log(`isi kgsWtValue : ${kgsWtValue}`);
+    // console.log(`isi selectedCommodityValue : ${selectedCommodityValue.value}`);
+    // console.log(`isi selectedUomValue : ${selectedUomValue.value}`);
+    
+
+    //  const payload = {
+    //   name: fullnameOrCompanyName.value,
+    //   email: email.value,
+    //   phone: phone.value,
+    //   x_studio_your_business: selectedBusinessType.value?.value || null,  
+    //   country_id: selectedCountry.value?.id,
+    //   state_id: selectedState.value?.id,
+    //   pickup_origin_id: selectedPickupOrigin.value?.id,
+    //   pickup_destination_id: selectedPickupDestination.value?.id,
+    //   terms_condition: termsCondition.value,
+    //   transportation_method: selectedTransportation1.value?.value,
+    //   commodity: selectedCommodityValue.value || null,
+    //   uom: selectedUomValue.value || null,
+    //   ratio: ratio.value,
+    //   quantity: qty.value,
+    //   kgs_chg: kgs_chg.value,
+    //   kgs_wt: kgs_wt.value,
+    // };
+
+    // console.log(payload);
+    
+
+  isSubmitting.value = true; 
 
   try {
-    const payload = {
+    // const payload = {
+    //   name: fullnameOrCompanyName.value,
+    //   email: email.value,
+    //   phone: phone.value,
+    //   x_studio_your_business: selectedBusinessType.value?.value || null,  
+    //   country_id: selectedCountry.value?.id,
+    //   state_id: selectedState.value?.id,
+    //   pickup_origin_id: selectedPickupOrigin.value?.id,
+    //   pickup_destination_id: selectedPickupDestination.value?.id,
+    //   terms_condition: termsCondition.value,
+    //   transportation_method: selectedTransportation1.value?.value,
+    // };
+
+     const payload = {
       name: fullnameOrCompanyName.value,
       email: email.value,
       phone: phone.value,
@@ -741,6 +806,11 @@ const submitQuote = async () => {
       pickup_destination_id: selectedPickupDestination.value?.id,
       terms_condition: termsCondition.value,
       transportation_method: selectedTransportation1.value?.value,
+      commodity_id: selectedCommodityValue.value || null,
+      uom_id: selectedUomValue.value || null,
+      qty: qty.value,
+      kgs_chg: kgs_chg.value,
+      kgs_wt: kgs_wt.value,
     };
 
     const res = await quotationStore.createQuote(payload);
@@ -756,7 +826,7 @@ const submitQuote = async () => {
       position: 'top-right'
     });
   } finally {
-    isSubmitting.value = false; // selesai loading
+    isSubmitting.value = false; 
   }
 };
 
