@@ -137,7 +137,7 @@ const fetchData = async () => {
     
     
     let allAgents = []
-    let nextUrl = "http://127.0.0.1:8000/api/Agents/Network" 
+    let nextUrl = "/api/Agents/Network" 
     // let nextUrl = "/api/Agents/Network" untuk server 
 
     try {

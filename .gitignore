@@ -1,26 +1,59 @@
+# ------------------------
+# System / OS files
+# ------------------------
 *.log
 .DS_Store
+Thumbs.db
+
+# ------------------------
+# Environment files
+# ------------------------
 .env
 .env.backup
 .env.production
+
+# ------------------------
+# IDE / Editor folders
+# ------------------------
+/.idea
+/.vscode
+/.phpunit.cache
+/.fleet
+/.zed
+/.nova
+Homestead.json
+Homestead.yaml
 .phpactor.json
 .phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
+
+# ------------------------
+# Node / frontend
+# ------------------------
 /node_modules
 /public/build
 /public/hot
-/public/storage
+npm-debug.log
+yarn-error.log
+
+# ------------------------
+# Composer / PHP
+# ------------------------
+/vendor
+/auth.json
+
+# ------------------------
+# Laravel storage & cache
+# ------------------------
 /storage/*.key
 /storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
-npm-debug.log
-Thumbs.db
-yarn-error.log
+/storage/framework
+
+# Jangan ignore folder public storage dan folder default
+!storage/app/public
+!storage/app/public/agent
+!storage/app/public/blogs
+!storage/app/public/flag
+!storage/app/public/profile
+
+# Optional: ignore symlink (public/storage)
+public/storage
