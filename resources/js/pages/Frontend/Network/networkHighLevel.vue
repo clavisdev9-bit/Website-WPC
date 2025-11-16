@@ -138,7 +138,6 @@ const fetchData = async () => {
     
     let allAgents = []
     let nextUrl = "/api/Agents/Network" 
-    // let nextUrl = "/api/Agents/Network" untuk server 
 
     try {
         while (nextUrl) {
