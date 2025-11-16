@@ -11,10 +11,10 @@
 
 <script setup>
 import { ref, nextTick, onMounted } from 'vue'
-// import { createChat } from '@public/js/chat.js';
-// import '@public/assets/frontend/css/chat.css';
-import { createChat } from '../../../js/chat.js';
-import '../../../assets/frontend/css/chat.css';
+import { createChat } from '@public/js/chat.js';
+import '@public/assets/frontend/css/chat.css';
+// import { createChat } from '../../../js/chat.js';
+// import '../../../assets/frontend/css/chat.css';
 // 1️⃣ Buat variabel reaktif
 const webhookUrl = ref('https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat')
 
