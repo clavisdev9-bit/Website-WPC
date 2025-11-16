@@ -1010,32 +1010,14 @@ public function ChangeAccessSubMenu(Request $request)  {
 
 public function createDataAgentCountryNetwork()
 {
-    // $response = Http::get('http://53794bb17cf4.ngrok-free.app/countries');
-  $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/countries');
+  
+  $response = Http::withoutVerifying()->get('https://0e3242f7df3f.ngrok-free.app/countries');
     if ($response->successful()) {
         $json = $response->json();
         $countries = $json['data'] ?? []; // ambil isi 'data'
     } else {
         $countries = [];
     }
-
-    // Simpan hasil API selama 1 jam (3600 detik)
-    // $countries = Cache::remember('countries_data', 3600, function () {
-    //     try {
-    //         // Gunakan timeout agar tidak menggantung
-    //         $response = Http::timeout(5)->get('http://53794bb17cf4.ngrok-free.app/countries');
-              
-    //         if ($response->successful()) {
-    //             $json = $response->json();
-    //             return $json['data'] ?? [];
-    //         }
-    //     } catch (\Exception $e) {
-    //         // Kalau error (timeout, koneksi, dsb), return array kosong
-    //         \Log::error('Error fetching countries: ' . $e->getMessage());
-    //     }
-
-    //     return []; // fallback default
-    // });
 
     $getSubContinent =  $this->SubContinentModel->all();
     $data = [
@@ -1077,7 +1059,7 @@ public function createDataAgentCountryNetwork()
 
 
     public function showDataAgentCountryNetwork($id) {
-        $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/countries');
+        $response = Http::withoutVerifying()->get('https://0e3242f7df3f.ngrok-free.app/countries');
             if ($response->successful()) {
                 $json = $response->json();
                 $countries = $json['data'] ?? []; // ambil isi 'data'
@@ -1085,23 +1067,6 @@ public function createDataAgentCountryNetwork()
                 $countries = [];
             }
 
-    //     $countries = Cache::remember('countries_data', 3600, function () {
-    //     try {
-    //         $response = Http::timeout(5)->get('http://53794bb17cf4.ngrok-free.app/countries');
-
-    //         if ($response->successful()) {
-    //             $json = $response->json();
-    //             return $json['data'] ?? [];
-    //         }
-    //     } catch (\Exception $e) {
-    //         \Log::error('Error fetching countries: ' . $e->getMessage());
-    //     }
-
-    //     return []; // fallback jika API gagal
-    // });
-
-
-        
         
                 $decyId = Crypt::decrypt($id);
                 $encyIdCountry = Crypt::encrypt($decyId);

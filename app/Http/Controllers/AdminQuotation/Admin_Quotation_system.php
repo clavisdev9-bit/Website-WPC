@@ -48,7 +48,7 @@ class Admin_Quotation_system extends Controller
    
     if ($request->ajax()) {
          $data = Cache::remember('quotations_data', 60, function () {
-            $response = Http::withoutVerifying()->get('https://53794bb17cf4.ngrok-free.app/quotes');
+            $response = Http::withoutVerifying()->get('https://0e3242f7df3f.ngrok-free.app/quotes');
 
             if (!$response->successful()) {
                 return []; // Kalau gagal, return kosong

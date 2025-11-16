@@ -26,7 +26,7 @@ export const useAgentNetworkStore = defineStore('agentNetwork', () => {
   const fetchData = async () => {
     loading.value = true
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/Agents/Network")
+      const res = await axios.get("/api/Agents/Network")
       const agents = res.data.data.data
 
       const grouped = Object.values(

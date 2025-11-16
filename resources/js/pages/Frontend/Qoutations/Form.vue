@@ -741,60 +741,10 @@ watch(selectedTransportation2, (newVal) => {
 
 const submitQuote = async () => {
   if (!validateStep(2)) return;
-
-    // const ratioValue = ratio.value;
-    // const qtyValue = qty.value;
-    // const kgsChgValue = kgs_chg.value;
-    // const kgsWtValue = kgs_wt.value;
     const selectedCommodityValue = selectedCommodity.value;
     const selectedUomValue = selectedUom.value;
-
-    // console.log(`isi ratio : ${ratioValue}`);
-    // console.log(`isi qtyValue : ${qtyValue}`);
-    // console.log(`isi kgsChgValue : ${kgsChgValue}`);
-    // console.log(`isi kgsWtValue : ${kgsWtValue}`);
-    // console.log(`isi selectedCommodityValue : ${selectedCommodityValue.value}`);
-    // console.log(`isi selectedUomValue : ${selectedUomValue.value}`);
-    
-
-    //  const payload = {
-    //   name: fullnameOrCompanyName.value,
-    //   email: email.value,
-    //   phone: phone.value,
-    //   x_studio_your_business: selectedBusinessType.value?.value || null,  
-    //   country_id: selectedCountry.value?.id,
-    //   state_id: selectedState.value?.id,
-    //   pickup_origin_id: selectedPickupOrigin.value?.id,
-    //   pickup_destination_id: selectedPickupDestination.value?.id,
-    //   terms_condition: termsCondition.value,
-    //   transportation_method: selectedTransportation1.value?.value,
-    //   commodity: selectedCommodityValue.value || null,
-    //   uom: selectedUomValue.value || null,
-    //   ratio: ratio.value,
-    //   quantity: qty.value,
-    //   kgs_chg: kgs_chg.value,
-    //   kgs_wt: kgs_wt.value,
-    // };
-
-    // console.log(payload);
-    
-
   isSubmitting.value = true; 
-
   try {
-    // const payload = {
-    //   name: fullnameOrCompanyName.value,
-    //   email: email.value,
-    //   phone: phone.value,
-    //   x_studio_your_business: selectedBusinessType.value?.value || null,  
-    //   country_id: selectedCountry.value?.id,
-    //   state_id: selectedState.value?.id,
-    //   pickup_origin_id: selectedPickupOrigin.value?.id,
-    //   pickup_destination_id: selectedPickupDestination.value?.id,
-    //   terms_condition: termsCondition.value,
-    //   transportation_method: selectedTransportation1.value?.value,
-    // };
-
      const payload = {
       name: fullnameOrCompanyName.value,
       email: email.value,
@@ -829,7 +779,6 @@ const submitQuote = async () => {
     isSubmitting.value = false; 
   }
 };
-
 </script> 
 
 

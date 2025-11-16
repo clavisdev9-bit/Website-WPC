@@ -13,7 +13,7 @@ class Qoutation extends Controller
 
     public function createQuotation(Request $request)
     {
-        $externalUrl = "https://53794bb17cf4.ngrok-free.app/quote/create";
+        $externalUrl = "https://0e3242f7df3f.ngrok-free.app/quote/create";
         try {
             $response = Http::withOptions([
                 'verify' => false,

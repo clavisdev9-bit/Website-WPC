@@ -129,9 +129,40 @@
                 <hr>
 
 
+                 <article class="card">
+                    <div class="card-body row">
+                        <div class="col"> <strong>Commodity:</strong> <br> <p id="commodity"></p></div>
+                        <div class="col"> <strong>Unit of Measure (UOM):</strong> <br> <p id="uom"></p> </div>
+                        <div class="col"> <strong>Ratio:</strong> <br> <p id="ratio"></p> </div>
+                    </div>
+                </article>
+                <hr>
+
+             <article class="card">
+                    <div class="card-body row">
+                        <div class="col">
+                            <strong>Chargeable Weight (kg):</strong><br>
+                            <p id="chargeable_weight"></p>
+                        </div>
+
+                        <div class="col">
+                            <strong>Gross Weight (kg):</strong><br>
+                            <p id="gross_weight"></p>
+                        </div>
+
+                        <div class="col">
+                            <strong>Package Qty:</strong><br>
+                            <p id="package_qty"></p>
+                        </div>
+                    </div>
+                </article>
+                <hr>
+
+
+
                 <article class="card">
                     <div class="card-body row">
-                    <div class="col"> <strong>terms condition:</strong> <br> <textarea class="form-control" id="terms" cols="10" rows="5" readonly></textarea> </div>
+                    <div class="col"> <strong>other notes:</strong> <br> <textarea class="form-control" id="terms" cols="10" rows="5" readonly></textarea> </div>
                     </div>
                 </article>
                 <hr>
@@ -518,14 +549,15 @@ btnResetDestination.addEventListener("click", () => {
   const itemsPerPageDestination = 6;
 
   // === Fetch Data Agent ===
-  fetch("http://127.0.0.1:8000/api/contacts")
+  fetch("/api/contacts")
     .then(res => res.json())
     .then(data => {
       allContactsDestination = data.data || [];
-
+      
       // country
       const countriesContact = [...new Set(allContactsDestination.flatMap(c => c.countries?.map(ct => ct.country_name) || []))];
       countriesContact.forEach(c => countrySelectContact.innerHTML += `<option value="${c}">${c}</option>`);
+      console.log(countriesContact);
 
       // tags
       const allTagsContact = [...new Set(allContactsDestination.flatMap(c => c.tags?.map(t => t.tag_name) || []))];

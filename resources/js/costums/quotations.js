@@ -138,12 +138,5 @@ $(document).on('click', '#destination', function() {
 });
 
 
-//  $(document).on('click', '#dataExample', function() {
-//     let po  = $(this).data('po');
-   
-//     // isi modal
-//     $('#po').text(po);
-// });
-
 });
 

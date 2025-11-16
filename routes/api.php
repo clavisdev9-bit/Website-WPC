@@ -23,8 +23,6 @@ Route::get('/master/commodities', [Master::class, 'commodity']);
 Route::get('/master/uoms', [Master::class, 'uom']);
 
 
-
-
 // route for syncron contacts Manual
 Route::get('/contacts', [ContactSyncApi::class, 'index'])->name('get.data.contact.fix.');
 Route::get('/contacts/sync', [ContactSyncApi::class, 'syncFromApi'])->name('sync.contact.process');

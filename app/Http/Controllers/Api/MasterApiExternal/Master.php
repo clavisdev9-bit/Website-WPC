@@ -13,7 +13,7 @@ class Master extends Controller
         public function countries()
         {
           
-            $externalUrl = "https://53794bb17cf4.ngrok-free.app/countries";
+            $externalUrl = "https://0e3242f7df3f.ngrok-free.app/countries";
 
             try {
                 // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
@@ -51,7 +51,7 @@ class Master extends Controller
         public function statesByCountry($countryId)
         {
            
-            $externalUrlState = "https://53794bb17cf4.ngrok-free.app/states/country/{$countryId}";
+            $externalUrlState = "https://0e3242f7df3f.ngrok-free.app/states/country/{$countryId}";
 
             try {
                 // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
@@ -91,7 +91,7 @@ class Master extends Controller
             {
                 $transportation = $request->query('transportation'); 
 
-                $externalUrl = "https://53794bb17cf4.ngrok-free.app/lookups/pickup-origins";
+                $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/pickup-origins";
 
                 try {
                     $response = Http::withOptions([
@@ -154,7 +154,7 @@ class Master extends Controller
             ], 400);
         }
 
-        $externalUrl = "https://53794bb17cf4.ngrok-free.app/lookups/pickup-destinations";
+        $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/pickup-destinations";
 
         try {
             $response = Http::withOptions([
@@ -208,7 +208,7 @@ class Master extends Controller
      public function commodity()
         {
           
-            $externalUrl = "https://53794bb17cf4.ngrok-free.app/lookups/commodities";
+            $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/commodities";
 
             try {
                 // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
@@ -245,7 +245,7 @@ class Master extends Controller
         public function uom()
         {
           
-            $externalUrl = "https://53794bb17cf4.ngrok-free.app/lookups/uoms";
+            $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/uoms";
 
             try {
                 // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)

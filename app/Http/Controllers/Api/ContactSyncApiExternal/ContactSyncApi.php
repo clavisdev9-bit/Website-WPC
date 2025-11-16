@@ -53,7 +53,7 @@ class ContactSyncApi extends Controller
             //  Ambil data dari API eksternal
             $response = Http::withoutVerifying()
                 ->timeout(120)
-                ->get('https://53794bb17cf4.ngrok-free.app/contacts');
+                ->get('https://0e3242f7df3f.ngrok-free.app/contacts');
 
             $data = $response->json();
 
