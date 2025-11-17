@@ -2600,7 +2600,9 @@ ul.user-stack-list li:hover {
     }
 }
 .chat-messages-list {
-    height: 600px !important;
+    flex: 1;
+    min-height: 150px;              /* biar tidak terlalu kecil */
+    max-height: 60vh;
     overflow-y: auto !important;
     display: flex;
     flex-direction: column;
