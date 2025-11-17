@@ -5,7 +5,7 @@ import axios from "axios";
 export const useQuotation = defineStore("QuotationFitur", () => {
 
     // code url Api
-  // const baseUrlApiExternalCountry ="/api/country";
+  const baseUrlApiExternalCountry ="/api/country";
   // const baseUrlApiExternalCommodity ="/api/master/commodities";
   // const baseUrlApiExternalUom ="/api/master/uom";
 
@@ -69,7 +69,7 @@ const fetchUoms = async () => {
     loading.value = true;
     error.value = null;
     try {
-      const res = await axios.get(`/api/country`);
+      const res = await axios.get(`${baseUrlApiExternalCountry}`);
       dataCountry.value = res.data?.data || []; // sesuaikan struktur response API kamu
     } catch (err) {
       console.error("Error fetching countries:", err);
