@@ -5,11 +5,10 @@ import axios from "axios";
 export const useQuotation = defineStore("QuotationFitur", () => {
 
     // code url Api
-  const baseUrlApiExternalCountry ="/api/country";
-  const baseUrlApiExternalCommodity ="/api/master/commodities";
-  const baseUrlApiExternalUom ="/api/master/uoms";
+  // const baseUrlApiExternalCountry ="/api/country";
+  // const baseUrlApiExternalCommodity ="/api/master/commodities";
+  // const baseUrlApiExternalUom ="/api/master/uom";
 
-  
   // state
   const dataCountry = ref([]);
   const dataState = ref([]);
@@ -26,8 +25,8 @@ export const useQuotation = defineStore("QuotationFitur", () => {
   loading.value = true;
   error.value = null;
   try {
-    // const { data } = await axios.get(`/api/master/commodities`);
-    const { data } = await axios.get(`${baseUrlApiExternalCommodity}`);
+    const { data } = await axios.get(`/api/master/commodities`);
+    // const { data } = await axios.get(`${baseUrlApiExternalCommodity}`);
     dataCommodities.value = (data?.data ?? []).map(item => ({
       value: item.id,                
       label: item.name,  
@@ -48,7 +47,7 @@ const fetchUoms = async () => {
   error.value = null;
 
   try {
-    const { data } = await axios.get(baseUrlApiExternalUom);
+    const { data } = await axios.get(`/api/master/uom`);
 
     dataUoms.value = (data?.data ?? []).map(item => ({
       value: item.id,
@@ -70,7 +69,7 @@ const fetchUoms = async () => {
     loading.value = true;
     error.value = null;
     try {
-      const res = await axios.get(baseUrlApiExternalCountry);
+      const res = await axios.get(`/api/country`);
       dataCountry.value = res.data?.data || []; // sesuaikan struktur response API kamu
     } catch (err) {
       console.error("Error fetching countries:", err);

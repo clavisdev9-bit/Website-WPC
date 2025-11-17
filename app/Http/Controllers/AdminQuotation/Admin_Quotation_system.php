@@ -58,15 +58,11 @@ class Admin_Quotation_system extends Controller
             return $result['data'] ?? [];
         });
 
-
         // === . Ambil & Cache Lookup Commodity ===
         $commodities = Cache::remember('commodities_lookup', 60, function () {
             $res = Http::withoutVerifying()->get('https://0e3242f7df3f.ngrok-free.app/lookups/commodities');
-
             if (!$res->successful()) return [];
-
             $data = $res->json()['data'] ?? [];
-
             // id => name
             return collect($data)->pluck('name', 'id')->toArray();
         });
@@ -116,19 +112,15 @@ class Admin_Quotation_system extends Controller
                     })
                     ->rawColumns(['transportation_method'])
                     
-                    ->addColumn('data_quotation', function ($row) use ($commodities) {
-
+                ->addColumn('data_quotation', function ($row) use ($commodities) {
                 // Pickup origin
                 $Pickuporigin = $row['pickup_origin'] ?? [null, null];
                 $originName = $Pickuporigin[1] ?? '';
-
                 // Destination
                 $destinationPickup = $row['pickup_destination'] ?? [null, null];
                 $destinationName = $destinationPickup[1] ?? '';
-
-                // Commodity (konversi ID → nama)
+                // Commodity (konversi ID ke nama)
                 $commodityName = $commodities[$row['commodity']] ?? $row['commodity'] ?? '-';
-
                 return '<button type="button" class="btn btn-outline-primary" id="quotation"
                     data-bs-toggle="modal" data-bs-target="#modal-quotation"
                     data-terms="' . e($row['terms_condition']) . '"
@@ -145,38 +137,6 @@ class Admin_Quotation_system extends Controller
                         <i class="fas fa fa-file"></i> Quotation Request
                 </button>';
             })
-
- 
-                    // ->addColumn('data_quotation', function ($row) {
-                    //        $Pickuporigin = $row['pickup_origin'] ?? null;
-                    //         $originId = $Pickuporigin[0] ?? '';
-                    //         $originName = $Pickuporigin[1] ?? '';
-
-                    //         $destinationPickup = $row['pickup_destination'] ?? null;
-                    //         $destinationId = $destinationPickup[0] ?? '';
-                    //         $destinationName = $destinationPickup[1] ?? '';
-
-                    //     return '<button type="button" 
-                    //                 class="btn btn-outline-primary"
-                    //                 id="quotation"
-                    //                 data-bs-toggle="modal" 
-                    //                 data-bs-target="#modal-quotation"
-                    //                 data-terms="' . e($row['terms_condition']) . '"
-                    //                 data-commodity="' . e($row['commodity']) . '"
-                    //                 data-uom="' . e($row['uom']) . '"
-                    //                 data-ratio="' . e($row['ratio']) . '"
-                    //                 data-kgs_chg="' . e($row['kgs_chg']) . '"
-                    //                 data-kgs_wt="' . e($row['kgs_wt']) . '"
-                    //                 data-qty="' . e($row['qty']) . '"
-                    //                 data-no_request="' . e($row['name']) . '"
-                    //                 data-pickup_origin="' . e($originName) . '"
-                    //                 data-destination_origin="' . e($destinationName) . '"
-                    //                 data-transportation_method="' . e($row['transportation_method']) . '"
-                    //                 >
-                    //                 <i class="fas fa fa-file"> </i> Quotation Request
-                    //             </button>';
-                    // })
-
 
                     ->addColumn('agents_pickup', function ($row) {
                             $Pickuporigin = $row['pickup_origin'] ?? null;

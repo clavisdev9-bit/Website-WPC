@@ -10,26 +10,54 @@ class Master extends Controller
 {
    
         // ambil negara
-        public function countries()
-        {
+        // public function countries()
+        // {
           
+        //     $externalUrl = "https://0e3242f7df3f.ngrok-free.app/countries";
+        //     try {
+        //         // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+        //         $response = Http::withOptions([
+        //             'verify' => false, 
+        //             'timeout' => 15
+        //         ])->get($externalUrl); 
+
+        //         if ($response->failed()) {
+        //             return response()->json([
+        //                 "success" => false,
+        //                 "message" => "Failed to fetch Country from external API"
+        //             ], $response->status() ?: 500);
+        //         }
+
+        //         $data = $response->json();
+        //         $countries = $data['data'] ?? $data;
+
+        //         return response()->json([
+        //             "success" => true,
+        //             "data" => $countries,
+        //             "count" => count($countries)
+        //         ]);
+
+        //     } catch (\Exception $e) {
+        //         return response()->json([
+        //             "success" => false,
+        //             "message" => "External service unavailable: " . $e->getMessage()
+        //         ], 503);
+        //     }
+        // }
+
+       public function countries()
+        {
             $externalUrl = "https://0e3242f7df3f.ngrok-free.app/countries";
 
             try {
-                // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+
                 $response = Http::withOptions([
-                    'verify' => false, 
-                    'timeout' => 15
-                ])->get($externalUrl); 
+                    'verify' => env('HTTP_VERIFY_SSL', false), // Prod=true
+                    'timeout' => 10
+                ])->get($externalUrl)->throw();
 
-                if ($response->failed()) {
-                    return response()->json([
-                        "success" => false,
-                        "message" => "Failed to fetch Country from external API"
-                    ], $response->status() ?: 500);
-                }
+                $data = $response->json() ?? [];
 
-                $data = $response->json();
                 $countries = $data['data'] ?? $data;
 
                 return response()->json([
@@ -38,13 +66,16 @@ class Master extends Controller
                     "count" => count($countries)
                 ]);
 
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
+
                 return response()->json([
                     "success" => false,
-                    "message" => "External service unavailable: " . $e->getMessage()
+                    "message" => "External service unavailable",
+                    "error"   => $e->getMessage(),
                 ], 503);
             }
         }
+
 
 
         // ambil state
@@ -205,26 +236,55 @@ class Master extends Controller
 
 
 
-     public function commodity()
-        {
+    //  public function commodity()
+    //     {
           
+    //         $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/commodities";
+
+    //         try {
+    //             // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+    //             $response = Http::withOptions([
+    //                 'verify' => false, 
+    //                 'timeout' => 15
+    //             ])->get($externalUrl); 
+
+    //             if ($response->failed()) {
+    //                 return response()->json([
+    //                     "success" => false,
+    //                     "message" => "Failed to fetch commodities from external API"
+    //                 ], $response->status() ?: 500);
+    //             }
+
+    //             $data = $response->json();
+    //             $commodities = $data['data'] ?? $data;
+
+    //             return response()->json([
+    //                 "success" => true,
+    //                 "data" => $commodities,
+    //                 "count" => count($commodities)
+    //             ]);
+
+    //         } catch (\Exception $e) {
+    //             return response()->json([
+    //                 "success" => false,
+    //                 "message" => "External service unavailable: " . $e->getMessage()
+    //             ], 503);
+    //         }
+    //     }
+
+            public function commodity()
+        {
             $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/commodities";
 
             try {
-                // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+
                 $response = Http::withOptions([
-                    'verify' => false, 
-                    'timeout' => 15
-                ])->get($externalUrl); 
+                    'verify' => env('HTTP_VERIFY_SSL', false), // DEV=false, PROD=true
+                    'timeout' => 10
+                ])->get($externalUrl)->throw(); // otomatis throw error kalau gagal
 
-                if ($response->failed()) {
-                    return response()->json([
-                        "success" => false,
-                        "message" => "Failed to fetch commodities from external API"
-                    ], $response->status() ?: 500);
-                }
+                $data = $response->json() ?? [];
 
-                $data = $response->json();
                 $commodities = $data['data'] ?? $data;
 
                 return response()->json([
@@ -233,35 +293,68 @@ class Master extends Controller
                     "count" => count($commodities)
                 ]);
 
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
+
                 return response()->json([
                     "success" => false,
-                    "message" => "External service unavailable: " . $e->getMessage()
+                    "message" => "External service unavailable",
+                    "error" => $e->getMessage(),
                 ], 503);
             }
         }
 
 
+
+        // public function uom()
+        // {
+          
+        //     $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/uoms";
+
+        //     try {
+        //         // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+        //         $response = Http::withOptions([
+        //             'verify' => false, 
+        //             'timeout' => 15
+        //         ])->get($externalUrl); 
+
+        //         if ($response->failed()) {
+        //             return response()->json([
+        //                 "success" => false,
+        //                 "message" => "Failed to fetch uoms from external API"
+        //             ], $response->status() ?: 500);
+        //         }
+
+        //         $data = $response->json();
+        //         $uoms = $data['data'] ?? $data;
+
+        //         return response()->json([
+        //             "success" => true,
+        //             "data" => $uoms,
+        //             "count" => count($uoms)
+        //         ]);
+
+        //     } catch (\Exception $e) {
+        //         return response()->json([
+        //             "success" => false,
+        //             "message" => "External service unavailable: " . $e->getMessage()
+        //         ], 503);
+        //     }
+        // }
+
+
         public function uom()
         {
-          
             $externalUrl = "https://0e3242f7df3f.ngrok-free.app/lookups/uoms";
 
             try {
-                // SOLUSI: Nonaktifkan verifikasi SSL (HANYA UNTUK DEV LOKAL Jika Prod true kan verify)
+
                 $response = Http::withOptions([
-                    'verify' => false, 
-                    'timeout' => 15
-                ])->get($externalUrl); 
+                    'verify' => env('HTTP_VERIFY_SSL', false),
+                    'timeout' => 10
+                ])->get($externalUrl)->throw();
 
-                if ($response->failed()) {
-                    return response()->json([
-                        "success" => false,
-                        "message" => "Failed to fetch uoms from external API"
-                    ], $response->status() ?: 500);
-                }
+                $data = $response->json() ?? [];
 
-                $data = $response->json();
                 $uoms = $data['data'] ?? $data;
 
                 return response()->json([
@@ -270,11 +363,14 @@ class Master extends Controller
                     "count" => count($uoms)
                 ]);
 
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
+
                 return response()->json([
                     "success" => false,
-                    "message" => "External service unavailable: " . $e->getMessage()
+                    "message" => "External service unavailable",
+                    "error"   => $e->getMessage(),
                 ], 503);
             }
         }
+
 }

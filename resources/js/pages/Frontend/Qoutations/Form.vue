@@ -236,7 +236,7 @@
 
                         <!-- KGS CHG -->
                         <div class="col-md-4 mb-3">
-                          <label class="form-label"> Chargeable Weight (KGS) <small class="text-danger">*</small></label>
+                          <label class="form-label"> Kilogram Charge (KGS CHG) <small class="text-danger">*</small></label>
                           <input type="number" v-model="kgs_chg"
                              :class="['form-control', errors.kgs_chg ? 'is-invalid' : '']" 
                             name="kgs_chg"
@@ -247,7 +247,7 @@
 
                         <!-- KGS WT -->
                         <div class="col-md-4 mb-3">
-                          <label class="form-label">Actual Weight (KGS) <small class="text-danger">*</small></label>
+                          <label class="form-label">Kilogram Gross Weight (KGS WT) <small class="text-danger">*</small></label>
                           <input type="number"
                            v-model="kgs_wt"
                            :class="['form-control', errors.kgs_wt ? 'is-invalid' : '']"
@@ -423,9 +423,6 @@ import { useToast } from 'vue-toastification'
 const toast = useToast();
 const quotationStore = useQuotation();
 
-
-
-
 // --- Stepper Control ---
 const currentStep = ref(0);
 // const steps = ["Personal Information", "Cargo Details", "Route"];
@@ -449,9 +446,14 @@ const resetForm = () => {
   selectedPickupOrigin.value = null;
   selectedPickupDestination.value = null;
   termsCondition.value = "";
+  selectedCommodity.value = null;
+  selectedUom.value = null;
+  ratio.value = "";
+  qty.value = "";
+  kgs_chg.value = "";
+  kgs_wt.value = "";
   currentStep.value = 0; 
 };
-
 
 
 
