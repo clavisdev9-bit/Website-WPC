@@ -1035,7 +1035,6 @@ body[data-theme="dark"] .hljs-deletion {
     background: var(--chat--body--background);
     flex-direction: column;
     flex: 1;
-    min-height: 100px;
     display: flex;
     position: relative;
     overflow-y: auto;
@@ -2605,8 +2604,11 @@ ul.user-stack-list li:hover {
 }
 .chat-messages-list {
     padding: var(--chat--messages-list--padding);
-    margin-top: auto;
-    display: block;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    justify-content: flex-end;
 }
 .empty-container {
     justify-content: center;

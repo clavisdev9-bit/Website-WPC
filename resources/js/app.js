@@ -33,7 +33,11 @@ import './costums/agentCityNetwork.js'
 import './costums/agentNetwork.js'
 import './costums/ContinentNetwork.js'
 import './costums/SubContinentNetwork.js'
+import '../css/chat.css';
+import './chat.js';
+import { createChat } from './chat.js';
 
+window.createChat = createChat;
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
