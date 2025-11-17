@@ -47,7 +47,7 @@ const fetchUoms = async () => {
   error.value = null;
 
   try {
-    const { data } = await axios.get(`/api/master/uom`);
+    const { data } = await axios.get(`/api/master/units-of-measure`);
 
     dataUoms.value = (data?.data ?? []).map(item => ({
       value: item.id,
@@ -61,7 +61,6 @@ const fetchUoms = async () => {
     loading.value = false;
   }
 };
-
 
 
   // action untuk fetch data
@@ -136,20 +135,48 @@ const fetchUoms = async () => {
 };
 
 
+// const createQuote = async (payload) => {
+//   try {
+//     const res = await axios.post("/api/quote/create", payload);
+//     if (res.data.success) {
+//       console.log("Quote created:", res.data);
+//       return res.data;
+//     } else {
+//       throw new Error(res.data.message || "Failed to create quote");
+//     }
+//   } catch (err) {
+//     console.error("Error creating quote:", err);
+//     throw err;
+//   }
+// };
+
+
 const createQuote = async (payload) => {
   try {
     const res = await axios.post("/api/quote/create", payload);
-    if (res.data.success) {
-      console.log("Quote created:", res.data);
-      return res.data;
-    } else {
-      throw new Error(res.data.message || "Failed to create quote");
+
+    const data = res?.data;
+
+    if (data?.success) {
+      console.log("Quote created:", data);
+      return data;
     }
+
+    throw new Error(data?.message || "Failed to create quote");
   } catch (err) {
-    console.error("Error creating quote:", err);
-    throw err;
+    // Ambil pesan dari server jika ada
+    const errorMessage =
+      err?.response?.data?.message ||
+      err?.message ||
+      "Error while creating quote";
+
+    console.error("Error creating quote:", errorMessage);
+
+    // lempar ulang dengan pesan yang rapi
+    throw new Error(errorMessage);
   }
 };
+
 
   return {
     dataCountry,
