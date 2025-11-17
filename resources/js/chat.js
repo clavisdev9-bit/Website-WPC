@@ -3176,7 +3176,7 @@ const defaultOptions = {
 	chatSessionKey: "sessionId",
 	defaultLanguage: "en",
 	showWelcomeScreen: !1,
-	initialMessages: ["Halo kak, ada yang bisa mimin bantu?"],
+	initialMessages: ["Halo kak, ada yang bisa Clavis bantu?"],
 	i18n: { en: {
 		title: "WPC Chatbot",
 		subtitle: "",
