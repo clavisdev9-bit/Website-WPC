@@ -81,6 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let no_request = $(this).data('no_request');
     let terms = $(this).data('terms');
     let pickup_origin = $(this).data('pickup_origin');
+    let commodity = $(this).data('commodity');
+    let uom = $(this).data('uom');
+    let ratio = $(this).data('ratio');
+    let kgs_chg = $(this).data('kgs_chg');
+    let kgs_wt = $(this).data('kgs_wt');
+    let qty = $(this).data('qty');
     let destination_origin = $(this).data('destination_origin');
     var transportation = ($(this).data('transportation_method') || '').toLowerCase();
      // mapping icons
@@ -93,9 +99,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // isi modal
     $('#no_request').text(no_request);
     $('#terms').text(terms);
+    $('#commodity').text(commodity);
+    $('#uom').text(uom);
+    $('#ratio').text(ratio);
     $('#pickup_origin').text(pickup_origin);
     $('#destination_origin').text(destination_origin);
     $('#termsDest').text(termsDest);
+    $('#kgs_chg').text(kgs_chg);
+    $('#kgs_wt').text(kgs_wt);
+    $('#qty').text(qty);
    $('#transportation_method').html(icons[transportation] || transportation);
 });
 

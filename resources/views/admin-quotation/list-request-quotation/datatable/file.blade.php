@@ -141,18 +141,18 @@
              <article class="card">
                     <div class="card-body row">
                         <div class="col">
-                            <strong>Chargeable Weight (kg):</strong><br>
-                            <p id="chargeable_weight"></p>
+                            <strong>Chargeable Weight (KGS CHG):</strong><br>
+                            <p id="kgs_chg"></p>
                         </div>
 
                         <div class="col">
-                            <strong>Gross Weight (kg):</strong><br>
-                            <p id="gross_weight"></p>
+                            <strong>Gross Weight (KGS WT):</strong><br>
+                            <p id="kgs_wt"></p>
                         </div>
 
                         <div class="col">
                             <strong>Package Qty:</strong><br>
-                            <p id="package_qty"></p>
+                            <p id="qty"></p>
                         </div>
                     </div>
                 </article>
@@ -1520,12 +1520,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // const termsPickup = document.getElementById('terms');
   const termsPickup = document.getElementById('termsPick');
   const tm = document.getElementById('tm'); 
+  const ratioPickup = document.getElementById('ratio'); 
 
   modal.addEventListener('shown.bs.modal', () => {
     const reqValue = codeReq.textContent.trim();
     const reqValuePickup = fromPickup.textContent.trim();
     const termsValue = termsPickup.textContent.trim();
     const tmValue = tm.textContent.trim();
+    const ratioValue = ratioPickup.textContent.trim();
 
 
     if (!subjectField.value) {
@@ -1542,7 +1544,13 @@ These are the details of the pickup we offer.
 No Request: ${reqValue}
 Transportation Methode: ${tmValue}
 Pickup Origin From: ${reqValuePickup}
-Terms Condition: ${termsValue}
+Commodity:
+UoM (Unit of Measure) :
+Kilogram Charge (KGS CHG):
+Kilogram Gross Weight (KGS WT):
+Ratio:
+QTY:
+Other Noted: ${termsValue}
 
 
 We look forward to your feedback and continued collaboration.
@@ -1595,8 +1603,13 @@ Please find the attached quotation for your review.
 No Request: ${reqValueCodeReqDestination}
 Transportation Methode: ${reqValueDmDestination}
 Pickup Origin From: ${reqValueToDestination}
-Terms Condition: ${reqValueTermsDestination}
-
+Commodity:
+UoM (Unit of Measure) :
+Kilogram Charge (KGS CHG):
+Kilogram Gross Weight (KGS WT):
+Ratio:
+QTY:
+Other Noted: ${reqValueTermsDestination}
 
 We look forward to your feedback and hope to continue our successful cooperation.
 
