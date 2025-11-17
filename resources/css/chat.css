@@ -2610,14 +2610,6 @@ ul.user-stack-list li:hover {
     padding-right: 10px;
     padding-left: 10px;
 }
-.chat-header h1::after {
-    content: "\f086";        /* contoh: robot icon */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    margin-left: 8px;
-    font-size: 0.9em;
-}
-
 .chat-messages-list::before {
     content: "";
     flex-grow: 1;          /* spacer untuk mendorong ke bawah */
