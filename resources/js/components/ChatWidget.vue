@@ -18,7 +18,15 @@ const webhookUrl = ref('https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/w
 
 // 2️⃣ Gunakan di lifecycle hook
 onMounted(() => {
-  createChat({ webhookUrl: webhookUrl.value })
+  createChat({ webhookUrl: webhookUrl.value });
+  const interval = setInterval(() => {
+    const title = document.querySelector('.chat-header h1');
+    if (title && !title.classList.contains('fa-added')) {
+      title.innerHTML += ' <i class="fa-sharp-duotone fa-solid fa-comments"></i>';
+      title.classList.add('fa-added');
+      clearInterval(interval);
+    }
+  }, 200);
 })
 const isOpen = ref(false)
 const input = ref('')

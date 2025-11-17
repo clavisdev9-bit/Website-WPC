@@ -3178,7 +3178,7 @@ const defaultOptions = {
 	showWelcomeScreen: !1,
 	initialMessages: ["Halo kak, ada yang bisa mimin bantu?"],
 	i18n: { en: {
-		title: "WPC Chatbot💬",
+		title: "WPC Chatbot",
 		subtitle: "",
 		footer: "",
 		getStarted: "New Conversation",
