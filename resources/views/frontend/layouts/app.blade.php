@@ -9,7 +9,7 @@
         <meta content="" name="keywords">
         <meta content="" name="description">
        <!-- <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" /> -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link href="{{ asset('assets/frontend/css/chat.css')}}" rel="stylesheet">
 
         <!-- Apple Touch Icons -->
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
@@ -90,13 +90,15 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
         <script type="module">
-    
-	createChat({
-		webhookUrl: 'https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat'
-	});
+            // import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+            import { createChat } from '/js/chat.js';
+            
+            createChat({
+                webhookUrl: 'https://workflow-dev-clavis-flow.tmlkkz.easypanel.host/webhook/a1ba1836-2b7b-4485-b3fb-f0ad4da3eb25/chat'
+            });
 
-	
-</script>
+            
+        </script>
 
 
     </body>
