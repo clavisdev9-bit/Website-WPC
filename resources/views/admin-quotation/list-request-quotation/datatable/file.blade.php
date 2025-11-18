@@ -211,8 +211,27 @@
             <div class="col"> <strong>Pickup Origin:</strong> <br> <p id="pickup_origin_s"></p> </div>
           </div>
         </article>
-
         <hr>
+
+         <article class="card" hidden>
+          <div class="card-body row">
+            <div class="col"> <strong>Commodity:</strong> <br> <p id="commodityPickup"></p> </div>
+            <div class="col"> <strong>UOM:</strong> <br> <p id="uomsPickup"></p> </div>
+            <div class="col"> <strong>Ratio:</strong> <br> <p id="ratioPickup"></p> </div>
+          </div>
+        </article>
+        {{-- <hr> --}}
+
+        <article class="card" hidden>
+          <div class="card-body row">
+            <div class="col"> <strong>Kilogram Charge (KGS CHG):</strong> <br> <p id="kgsChgPickup"></p> </div>
+            <div class="col"> <strong>Kilogram Gross Weight (KGS WT):</strong> <br> <p id="kgsWtPickup"></p> </div>
+            <div class="col"> <strong>Qty:</strong> <br> <p id="qtyPickup"></p> </div>
+          </div>
+        </article>
+        {{-- <hr> --}}
+
+
         <h6 class="text-danger">search for contacts based on available parameters</h6>
         <div class="row g-3 mb-3">
           <div class="col-md-6">
@@ -230,14 +249,14 @@
           </div>
 
           <div class="col-md-6">
-            <label class="form-label">City</label>
+            <label class="form-label">City <small class="text-danger"> (optional)</small></label>
             <select id="city_destination" class="form-select">
               <option value="">Select City</option>
             </select>
           </div>
 
           <div class="col-md-6">
-            <label class="form-label">Tags</label>
+            <label class="form-label">Tags <small class="text-danger"> (optional)</small></label>
             <select id="tags_destination" class="form-select">
               <option value="">Select Tags</option>
             </select>
@@ -319,22 +338,24 @@
             />
           </div>
 
+          <!-- Attachment -->
+          <div class="mb-3">
+            <label for="emailAttachment" class="form-label fw-bold">Attachment <small class="text-danger">(optional | Max Size File 10MB | Pdf)</small></label>
+            <input type="file" class="form-control" id="emailAttachment"  accept=".pdf">
+          </div>
+
           <!-- Message -->
           <div class="mb-3">
             <label for="emailMessage" class="form-label fw-bold">Message <small class="text-danger">(***)</small></label>
             <textarea 
               id="emailMessage" 
               class="form-control" 
-              rows="6" 
+              rows="15" 
               placeholder="Write your message..."
             ></textarea>
           </div>
 
-          <!-- Attachment -->
-          <div class="mb-3">
-            <label for="emailAttachment" class="form-label fw-bold">Attachment <small class="text-danger">(optional | Max Size File 10MB | Pdf)</small></label>
-            <input type="file" class="form-control" id="emailAttachment"  accept=".pdf">
-          </div>
+          
         </div>
 
 
@@ -370,8 +391,26 @@
             <div class="col"> <strong>Destination Origin:</strong> <br> <p id="destination_origin_s"></p> </div>
           </div>
         </article>
-
         <hr>
+
+         <article class="card" hidden>
+          <div class="card-body row">
+            <div class="col"> <strong>Commodity:</strong> <br> <p id="compDestin"></p> </div>
+            <div class="col"> <strong>UOM:</strong> <br> <p id="uomDestin"></p> </div>
+            <div class="col"> <strong>Ratio:</strong> <br> <p id="ratioDestin"></p> </div>
+          </div>
+        </article>
+        {{-- <hr> --}}
+
+        <article class="card" hidden>
+          <div class="card-body row">
+            <div class="col"> <strong>Kilogram Charge (KGS CHG):</strong> <br> <p id="kgschgdDestin"></p> </div>
+            <div class="col"> <strong>Kilogram Gross Weight (KGS WT):</strong> <br> <p id="kgswtdDestin"></p> </div>
+            <div class="col"> <strong>Qty:</strong> <br> <p id="qtyDestin"></p> </div>
+          </div>
+        </article>
+
+        {{-- <hr> --}}
         <h6 class="text-danger">search for contacts based on available parameters</h6>
         <div class="row g-3 mb-3">
           <div class="col-md-6">
@@ -389,14 +428,14 @@
           </div>
 
           <div class="col-md-6">
-            <label class="form-label">City</label>
+            <label class="form-label">City <small class="text-danger"> (optional)</small></label>
             <select id="city_destination_contact" class="form-select">
               <option value="">Select City</option>
             </select>
           </div>
 
           <div class="col-md-6">
-            <label class="form-label">Tags</label>
+            <label class="form-label">Tags <small class="text-danger"> (optional)</small></label>
             <select id="tags_destination_contact" class="form-select">
               <option value="">Select Tags</option>
             </select>
@@ -465,17 +504,19 @@
           <input type="text" class="form-control" id="emailSubjectDestination" placeholder="Enter subject">
         </div>
 
-        <!-- Message -->
-        <div class="mb-3">
-          <label for="emailMessage" class="form-label fw-bold">Message <small class="text-danger">(***)</small></label>
-          <textarea id="emailMessageDestination" class="form-control" rows="6" placeholder="Write your message..."></textarea>
-        </div>
-
-        <!-- Attachment -->
+         <!-- Attachment -->
         <div class="mb-3">
           <label for="emailAttachment" class="form-label fw-bold">Attachment <small class="text-danger">(optional | Max Size File 10MB | PDF)</small></label>
           <input type="file" class="form-control" id="emailAttachmentDestination" accept=".pdf">
         </div>
+
+        <!-- Message -->
+        <div class="mb-3">
+          <label for="emailMessage" class="form-label fw-bold">Message <small class="text-danger">(***)</small></label>
+          <textarea id="emailMessageDestination" class="form-control" rows="15" placeholder="Write your message..."></textarea>
+        </div>
+
+       
       </div>
 
       <div class="modal-footer">
@@ -1520,15 +1561,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // const termsPickup = document.getElementById('terms');
   const termsPickup = document.getElementById('termsPick');
   const tm = document.getElementById('tm'); 
-  const ratioPickup = document.getElementById('ratio'); 
+  const cmp = document.getElementById('commodityPickup'); 
+  const rp = document.getElementById('ratioPickup'); 
+  const ump = document.getElementById('uomsPickup'); 
+  const kcp = document.getElementById('kgsChgPickup'); 
+  const kwp = document.getElementById('kgsWtPickup'); 
+  const qtyp = document.getElementById('qtyPickup'); 
+  
 
   modal.addEventListener('shown.bs.modal', () => {
     const reqValue = codeReq.textContent.trim();
     const reqValuePickup = fromPickup.textContent.trim();
     const termsValue = termsPickup.textContent.trim();
     const tmValue = tm.textContent.trim();
-    const ratioValue = ratioPickup.textContent.trim();
-
+    const ratioValue = rp.textContent.trim();
+    const cmpValue = cmp.textContent.trim();
+    const umpValue = ump.textContent.trim();
+    const kcpValue = kcp.textContent.trim();
+    const kwpValue = kwp.textContent.trim();
+    const qtypValue = qtyp.textContent.trim();
 
     if (!subjectField.value) {
         subjectField.value = `Special Offer for Shipping Needs (Pickup Service) with No Request ${reqValue}`;
@@ -1541,20 +1592,19 @@ We’re excited to share our latest pickup schedule and exclusive rates with you
 Please find the attached quotation for your review.
 
 These are the details of the pickup we offer.
-No Request: ${reqValue}
-Transportation Methode: ${tmValue}
-Pickup Origin From: ${reqValuePickup}
-Commodity:
-UoM (Unit of Measure) :
-Kilogram Charge (KGS CHG):
-Kilogram Gross Weight (KGS WT):
-Ratio:
-QTY:
-Other Noted: ${termsValue}
+No Request = ${reqValue}
+Transportation Methode = ${tmValue}
+Pickup Origin From = ${reqValuePickup}
+Commodity = ${cmpValue}
+UoM (Unit of Measure) = ${umpValue}
+Kilogram Charge (KGS CHG) = ${kcpValue}
+Kilogram Gross Weight (KGS WT) = ${kwpValue}
+Ratio = ${ratioValue}
+QTY = ${qtypValue}
+Other Noted = ${termsValue}
 
 
 We look forward to your feedback and continued collaboration.
-
 `;
     }
   });
@@ -1580,6 +1630,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const codeReqDestination = document.getElementById('code_req_destination');
   const dmDestination = document.getElementById('dm');
   const termsDestination = document.getElementById('termsDest');
+  const compDestination = document.getElementById('compDestin');
+  const uomDestination = document.getElementById('uomDestin');
+  const ratioDestination = document.getElementById('ratioDestin');
+  const kgschgDestination = document.getElementById('kgschgdDestin');
+  const kgswtdDestination = document.getElementById('kgswtdDestin');
+  const qtyDestination = document.getElementById('qtyDestin');
 
   modal.addEventListener('shown.bs.modal', () => {
 
@@ -1587,8 +1643,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const reqValueCodeReqDestination = codeReqDestination.textContent.trim();
     const reqValueDmDestination = dmDestination.textContent.trim();
     const reqValueTermsDestination = termsDestination.textContent.trim();
-
-
+    const reqValueCompDestination = compDestination.textContent.trim();
+    const reqValueUomDestination = uomDestination.textContent.trim();
+    const reqValueRatioDestination = ratioDestination.textContent.trim();
+    const reqValuekgschgDestination = kgschgDestination.textContent.trim();
+    const reqValuekgswtdDestination = kgswtdDestination.textContent.trim();
+    const reqValueqtyDestination = qtyDestination.textContent.trim();
+    
     if (!subjectField.value) {
       
       subjectField.value = `Special Offers for Shipping Needs (Destination Services) with No Request ${reqValueCodeReqDestination}`;
@@ -1602,17 +1663,16 @@ Please find the attached quotation for your review.
 
 No Request: ${reqValueCodeReqDestination}
 Transportation Methode: ${reqValueDmDestination}
-Pickup Origin From: ${reqValueToDestination}
-Commodity:
-UoM (Unit of Measure) :
-Kilogram Charge (KGS CHG):
-Kilogram Gross Weight (KGS WT):
-Ratio:
-QTY:
+Destination To : ${reqValueToDestination}
+Commodity: ${reqValueCompDestination}
+UoM (Unit of Measure) : ${reqValueUomDestination}
+Kilogram Charge (KGS CHG): ${reqValuekgschgDestination}
+Kilogram Gross Weight (KGS WT): ${reqValuekgswtdDestination}
+Ratio: ${reqValueRatioDestination}
+QTY: ${reqValueqtyDestination}
 Other Noted: ${reqValueTermsDestination}
 
 We look forward to your feedback and hope to continue our successful cooperation.
-
 `;
     }
   });

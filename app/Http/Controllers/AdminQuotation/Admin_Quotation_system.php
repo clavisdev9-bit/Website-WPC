@@ -138,45 +138,95 @@ class Admin_Quotation_system extends Controller
                 </button>';
             })
 
-                    ->addColumn('agents_pickup', function ($row) {
+                  
+
+                    ->addColumn('agents_pickup', function ($row) use ($commodities) {
                             $Pickuporigin = $row['pickup_origin'] ?? null;
                             $originName = $Pickuporigin[1] ?? '';
+
                             $methodPickup = strtolower($row['transportation_method'] ?? '');
                             $codeRequest = $row['name'] ?? '';
-                       
-                        return '<button type="button" 
-                                    class="btn btn-outline-primary"
-                                    id="pickup"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#modal-pickup-agent"
-                                    data-pickup_origin_s="' . e($originName) . '"
-                                    data-code_req="' . $codeRequest . '"
-                                    data-tm="' . $methodPickup . '"
-                                    data-terms-condition-pick="' . e($row['terms_condition']) . '"
-                                    >
-                                    <i class="fa-solid fa-box-open"> </i> Pickup Agent
-                                </button>';
-                    })
 
-                    ->addColumn('agents_destination', function ($row) {
-                            $Destinationorigin = $row['pickup_destination'] ?? null;
-                            $originNameDestination = $Destinationorigin[1] ?? '';
-                            $methodDestination = strtolower($row['transportation_method'] ?? '');
-                            $codeRequestDestination = $row['name'] ?? '';
-                       
+                            // Ambil nama commodity
+                            $commodityNames = $commodities[$row['commodity']] ?? $row['commodity'] ?? '-';
+                        
+                            return '<button type="button" 
+                                        class="btn btn-outline-primary"
+                                        id="pickup"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#modal-pickup-agent"
+
+                                        data-pickup_origin_s="' . e($originName) . '"
+                                        data-code_req="' . e($codeRequest) . '"
+                                        data-tm="' . e($methodPickup) . '"
+                                        data-terms-condition-pick="' . e($row['terms_condition']) . '"
+
+                                        data-comp="' . e($commodityNames) . '"
+                                        data-uomp="' . e($row['uom']) . '"
+                                        data-ratp="' . e($row['ratio']) . '"
+                                        data-kgschgp="' . e($row['kgs_chg']) . '"
+                                        data-kgswtp="' . e($row['kgs_wt']) . '"
+                                        data-qtyp="' . e($row['qty']) . '"
+                                    >
+                                    <i class="fa-solid fa-box-open"></i> Pickup Agent
+                                    </button>';
+                        })
+
+
+                        ->addColumn('agents_destination', function ($row) use ($commodities) {
+
+                        $Destinationorigin = $row['pickup_destination'] ?? null;
+                        $originNameDestination = $Destinationorigin[1] ?? '';
+
+                        $methodDestination = strtolower($row['transportation_method'] ?? '');
+                        $codeRequestDestination = $row['name'] ?? '';
+
+                        // Ambil nama commodity
+                        $commodityName = $commodities[$row['commodity']] ?? $row['commodity'] ?? '-';
+
                         return '<button type="button" 
                                     class="btn btn-outline-warning"
                                     id="destination"
                                     data-bs-toggle="modal" 
                                     data-bs-target="#modal-destination-agent"
+
                                     data-destination_origin_s="' . e($originNameDestination) . '"
-                                    data-code_req_destination="' . $codeRequestDestination . '"
-                                    data-dm="' . $methodDestination . '"
+                                    data-code_req_destination="' . e($codeRequestDestination) . '"
+                                    data-dm="' . e($methodDestination) . '"
                                     data-terms-condition-dest="' . e($row['terms_condition']) . '"
-                                    >
-                                   <i class="fa-solid fa-warehouse"></i> Destination Agent
+
+                                    data-comd="' . e($commodityName) . '"
+                                    data-uomd="' . e($row['uom']) . '"
+                                    data-ratd="' . e($row['ratio']) . '"
+                                    data-kgschgd="' . e($row['kgs_chg']) . '"
+                                    data-kgswtd="' . e($row['kgs_wt']) . '"
+                                    data-qtyd="' . e($row['qty']) . '"
+                                >
+                                <i class="fa-solid fa-warehouse"></i> Destination Agent
                                 </button>';
                     })
+
+
+
+                    // ->addColumn('agents_destination', function ($row) {
+                    //         $Destinationorigin = $row['pickup_destination'] ?? null;
+                    //         $originNameDestination = $Destinationorigin[1] ?? '';
+                    //         $methodDestination = strtolower($row['transportation_method'] ?? '');
+                    //         $codeRequestDestination = $row['name'] ?? '';
+                       
+                    //     return '<button type="button" 
+                    //                 class="btn btn-outline-warning"
+                    //                 id="destination"
+                    //                 data-bs-toggle="modal" 
+                    //                 data-bs-target="#modal-destination-agent"
+                    //                 data-destination_origin_s="' . e($originNameDestination) . '"
+                    //                 data-code_req_destination="' . $codeRequestDestination . '"
+                    //                 data-dm="' . $methodDestination . '"
+                    //                 data-terms-condition-dest="' . e($row['terms_condition']) . '"
+                    //                 >
+                    //                <i class="fa-solid fa-warehouse"></i> Destination Agent
+                    //             </button>';
+                    // })
                     ->rawColumns(['data_customer','data_quotation','transportation_method','agents_pickup','agents_destination'])
                     ->make(true);
     }

@@ -117,6 +117,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let code_req      = $(this).data('code_req');
     let tm = $(this).data('tm');
     let termsPick = $(this).data('terms-condition-pick');
+    let commodityPickup = $(this).data('comp');
+    let uomsPickup = $(this).data('uomp');
+    let ratioPickup = $(this).data('ratp');
+    let kgsChgPickup = $(this).data('kgschgp');
+    let kgsWtPickup = $(this).data('kgswtp');
+    let qtyPickup = $(this).data('qtyp');
+
+
     var icons = {
         'air': '<i class="fa fa-plane text-primary"></i> Air',
         'ocean': '<i class="fa fa-ship text-info"></i> Ocean',
@@ -126,6 +134,12 @@ document.addEventListener("DOMContentLoaded", function () {
     $('#pickup_origin_s').text(pickup_origin_s);
     $('#code_req').text(code_req);
     $('#termsPick').text(termsPick);
+    $('#commodityPickup').text(commodityPickup);
+    $('#uomsPickup').text(uomsPickup);
+    $('#ratioPickup').text(ratioPickup);
+    $('#kgsChgPickup').text(kgsChgPickup);
+    $('#kgsWtPickup').text(kgsWtPickup);
+    $('#qtyPickup').text(qtyPickup);
     $('#tm').html(icons[tm] || tm);
 
 });
@@ -136,6 +150,14 @@ $(document).on('click', '#destination', function() {
     let code_req_destination  = $(this).data('code_req_destination');
     let dm = $(this).data('dm');
     let termsDest = $(this).data('terms-condition-dest');
+    let compDestin = $(this).data('comd');
+    let uomDestin = $(this).data('uomd');
+    let ratioDestin = $(this).data('ratd');
+    let kgschgdDestin = $(this).data('kgschgd');
+    let kgswtdDestin = $(this).data('kgswtd');
+    let qtyDestin = $(this).data('qtyd');
+
+
     var icons = {
         'air': '<i class="fa fa-plane text-primary"></i> Air',
         'ocean': '<i class="fa fa-ship text-info"></i> Ocean',
@@ -144,6 +166,12 @@ $(document).on('click', '#destination', function() {
     };
     $('#destination_origin_s').text(destination_origin_s);
     $('#code_req_destination').text(code_req_destination);
+    $('#compDestin').text(compDestin);
+    $('#uomDestin').text(uomDestin);
+    $('#ratioDestin').text(ratioDestin);
+    $('#kgschgdDestin').text(kgschgdDestin);
+    $('#kgswtdDestin').text(kgswtdDestin);
+    $('#qtyDestin').text(qtyDestin);
     $('#dm').html(icons[dm] || dm);
     $('#termsDest').text(termsDest);
 
