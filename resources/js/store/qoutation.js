@@ -20,6 +20,44 @@ export const useQuotation = defineStore("QuotationFitur", () => {
   const dataUoms = ref([]);
 
 
+
+
+  // action untuk fetch data
+  const fetchCountries = async () => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const res = await axios.get(`${baseUrlApiExternalCountry}`);
+      dataCountry.value = res.data?.data || []; // sesuaikan struktur response API kamu
+    } catch (err) {
+      console.error("Error fetching countries:", err);
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+
+  const fetchStatesByCountry = async (countryId) => {
+    if (!countryId) {
+      dataState.value = [];
+      return;
+    }
+    loading.value = true;
+    error.value = null;
+    try {
+      const res = await axios.get(`/api/states/country/${countryId}`);
+      dataState.value = res.data?.data || [];
+    } catch (err) {
+      console.error("Error fetching states:", err);
+      error.value = err.message;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+
+
   // fetch commodities
   const fetchCommodities = async () => {
   loading.value = true;
@@ -63,40 +101,6 @@ const fetchUoms = async () => {
 };
 
 
-  // action untuk fetch data
-  const fetchCountries = async () => {
-    loading.value = true;
-    error.value = null;
-    try {
-      const res = await axios.get(`${baseUrlApiExternalCountry}`);
-      dataCountry.value = res.data?.data || []; // sesuaikan struktur response API kamu
-    } catch (err) {
-      console.error("Error fetching countries:", err);
-      error.value = err.message;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-
-  const fetchStatesByCountry = async (countryId) => {
-    if (!countryId) {
-      dataState.value = [];
-      return;
-    }
-    loading.value = true;
-    error.value = null;
-    try {
-      const res = await axios.get(`/api/states/country/${countryId}`);
-      dataState.value = res.data?.data || [];
-    } catch (err) {
-      console.error("Error fetching states:", err);
-      error.value = err.message;
-    } finally {
-      loading.value = false;
-    }
-  };
-
 
   const fetchPickupOrigins = async (transportation) => {
     if (!transportation) {
@@ -135,20 +139,6 @@ const fetchUoms = async () => {
 };
 
 
-// const createQuote = async (payload) => {
-//   try {
-//     const res = await axios.post("/api/quote/create", payload);
-//     if (res.data.success) {
-//       console.log("Quote created:", res.data);
-//       return res.data;
-//     } else {
-//       throw new Error(res.data.message || "Failed to create quote");
-//     }
-//   } catch (err) {
-//     console.error("Error creating quote:", err);
-//     throw err;
-//   }
-// };
 
 
 const createQuote = async (payload) => {

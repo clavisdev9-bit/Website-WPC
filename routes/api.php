@@ -20,7 +20,7 @@ Route::get('/pickup-origins', [Master::class, 'pickupOrigins']);
 Route::get('/pickup-destinations', [Master::class, 'pickupDestinations']);
 Route::post('/quote/create', [Qoutation::class, 'createQuotation']);
 Route::get('/master/commodities', [Master::class, 'commodity']);
-Route::get('/master/units-of-measure', [Master::class, 'uom']);
+Route::get('/master/units-of-measure', [Master::class, 'unitOfMeasure']);
 
 
 // route for syncron contacts Manual

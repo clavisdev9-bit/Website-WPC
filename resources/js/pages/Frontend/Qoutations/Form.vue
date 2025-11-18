@@ -393,7 +393,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary" style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;">{{ $t("quotationForm.tracking.button") }}</button>
                                 </form>
-                            </div>
+              </div>
               </div>
 
             </div>
