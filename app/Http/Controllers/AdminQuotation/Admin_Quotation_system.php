@@ -206,27 +206,6 @@ class Admin_Quotation_system extends Controller
                                 </button>';
                     })
 
-
-
-                    // ->addColumn('agents_destination', function ($row) {
-                    //         $Destinationorigin = $row['pickup_destination'] ?? null;
-                    //         $originNameDestination = $Destinationorigin[1] ?? '';
-                    //         $methodDestination = strtolower($row['transportation_method'] ?? '');
-                    //         $codeRequestDestination = $row['name'] ?? '';
-                       
-                    //     return '<button type="button" 
-                    //                 class="btn btn-outline-warning"
-                    //                 id="destination"
-                    //                 data-bs-toggle="modal" 
-                    //                 data-bs-target="#modal-destination-agent"
-                    //                 data-destination_origin_s="' . e($originNameDestination) . '"
-                    //                 data-code_req_destination="' . $codeRequestDestination . '"
-                    //                 data-dm="' . $methodDestination . '"
-                    //                 data-terms-condition-dest="' . e($row['terms_condition']) . '"
-                    //                 >
-                    //                <i class="fa-solid fa-warehouse"></i> Destination Agent
-                    //             </button>';
-                    // })
                     ->rawColumns(['data_customer','data_quotation','transportation_method','agents_pickup','agents_destination'])
                     ->make(true);
     }

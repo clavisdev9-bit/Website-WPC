@@ -22,17 +22,39 @@ class ContactSyncApi extends Controller
      * Menampilkan semua contact dari database lokal
      */
     public function index()
-    {
-        $contacts = ContactModel::with(['countries', 'states', 'tags'])
-            ->orderBy('name', 'asc')
-            ->get();
+        {
+            try {
+                $contacts = ContactModel::with(['countries', 'states', 'tags'])
+                    ->orderBy('name', 'asc')
+                    ->get();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data contacts lokal',
-            'data' => $contacts,
-        ]);
-    }
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data contacts lokal',
+                    'data' => $contacts,
+                ]);
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengambil kontak: ' . $e->getMessage(),
+                    'data' => [],
+                ], 500);
+            }
+        }
+
+    // public function index()
+    // {
+    //     $contacts = ContactModel::with(['countries', 'states', 'tags'])
+    //         ->orderBy('name', 'asc')
+    //         ->get();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Data contacts lokal',
+    //         'data' => $contacts,
+    //     ]);
+    // }
 
     /**
      * Sinkronisasi manual data contacts dari API ke database lokal

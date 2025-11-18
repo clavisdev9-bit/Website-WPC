@@ -1096,7 +1096,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const itemsPerPage = 6;
 
   // === Fetch Data Agent ===
-  fetch("http://127.0.0.1:8000/api/contacts")
+  fetch("/api/contacts")
     .then(res => res.json())
     .then(data => {
       allContacts = data.data || [];
