@@ -178,6 +178,35 @@
                       <div class="row">
 
                         <div class="col-md-4 mb-3">
+                            <label class="form-label">Commodity <small class="text-danger">*</small></label>
+<Multiselect
+  v-model="selectedCommodity"
+  :options="quotationStore.dataCommodities"
+  track-by="value"
+  label="label"
+  placeholder="Select Commodities"
+  @close="validateField('selectedCommodity')"
+  @select="validateField('selectedCommodity')"
+  :class="errors.selectedCommodity ? 'is-invalid' : ''"
+/>
+</div>
+
+
+  <div class="col-md-4 mb-3">
+ <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
+<Multiselect
+  v-model="selectedUom"
+  :options="quotationStore.dataUoms"
+  track-by="value"
+  label="label"
+  placeholder="Select UOM"
+  @close="validateField('selectedUom')"
+  @select="validateField('selectedUom')"
+  :class="errors.selectedUom ? 'is-invalid' : ''"
+/>
+</div>
+
+                        <!-- <div class="col-md-4 mb-3">
                           <label class="form-label">Commodity <small class="text-danger">*</small></label>
                           <Multiselect
                             v-model="selectedCommodity"
@@ -190,9 +219,9 @@
                             :class="errors.selectedCommodity ? 'is-invalid' : ''"
                           />
                           <small class="text-danger">{{ errors.selectedCommodity }}</small>
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-4 mb-3">
+                        <!-- <div class="col-md-4 mb-3">
                           <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
                           <Multiselect
                             v-model="selectedUom"
@@ -206,7 +235,7 @@
                           />
                           <small class="text-danger">{{ errors.selectedUom }}</small>
                           
-                        </div>
+                        </div> -->
 
                         <!-- Ratio -->
                           <div class="col-md-4 mb-3">
@@ -550,37 +579,54 @@ const validateField = (name) => {
     }
     break;
 
+
     case 'qty':
-    if (!qty.value) {
-      errors.value.qty = 'Quantity is required';
-    } else if (isNaN(ratio.value)) {
-      errors.value.qty = 'Quantity must be a number';
-    } else {
-      errors.value.qty = '';
-    }
-    break;
+  if (!qty.value) errors.value.qty = 'Quantity is required';
+  else if (isNaN(qty.value)) errors.value.qty = 'Quantity must be a number';
+  else errors.value.qty = '';
+
+case 'kgs_chg':
+  if (!kgs_chg.value) errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
+  else if (isNaN(kgs_chg.value)) errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
+  else errors.value.kgs_chg = '';
+
+case 'kgs_wt':
+  if (!kgs_wt.value) errors.value.kgs_wt = 'Actual Weight (KGS) is required';
+  else if (isNaN(kgs_wt.value)) errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
+  else errors.value.kgs_wt = '';
 
 
-    case 'kgs_chg':
-    if (!kgs_chg.value) {
-      errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
-    } else if (isNaN(ratio.value)) {
-      errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
-    } else {
-      errors.value.kgs_chg = '';
-    }
-    break;
+    // case 'qty':
+    // if (!qty.value) {
+    //   errors.value.qty = 'Quantity is required';
+    // } else if (isNaN(ratio.value)) {
+    //   errors.value.qty = 'Quantity must be a number';
+    // } else {
+    //   errors.value.qty = '';
+    // }
+    // break;
 
 
-    case 'kgs_wt':
-    if (!kgs_wt.value) {
-      errors.value.kgs_wt = 'Actual Weight (KGS) is required';
-    } else if (isNaN(ratio.value)) {
-      errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
-    } else {
-      errors.value.kgs_wt = '';
-    }
-    break;
+    // case 'kgs_chg':
+    // if (!kgs_chg.value) {
+    //   errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
+    // } else if (isNaN(ratio.value)) {
+    //   errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
+    // } else {
+    //   errors.value.kgs_chg = '';
+    // }
+    // break;
+
+
+    // case 'kgs_wt':
+    // if (!kgs_wt.value) {
+    //   errors.value.kgs_wt = 'Actual Weight (KGS) is required';
+    // } else if (isNaN(ratio.value)) {
+    //   errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
+    // } else {
+    //   errors.value.kgs_wt = '';
+    // }
+    // break;
 
 
     case 'termsCondition':
@@ -701,9 +747,14 @@ onMounted(() => {
   quotationStore.fetchUoms();
 });
 
+// watch(selectedUom, (uom) => {
+//   ratio.value = uom?.factor ?? "";
+// });
+
 watch(selectedUom, (uom) => {
-  ratio.value = uom?.factor ?? "";
+  ratio.value = Number(uom?.factor) || 0; // pastikan factor selalu number
 });
+
 
 
 
