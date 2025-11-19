@@ -392,6 +392,38 @@ class SubmenuSeeder extends Seeder
             ],
 
 
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Master-Sync',
+                'icon' => 'nav-icon fa fa-rotate',
+                'title' => 'Master Sync',
+                'noted' => '(main) Master Sync',
+                'is_active' => true,
+                'parent_id' => null,
+            ],
+
+
+            [
+                'id_menu' => 1,
+                'url' => 'Administrator/Data-Sync-Commodities',
+                'icon' => 'nav-icon fa fa-database',
+                'title' => 'Master Commodity',
+                'noted' => '(main) Master Commodity',
+                'is_active' => true,
+                'parent_id' => 40,
+            ],
+
+
+             [
+                'id_menu' => 1,
+                'url' => 'Administrator/Data-Sync-Uom',
+                'icon' => 'nav-icon fa fa-database',
+                'title' => 'Master UOM',
+                'noted' => '(main) Master UOM',
+                'is_active' => true,
+                'parent_id' => 40,
+            ],
+
 
 
              // ================================

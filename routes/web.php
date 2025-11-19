@@ -249,6 +249,12 @@ Route::put('Administrator/agent-network/update/{id}', [Administrator::class, 'up
 Route::delete('/Administrator/agent-network/delete/{id}', [Administrator::class, 'deleteDataAgentNetwork'])->name('Administrator.delete.agent.network');
 
 
+Route::get('Administrator/Data-Sync-Commodities', [Administrator::class, 'DataCommodity'])->name('Administrator.data.commodity');
+Route::get('Administrator/Data-Sync-Uom', [Administrator::class, 'DataUom'])->name('Administrator.data.uom');
+
+
+
+
 
 // Admin Cms Website Route (blogs)
 Route::get('Admins/Homes',[Admins::class,'Homes_Admins'])->name('Admins.homes');

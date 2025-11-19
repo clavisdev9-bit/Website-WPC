@@ -1941,5 +1941,21 @@ public function DeleteDataAgentSubContinentNetwork($id) {
     }
 }
 
+
+
+
+public function DataCommodity()  {
+         $data = [
+              'title' => 'Data Commodity'
+         ];
+         return view('administrator/commodity/data/file',$data);
+        }
+
+public function DataUom()  {
+         $data = [
+              'title' => 'Data Uom'
+         ];
+         return view('administrator/uom/data/file',$data);
+        }
 }
 

@@ -24,6 +24,7 @@ class NetworkAgentApi extends Controller
         $this->CountryNetworkAgentModel = $CountryNetworkAgentModel;
      }
 
+     
      public function getNetworkAgent(IndexRequestAgentNetwork $request) 
      {
          $validated = $request->validated();

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ContactSyncApiExternal\ContactSyncApi;
 use App\Http\Controllers\AdminQuotation\Admin_Quotation_system;
 use App\Http\Controllers\Api\ApiInternal\NetworkAgentApi;
 use App\Http\Controllers\Api\ApiInternal\SendEmail;
+use App\Http\Controllers\Api\MasterApiExternal\MasterSync;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -33,3 +34,10 @@ Route::get('/Agents/Network', [NetworkAgentApi::class, 'getNetworkAgent'])->name
 // route for send email internal system
 Route::post('/send-offer-email-pickup', [SendEmail::class, 'sendOfferEmailPickup'])->name('api.send.offer.email.pickup');
 Route::post('/send-offer-email-destination', [SendEmail::class, 'sendOfferEmailDestination'])->name('api.send.offer.email.destination');
+
+Route::get('/master-local-commodities', [MasterSync::class, 'MasterCommodity']);
+Route::post('/sync/commodities', [MasterSync::class, 'syncCommodities']);
+
+
+Route::get('/master-local-uoms', [MasterSync::class, 'MasterUoms']);
+Route::post('/sync/uoms', [MasterSync::class, 'syncUoms']);

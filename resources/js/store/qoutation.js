@@ -257,7 +257,7 @@ export const useQuotation = defineStore("QuotationFitur", () => {
     loadingCommodities.value = true;
     error.value = null;
     try {
-      const { data } = await axios.get(`/api/master/commodities`);
+      const { data } = await axios.get(`/api/master-local-commodities`);
       if (!data?.data) throw new Error("No commodities found");
       dataCommodities.value = data.data.map(item => ({
         value: String(item.id), // pastikan type string
@@ -277,7 +277,7 @@ export const useQuotation = defineStore("QuotationFitur", () => {
     loadingUoms.value = true;
     error.value = null;
     try {
-      const { data } = await axios.get(`/api/master/units-of-measure`);
+      const { data } = await axios.get(`/api/master-local-uoms`);
       if (!data?.data) throw new Error("No UOMs found");
       dataUoms.value = data.data.map(item => ({
         value: String(item.id),
