@@ -179,64 +179,34 @@
 
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Commodity <small class="text-danger">*</small></label>
-<Multiselect
-  v-model="selectedCommodity"
-  :options="quotationStore.dataCommodities"
-  track-by="value"
-  label="label"
-  placeholder="Select Commodities"
-  @close="validateField('selectedCommodity')"
-  @select="validateField('selectedCommodity')"
-  :class="errors.selectedCommodity ? 'is-invalid' : ''"
-/>
-</div>
+                        <Multiselect
+                          v-model="selectedCommodity"
+                          :options="quotationStore.dataCommodities"
+                          track-by="value"
+                          label="label"
+                          placeholder="Select Commodities"
+                          @close="validateField('selectedCommodity')"
+                          @select="validateField('selectedCommodity')"
+                          :class="errors.selectedCommodity ? 'is-invalid' : ''"
+                        />
+                        </div>
 
 
-  <div class="col-md-4 mb-3">
- <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
-<Multiselect
-  v-model="selectedUom"
-  :options="quotationStore.dataUoms"
-  track-by="value"
-  label="label"
-  placeholder="Select UOM"
-  @close="validateField('selectedUom')"
-  @select="validateField('selectedUom')"
-  :class="errors.selectedUom ? 'is-invalid' : ''"
-/>
-</div>
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
+                      <Multiselect
+                        v-model="selectedUom"
+                        :options="quotationStore.dataUoms"
+                        track-by="value"
+                        label="label"
+                        placeholder="Select UOM"
+                        @close="validateField('selectedUom')"
+                        @select="validateField('selectedUom')"
+                        :class="errors.selectedUom ? 'is-invalid' : ''"
+                      />
+                      </div>
 
-                        <!-- <div class="col-md-4 mb-3">
-                          <label class="form-label">Commodity <small class="text-danger">*</small></label>
-                          <Multiselect
-                            v-model="selectedCommodity"
-                            :options="quotationStore.dataCommodities"
-                            track-by="value"
-                            label="label"
-                            placeholder="Select Commodities"
-                            @close="validateField('selectedCommodity')" 
-                            @select="validateField('selectedCommodity')"
-                            :class="errors.selectedCommodity ? 'is-invalid' : ''"
-                          />
-                          <small class="text-danger">{{ errors.selectedCommodity }}</small>
-                        </div> -->
-
-                        <!-- <div class="col-md-4 mb-3">
-                          <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
-                          <Multiselect
-                            v-model="selectedUom"
-                            :options="quotationStore.dataUoms"
-                            track-by="value"
-                            label="label"
-                            placeholder="Select UOM"
-                            @close="validateField('selectedUom')" 
-                            @select="validateField('selectedUom')"
-                            :class="errors.selectedUom ? 'is-invalid' : ''"
-                          />
-                          <small class="text-danger">{{ errors.selectedUom }}</small>
-                          
-                        </div> -->
-
+                       
                         <!-- Ratio -->
                           <div class="col-md-4 mb-3">
                             <label class="form-label">Ratio <small class="text-danger">* (automatic)</small></label>
@@ -364,6 +334,41 @@
                           />
                           <small class="text-danger">{{ errors.selectedPickupDestination }}</small>
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                          <!-- HONEYPOT FIELD -->
+                          <input 
+                              type="text" 
+                              v-model="quotationStore.honeypot" 
+                              style="display:none !important" 
+                              tabindex="-1" 
+                              autocomplete="off" 
+                        />
+
+                        <!-- SLIDER CAPTCHA -->
+                        <!-- <small class="text-danger">{{ inputErrors.captcha }}</small> -->
+                          <div
+                            class="slider-track"
+                            ref="trackRef"
+                            :class="{ completed: sliderCompleted, 'slider-locked': sliderCompleted }"
+                           >
+                            <div
+                              class="slider-thumb"
+                              ref="thumbRef"
+                              :class="{ 'slider-locked': sliderCompleted }"
+                              @mousedown="startSlide"
+                              @touchstart="startSlide"
+                            >
+                              <i class="fa-solid fa-cart-flatbed"> </i>
+                            </div>
+
+                            <div class="slider-text">
+                              <span v-if="!sliderCompleted"> <small> Geser untuk verifikasi</small></span>
+                              <span v-else><i class="fa-solid fa-check-to-slot"> </i> <small> Verifikasi Berhasil</small> </span>
+                            </div>
+                          </div>
+
+                        </div>
                       </div>
                     </div>
 
@@ -452,6 +457,11 @@ import { useToast } from 'vue-toastification'
 const toast = useToast();
 const quotationStore = useQuotation();
 
+// untuk bot trap time
+onMounted(() => {
+  quotation.formStartTime = Date.now() / 1000;  // detik float
+});
+
 // --- Stepper Control ---
 const currentStep = ref(0);
 // const steps = ["Personal Information", "Cargo Details", "Route"];
@@ -459,6 +469,70 @@ const steps = ['personalInfo', 'cargoDetails', 'route']
 
 // animation spinner
 const isSubmitting = ref(false);
+
+
+/* ====================== SLIDER REFS ====================== */
+const trackRef = ref(null);
+const thumbRef = ref(null);
+
+const isSliding = ref(false);
+const sliderCompleted = ref(false);
+const startX = ref(0);
+
+/* ====================== SLIDER LOGIC ====================== */
+const startSlide = (event) => {
+  // Stop jika sudah diverifikasi
+  if (sliderCompleted.value) return;
+
+  isSliding.value = true;
+  startX.value = event.touches ? event.touches[0].clientX : event.clientX;
+
+  // mouse
+  window.addEventListener("mousemove", slideMove);
+  window.addEventListener("mouseup", stopSlide);
+
+  // mobile
+  window.addEventListener("touchmove", slideMove, { passive: false });
+  window.addEventListener("touchend", stopSlide);
+};
+
+const slideMove = (event) => {
+  if (!isSliding.value || sliderCompleted.value) return;
+
+  // biar slider gak nyeret halaman mobile
+  if (event.cancelable) event.preventDefault();
+
+  const track = trackRef.value;
+  const thumb = thumbRef.value;
+
+  const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+  const delta = clientX - startX.value;
+
+  const max = track.offsetWidth - thumb.offsetWidth;
+  const pos = Math.min(Math.max(0, delta), max);
+
+  thumb.style.transform = `translateX(${pos}px)`;
+
+  // jika sampai ujung selesai
+  if (pos >= max - 3) {
+    sliderCompleted.value = true;
+    stopSlide();
+  }
+};
+
+const stopSlide = () => {
+  if (!isSliding.value) return;
+
+  isSliding.value = false;
+
+  window.removeEventListener("mousemove", slideMove);
+  window.removeEventListener("mouseup", stopSlide);
+
+  window.removeEventListener("touchmove", slideMove);
+  window.removeEventListener("touchend", stopSlide);
+};
+
+
 
 // reset form before succes or err
 const resetForm = () => {
@@ -525,6 +599,7 @@ const errors = ref({
   qty:'',
   kgs_chg:'',
   kgs_wt:'',
+  captcha: '',
 });
 
 
@@ -558,17 +633,12 @@ const validateField = (name) => {
     case 'selectedState':
       errors.value.selectedState = selectedState.value ? '' : 'State is required';
       break;
-
-
       case 'selectedCommodity':
       errors.value.selectedCommodity = selectedCommodity.value ? '' : 'Commodity is Required ';
       break;
-
        case 'selectedUom':
       errors.value.selectedUom = selectedUom.value ? '' : 'UOM is Required ';
       break;
-
-
     case 'ratio':
     if (!ratio.value) {
       errors.value.ratio = 'Ratio is required';
@@ -578,58 +648,22 @@ const validateField = (name) => {
       errors.value.ratio = '';
     }
     break;
-
-
     case 'qty':
   if (!qty.value) errors.value.qty = 'Quantity is required';
   else if (isNaN(qty.value)) errors.value.qty = 'Quantity must be a number';
   else errors.value.qty = '';
-
+  break;
 case 'kgs_chg':
   if (!kgs_chg.value) errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
   else if (isNaN(kgs_chg.value)) errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
   else errors.value.kgs_chg = '';
-
+  break;
 case 'kgs_wt':
   if (!kgs_wt.value) errors.value.kgs_wt = 'Actual Weight (KGS) is required';
   else if (isNaN(kgs_wt.value)) errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
   else errors.value.kgs_wt = '';
-
-
-    // case 'qty':
-    // if (!qty.value) {
-    //   errors.value.qty = 'Quantity is required';
-    // } else if (isNaN(ratio.value)) {
-    //   errors.value.qty = 'Quantity must be a number';
-    // } else {
-    //   errors.value.qty = '';
-    // }
-    // break;
-
-
-    // case 'kgs_chg':
-    // if (!kgs_chg.value) {
-    //   errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
-    // } else if (isNaN(ratio.value)) {
-    //   errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
-    // } else {
-    //   errors.value.kgs_chg = '';
-    // }
-    // break;
-
-
-    // case 'kgs_wt':
-    // if (!kgs_wt.value) {
-    //   errors.value.kgs_wt = 'Actual Weight (KGS) is required';
-    // } else if (isNaN(ratio.value)) {
-    //   errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
-    // } else {
-    //   errors.value.kgs_wt = '';
-    // }
-    // break;
-
-
-    case 'termsCondition':
+  break;
+case 'termsCondition':
       if (!termsCondition.value || termsCondition.value.trim() === '') {
         errors.value.termsCondition = 'Other Notes cannot be empty';
       } else if (termsCondition.value.trim().length < 10) {
@@ -641,9 +675,7 @@ case 'kgs_wt':
       }
       break;
 
-     
-
-
+    
     case 'selectedTransportation1':
       errors.value.selectedTransportation1 = selectedTransportation1.value ? '' : 'Required';
       break;
@@ -747,9 +779,7 @@ onMounted(() => {
   quotationStore.fetchUoms();
 });
 
-// watch(selectedUom, (uom) => {
-//   ratio.value = uom?.factor ?? "";
-// });
+
 
 watch(selectedUom, (uom) => {
   ratio.value = Number(uom?.factor) || 0; // pastikan factor selalu number
@@ -789,11 +819,26 @@ watch(selectedTransportation2, (newVal) => {
   }
 });
 
-
   
 
 const submitQuote = async () => {
+
+    // SIMULASI BOT
   if (!validateStep(2)) return;
+
+ // === Anti BOT: Honeypot ===
+  if (quotationStore.honeypot && quotationStore.honeypot.trim() !== "") {
+    toast.error("Bot detected!");
+    return;
+  }
+
+  // === Anti BOT: Timestamp Trap (<1200ms) ===
+  const timeTaken = Date.now() - quotationStore.formStartTime;
+  if (timeTaken < 1200) {
+    toast.error("Bot detected (too fast)");
+    return;
+  }
+
     const selectedCommodityValue = selectedCommodity.value;
     const selectedUomValue = selectedUom.value;
   isSubmitting.value = true; 
@@ -814,6 +859,10 @@ const submitQuote = async () => {
       qty: qty.value,
       kgs_chg: kgs_chg.value,
       kgs_wt: kgs_wt.value,
+
+       //  anti-bot ke backend
+      extra_field: quotationStore.honeypot,
+      timestamp: quotationStore.formStartTime
     };
 
     const res = await quotationStore.createQuote(payload);
@@ -933,5 +982,69 @@ input.is-invalid, .multiselect.is-invalid .multiselect__tags {
 }
 
 
+
+/* === SLIDER (GLOBAL DESKTOP + MOBILE) === */
+/* === SLIDER === */
+.slider-track {
+  width: 100%;
+  height: 45px;
+  background: #e3e3e3;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+
+.slider-track.completed {
+  background: #4caf50;
+  transition: background 0.3s ease;
+}
+
+/* BENAR-BENAR MATIKAN EVENT SETELAH COMPLETED */
+.slider-locked {
+  pointer-events: none !important;
+  touch-action: none !important;
+}
+
+.slider-thumb {
+  width: 45px;
+  height: 45px;
+  background: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: grab;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.12s ease-out;
+  touch-action: none;
+}
+
+.slider-track.completed .slider-thumb {
+  background: #2e7d32;
+}
+
+.slider-text {
+  position: absolute;
+  width: 100%;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-weight: 600;
+  color: #555;
+}
+
+/* disabled */
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 </style>

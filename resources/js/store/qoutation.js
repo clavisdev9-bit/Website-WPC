@@ -1,193 +1,3 @@
-// import { ref } from "vue";
-// import { defineStore } from "pinia";
-// import axios from "axios";
-
-// export const useQuotation = defineStore("QuotationFitur", () => {
-
-//     // code url Api
-//   const baseUrlApiExternalCountry ="/api/country";
-//   // const baseUrlApiExternalCommodity ="/api/master/commodities";
-//   // const baseUrlApiExternalUom ="/api/master/uom";
-
-//   // state
-//   const dataCountry = ref([]);
-//   const dataState = ref([]);
-//   const dataPickupOrigins = ref([]);
-//   const dataPickupDestinations = ref([]);
-//   const loading = ref(false);
-//   const error = ref(null);
-//   const dataCommodities = ref([]);
-//   const dataUoms = ref([]);
-
-
-
-
-//   // action untuk fetch data
-//   const fetchCountries = async () => {
-//     loading.value = true;
-//     error.value = null;
-//     try {
-//       const res = await axios.get(`${baseUrlApiExternalCountry}`);
-//       dataCountry.value = res.data?.data || []; // sesuaikan struktur response API kamu
-//     } catch (err) {
-//       console.error("Error fetching countries:", err);
-//       error.value = err.message;
-//     } finally {
-//       loading.value = false;
-//     }
-//   };
-
-
-//   const fetchStatesByCountry = async (countryId) => {
-//     if (!countryId) {
-//       dataState.value = [];
-//       return;
-//     }
-//     loading.value = true;
-//     error.value = null;
-//     try {
-//       const res = await axios.get(`/api/states/country/${countryId}`);
-//       dataState.value = res.data?.data || [];
-//     } catch (err) {
-//       console.error("Error fetching states:", err);
-//       error.value = err.message;
-//     } finally {
-//       loading.value = false;
-//     }
-//   };
-
-
-
-//   // fetch commodities
-//   const fetchCommodities = async () => {
-//   loading.value = true;
-//   error.value = null;
-//   try {
-//     const { data } = await axios.get(`/api/master/commodities`);
-//     // const { data } = await axios.get(`${baseUrlApiExternalCommodity}`);
-//     dataCommodities.value = (data?.data ?? []).map(item => ({
-//       value: item.id,                
-//       label: item.name,  
-//     }));
-
-//   } catch (err) {
-//     console.error("Error fetching commodities:", err);
-//     error.value = err.response?.data?.message || err.message || "Unknown error";
-//   } finally {
-//     loading.value = false;
-//   }
-// };
-
-
-//   // fetch Uoms
-// const fetchUoms = async () => {
-//   loading.value = true;
-//   error.value = null;
-
-//   try {
-//     const { data } = await axios.get(`/api/master/units-of-measure`);
-
-//     dataUoms.value = (data?.data ?? []).map(item => ({
-//       value: item.id,
-//       label: item.name,
-//       factor: item.factor,
-//     }));
-//   } catch (err) {
-//     console.error("Error fetching uoms:", err);
-//     error.value = err.response?.data?.message || err.message || "Unknown error";
-//   } finally {
-//     loading.value = false;
-//   }
-// };
-
-
-
-//   const fetchPickupOrigins = async (transportation) => {
-//     if (!transportation) {
-//       dataPickupOrigins.value = [];
-//       return;
-//     }
-//     loading.value = true;
-//     error.value = null;
-//     try {
-//       const res = await axios.get(`/api/pickup-origins`, {
-//         params: { transportation }
-//       });
-//       dataPickupOrigins.value = res.data?.data || [];
-//     } catch (err) {
-//       error.value = err.message;
-//     } finally {
-//       loading.value = false;
-//     }
-//   };
-
-
-//   const fetchPickupDestinations = async (transportation) => {
-//   try {
-//     const res = await axios.get(`/api/pickup-destinations`, {
-//       params: { transportation }
-//     });
-//     if (res.data.success) {
-//       dataPickupDestinations.value = res.data.data;
-//     } else {
-//       dataPickupDestinations.value = [];
-//     }
-//   } catch (err) {
-//     console.error("Error fetching destinations:", err);
-//     dataPickupDestinations.value = [];
-//   }
-// };
-
-
-
-
-// const createQuote = async (payload) => {
-//   try {
-//     const res = await axios.post("/api/quote/create", payload);
-
-//     const data = res?.data;
-
-//     if (data?.success) {
-//       console.log("Quote created:", data);
-//       return data;
-//     }
-
-//     throw new Error(data?.message || "Failed to create quote");
-//   } catch (err) {
-//     // Ambil pesan dari server jika ada
-//     const errorMessage =
-//       err?.response?.data?.message ||
-//       err?.message ||
-//       "Error while creating quote";
-
-//     console.error("Error creating quote:", errorMessage);
-
-//     // lempar ulang dengan pesan yang rapi
-//     throw new Error(errorMessage);
-//   }
-// };
-
-
-//   return {
-//     dataCountry,
-//     dataState,
-//     dataPickupOrigins,
-//     dataPickupDestinations,
-//     dataCommodities,
-//     dataUoms,
-//     loading,
-//     error,
-//     fetchCountries,
-//     fetchStatesByCountry,
-//     fetchPickupOrigins,
-//     fetchPickupDestinations,
-//     fetchCommodities,
-//     fetchUoms,
-//     createQuote
-//   };
-// });
-
-
 
 import { ref } from "vue";
 import { defineStore } from "pinia";
@@ -206,6 +16,13 @@ export const useQuotation = defineStore("QuotationFitur", () => {
   const dataCommodities = ref([]);
   const dataUoms = ref([]);
 
+
+ // Honeypot (anti bot)
+  const honeypot = ref("");  // timestamp trap
+  // const formStartTime = ref(Date.now() / 1000); // detik float
+const formStartTime = ref(0); // default
+
+
   // Loading state per fetch
   const loadingCountries = ref(false);
   const loadingStates = ref(false);
@@ -220,7 +37,7 @@ export const useQuotation = defineStore("QuotationFitur", () => {
   const fetchCountries = async () => {
     loadingCountries.value = true;
     error.value = null;
-    try {
+    try { 
       const res = await axios.get(`${baseUrlApiExternalCountry}`);
       dataCountry.value = res.data?.data || [];
     } catch (err) {
@@ -330,18 +147,63 @@ export const useQuotation = defineStore("QuotationFitur", () => {
   };
 
   // --- Create Quote ---
+  // const createQuote = async (payload) => {
+
+  //   // === Honeypot detection (frontend) ===
+  //   if (honeypot.value.length > 0) {
+  //     console.warn("BOT DETECTED: honeypot terisi");
+  //     throw new Error("Bot detected");
+  //   }
+
+  //   // === Timestamp trap: form disubmit < 1.2 detik = bot ===
+  //   const now = Date.now();
+  //   if (now - formStartTime.value < 1200) {
+  //     console.warn("BOT DETECTED: Form too fast");
+  //     throw new Error("Bot detected");
+  //   }
+
+
+  //   try {
+  //     const res = await axios.post("/api/quote/create", payload);
+  //     const data = res?.data;
+  //     if (data?.success) return data;
+  //     throw new Error(data?.message || "Failed to create quote");
+  //   } catch (err) {
+  //     const errorMessage = err?.response?.data?.message || err?.message || "Error while creating quote";
+  //     console.error("Error creating quote:", errorMessage);
+  //     throw new Error(errorMessage);
+  //   }
+  // };
+
   const createQuote = async (payload) => {
-    try {
-      const res = await axios.post("/api/quote/create", payload);
-      const data = res?.data;
-      if (data?.success) return data;
-      throw new Error(data?.message || "Failed to create quote");
-    } catch (err) {
-      const errorMessage = err?.response?.data?.message || err?.message || "Error while creating quote";
-      console.error("Error creating quote:", errorMessage);
-      throw new Error(errorMessage);
-    }
-  };
+
+  // Frontend anti-bot
+  if (honeypot.value.length > 0) {
+    console.warn("BOT DETECTED: honeypot terisi");
+    throw new Error("Bot detected");
+  }
+
+  // Pastikan timestamp detik float
+  const now = Date.now() / 1000;
+  if (now - formStartTime.value < 1.2) {
+    console.warn("BOT DETECTED: Form too fast");
+    throw new Error("Bot detected");
+  }
+
+  // Kirim timestamp ke backend
+  payload.timestamp = formStartTime.value;
+  payload.extra_field = honeypot.value;
+
+  try {
+    const res = await axios.post("/api/quote/create", payload);
+    return res.data;
+  } catch (err) {
+    const errorMessage = err?.response?.data?.message || err.message;
+    console.error("Error creating quote:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 
   return {
     // states
@@ -358,6 +220,8 @@ export const useQuotation = defineStore("QuotationFitur", () => {
     loadingCommodities,
     loadingUoms,
     error,
+    honeypot,
+    formStartTime,
 
     // actions
     fetchCountries,
