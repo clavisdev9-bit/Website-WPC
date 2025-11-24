@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminQuotation\Admin_Quotation_system;
 use App\Http\Controllers\Api\ApiInternal\NetworkAgentApi;
 use App\Http\Controllers\Api\ApiInternal\SendEmail;
 use App\Http\Controllers\Api\MasterApiExternal\MasterSync;
+use App\Http\Controllers\Api\ApiInternal\CaptchaSlidder;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -41,3 +42,6 @@ Route::post('/sync/commodities', [MasterSync::class, 'syncCommodities']);
 
 Route::get('/master-local-uoms', [MasterSync::class, 'MasterUoms']);
 Route::post('/sync/uoms', [MasterSync::class, 'syncUoms']);
+
+Route::get('/captcha/slider', [CaptchaSlidder::class, 'generate']);
+Route::post('/captcha/slider/verify', [CaptchaSlidder::class, 'verify']);

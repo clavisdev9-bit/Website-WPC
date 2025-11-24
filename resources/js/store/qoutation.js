@@ -16,11 +16,36 @@ export const useQuotation = defineStore("QuotationFitur", () => {
   const dataCommodities = ref([]);
   const dataUoms = ref([]);
 
-
  // Honeypot (anti bot)
   const honeypot = ref("");  // timestamp trap
   // const formStartTime = ref(Date.now() / 1000); // detik float
 const formStartTime = ref(0); // default
+
+ // NEW: slider token state
+  const sliderToken = ref(null);
+  const sliderExpiresAt = ref(0);
+
+   // NEW: verifySlider -> call backend to generate slider token
+  const verifySlider = async () => {
+    try {
+      const res = await axios.post("/api/captcha/verify-slider");
+      if (!res.data || !res.data.token) throw new Error(res.data?.message || "No token returned");
+      sliderToken.value = res.data.token;
+      const expires = (res.data.expires_in || 300) * 1000; // convert to ms
+      sliderExpiresAt.value = Date.now() + expires;
+      // auto-clear client-store token on expiry
+      setTimeout(() => {
+        if (Date.now() >= sliderExpiresAt.value) {
+          sliderToken.value = null;
+          sliderExpiresAt.value = 0;
+        }
+      }, expires + 1000);
+      return res.data;
+    } catch (err) {
+      console.error("verifySlider failed:", err?.response?.data || err.message);
+      throw new Error(err?.response?.data?.message || err.message || "Verification failed");
+    }
+  };
 
 
   // Loading state per fetch

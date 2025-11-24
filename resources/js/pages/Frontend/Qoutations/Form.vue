@@ -178,13 +178,13 @@
                       <div class="row">
 
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Commodity <small class="text-danger">*</small></label>
+                            <label class="form-label"> {{ $t("quotationForm.labels.commodities") }} <small class="text-danger">*</small></label>
                         <Multiselect
                           v-model="selectedCommodity"
                           :options="quotationStore.dataCommodities"
                           track-by="value"
                           label="label"
-                          placeholder="Select Commodities"
+                          :placeholder="$t('quotationForm.placeholders.commodities')"
                           @close="validateField('selectedCommodity')"
                           @select="validateField('selectedCommodity')"
                           :class="errors.selectedCommodity ? 'is-invalid' : ''"
@@ -193,13 +193,13 @@
 
 
                     <div class="col-md-4 mb-3">
-                      <label class="form-label">UOM (Unit of Measurement) <small class="text-danger">*</small></label>
-                      <Multiselect
+                      <label class="form-label"> {{ $t("quotationForm.labels.Uom") }} <small class="text-danger">*</small></label>
+                      <Multiselect 
                         v-model="selectedUom"
                         :options="quotationStore.dataUoms"
                         track-by="value"
                         label="label"
-                        placeholder="Select UOM"
+                        :placeholder="$t('quotationForm.placeholders.Uom')"
                         @close="validateField('selectedUom')"
                         @select="validateField('selectedUom')"
                         :class="errors.selectedUom ? 'is-invalid' : ''"
@@ -209,7 +209,7 @@
                        
                         <!-- Ratio -->
                           <div class="col-md-4 mb-3">
-                            <label class="form-label">Ratio <small class="text-danger">* (automatic)</small></label>
+                            <label class="form-label">{{ $t("quotationForm.labels.ratio") }} <small class="text-danger">* (automatic)</small></label>
                             <input 
                               type="number" 
                               v-model="ratio"
@@ -217,7 +217,7 @@
                               :readonly="true"
                               :class="['form-control', errors.ratio ? 'is-invalid' : '']"
                               name="ratio"
-                              placeholder="e.g. 1.5"
+                              :placeholder="$t('quotationForm.placeholders.ratio')"
                             >
                             <small class="text-danger">{{ errors.ratio }}</small>
                           </div>
@@ -225,33 +225,34 @@
 
                         <!-- Quantity -->
                         <div class="col-md-4 mb-3">
-                          <label class="form-label">Quantity <small class="text-danger">*</small></label>
+                          <label class="form-label">{{ $t("quotationForm.labels.Quantity") }} <small class="text-danger">*</small></label>
                           <input type="number" v-model="qty"
                            :class="['form-control', errors.qty ? 'is-invalid' : '']" 
                             name="qty"
-                            placeholder="e.g. 10">
+                            :placeholder="$t('quotationForm.placeholders.Quantity')">
                              <small class="text-danger">{{ errors.qty }}</small>
                         </div>
 
                         <!-- KGS CHG -->
                         <div class="col-md-4 mb-3">
-                          <label class="form-label"> Kilogram Charge (KGS CHG) <small class="text-danger">*</small></label>
+                          <!-- <label class="form-label"> Kilogram Charge (KGS CHG) <small class="text-danger">*</small></label> -->
+                          <label class="form-label"> {{ $t("quotationForm.labels.kgsChg") }} <small class="text-danger">*</small></label>
                           <input type="number" v-model="kgs_chg"
                              :class="['form-control', errors.kgs_chg ? 'is-invalid' : '']" 
                             name="kgs_chg"
-                            placeholder="e.g. 50"
+                            :placeholder="$t('quotationForm.placeholders.kgsChg')"
                             >
                              <small class="text-danger">{{ errors.kgs_chg }}</small>
                         </div>
 
                         <!-- KGS WT -->
                         <div class="col-md-4 mb-3">
-                          <label class="form-label">Kilogram Gross Weight (KGS WT) <small class="text-danger">*</small></label>
+                          <label class="form-label"> {{ $t("quotationForm.labels.kgsWt") }} <small class="text-danger">*</small></label>
                           <input type="number"
                            v-model="kgs_wt"
                            :class="['form-control', errors.kgs_wt ? 'is-invalid' : '']"
                            name="kgs_wt" 
-                           placeholder="e.g. 75">
+                           :placeholder="$t('quotationForm.placeholders.kgsWt')">
                            <small class="text-danger">{{ errors.kgs_wt }}</small>
                         </div>
                       </div>
