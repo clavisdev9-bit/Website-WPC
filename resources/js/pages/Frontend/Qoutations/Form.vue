@@ -348,7 +348,7 @@
 
                         <!-- SLIDER CAPTCHA -->
                         <!-- <small class="text-danger">{{ inputErrors.captcha }}</small> -->
-                          <div
+                          <!-- <div
                             class="slider-track"
                             ref="trackRef"
                             :class="{ completed: sliderCompleted, 'slider-locked': sliderCompleted }"
@@ -367,7 +367,38 @@
                               <span v-if="!sliderCompleted"> <small> Geser untuk verifikasi</small></span>
                               <span v-else><i class="fa-solid fa-check-to-slot"> </i> <small> Verifikasi Berhasil</small> </span>
                             </div>
-                          </div>
+                          </div> -->
+
+
+                          <div
+  class="slider-track"
+  ref="trackRef"
+  :class="{ completed: sliderCompleted, 'slider-locked': sliderCompleted }"
+>
+  <div
+    class="slider-thumb"
+    ref="thumbRef"
+    :class="{ 'slider-locked': sliderCompleted }"
+    @mousedown="startSlide"
+    @touchstart="startSlide"
+
+    @mouseup="finishSlide"
+    @touchend="finishSlide"
+  >
+    <i class="fa-solid fa-cart-flatbed"></i>
+  </div>
+
+  <div class="slider-text">
+    <span v-if="!sliderCompleted">
+      <small>Geser untuk verifikasi</small>
+    </span>
+    <span v-else>
+      <i class="fa-solid fa-check-to-slot"></i>
+      <small>Verifikasi Berhasil</small>
+    </span>
+  </div>
+</div>
+
 
                         </div>
                       </div>
@@ -454,13 +485,16 @@ import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import { useQuotation } from '@/store/qoutation'
 import { useToast } from 'vue-toastification'
-
+import axios from "axios";
 const toast = useToast();
 const quotationStore = useQuotation();
 
 // untuk bot trap time
 onMounted(() => {
   quotation.formStartTime = Date.now() / 1000;  // detik float
+});
+onMounted(async () => {
+  await loadCaptchaToken();
 });
 
 // --- Stepper Control ---
@@ -471,36 +505,82 @@ const steps = ['personalInfo', 'cargoDetails', 'route']
 // animation spinner
 const isSubmitting = ref(false);
 
+const captchaData = ref({
+  token: "",
+  timestamp: "",
+  signature: "",
+});
 
-/* ====================== SLIDER REFS ====================== */
+const loadingCaptcha = ref(true);
+
+const loadCaptchaToken = async () => {
+  loadingCaptcha.value = true;
+
+  try {
+    const res = await axios.get("/api/captcha/slider");
+    if (res.data.success) {
+      captchaData.value = {
+        token: res.data.token,
+        timestamp: res.data.timestamp,
+        signature: res.data.signature,
+      };
+    }
+  } catch (e) {
+    console.error("Failed to load captcha:", e);
+  } finally {
+    loadingCaptcha.value = false;
+  }
+};
+
+const verifyCaptcha = async () => {
+  try {
+    const res = await axios.post("/api/captcha/slider/verify", {
+      token: captchaData.value.token,
+      timestamp: captchaData.value.timestamp,
+      signature: captchaData.value.signature,
+    });
+
+    if (res.data.success) {
+      sliderCompleted.value = true;
+      return true;
+    }
+  } catch (err) {
+    alert("Verifikasi captcha gagal");
+    await loadCaptchaToken(); // Refresh token
+    return false;
+  }
+};
+
+
+
+
+/* ======= SLIDER STATE ======= */
 const trackRef = ref(null);
 const thumbRef = ref(null);
 
 const isSliding = ref(false);
 const sliderCompleted = ref(false);
 const startX = ref(0);
+const sliderPos = ref(0);
 
-/* ====================== SLIDER LOGIC ====================== */
+/* ======= START ======= */
 const startSlide = (event) => {
-  // Stop jika sudah diverifikasi
   if (sliderCompleted.value) return;
 
   isSliding.value = true;
   startX.value = event.touches ? event.touches[0].clientX : event.clientX;
 
-  // mouse
   window.addEventListener("mousemove", slideMove);
   window.addEventListener("mouseup", stopSlide);
 
-  // mobile
   window.addEventListener("touchmove", slideMove, { passive: false });
   window.addEventListener("touchend", stopSlide);
 };
 
+/* ======= MOVE ======= */
 const slideMove = (event) => {
   if (!isSliding.value || sliderCompleted.value) return;
 
-  // biar slider gak nyeret halaman mobile
   if (event.cancelable) event.preventDefault();
 
   const track = trackRef.value;
@@ -512,18 +592,13 @@ const slideMove = (event) => {
   const max = track.offsetWidth - thumb.offsetWidth;
   const pos = Math.min(Math.max(0, delta), max);
 
+  sliderPos.value = pos;
   thumb.style.transform = `translateX(${pos}px)`;
-
-  // jika sampai ujung selesai
-  if (pos >= max - 3) {
-    sliderCompleted.value = true;
-    stopSlide();
-  }
 };
 
-const stopSlide = () => {
+/* ======= STOP ======= */
+const stopSlide = async () => {
   if (!isSliding.value) return;
-
   isSliding.value = false;
 
   window.removeEventListener("mousemove", slideMove);
@@ -531,7 +606,36 @@ const stopSlide = () => {
 
   window.removeEventListener("touchmove", slideMove);
   window.removeEventListener("touchend", stopSlide);
+
+  await finishSlide(); // 🔥 WAJIB — panggil di sini
 };
+
+/* ======= FINISH / VERIFY ======= */
+const finishSlide = async () => {
+  const track = trackRef.value;
+  const thumb = thumbRef.value;
+
+  const maxLeft = track.offsetWidth - thumb.offsetWidth;
+
+  if (sliderPos.value >= maxLeft - 3) {
+    const ok = await verifyCaptcha();
+    if (!ok) resetSlider();
+  } else {
+    resetSlider();
+  }
+};
+
+/* ======= RESET ======= */
+const resetSlider = () => {
+  sliderPos.value = 0;
+  sliderCompleted.value = false;
+
+  const thumb = thumbRef.value;
+  thumb.style.transform = "translateX(0px)";
+};
+
+
+
 
 
 
@@ -827,6 +931,12 @@ const submitQuote = async () => {
     // SIMULASI BOT
   if (!validateStep(2)) return;
 
+   //  Cek slider dulu
+  if (!sliderCompleted.value) {
+    toast.error("Please complete slider verification");
+    return;
+  }
+
  // === Anti BOT: Honeypot ===
   if (quotationStore.honeypot && quotationStore.honeypot.trim() !== "") {
     toast.error("Bot detected!");
@@ -861,9 +971,17 @@ const submitQuote = async () => {
       kgs_chg: kgs_chg.value,
       kgs_wt: kgs_wt.value,
 
+      captcha: {
+        token: captchaData.value.token,
+        timestamp: captchaData.value.timestamp,
+        signature: captchaData.value.signature,
+      },
+
+
        //  anti-bot ke backend
       extra_field: quotationStore.honeypot,
-      timestamp: quotationStore.formStartTime
+      timestamp: quotationStore.formStartTime,
+
     };
 
     const res = await quotationStore.createQuote(payload);
