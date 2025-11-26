@@ -235,7 +235,6 @@
 
                         <!-- KGS CHG -->
                         <div class="col-md-4 mb-3">
-                          <!-- <label class="form-label"> Kilogram Charge (KGS CHG) <small class="text-danger">*</small></label> -->
                           <label class="form-label"> {{ $t("quotationForm.labels.kgsChg") }} <small class="text-danger">*</small></label>
                           <input type="number" v-model="kgs_chg"
                              :class="['form-control', errors.kgs_chg ? 'is-invalid' : '']" 
@@ -346,59 +345,41 @@
                               autocomplete="off" 
                         />
 
-                        <!-- SLIDER CAPTCHA -->
-                        <!-- <small class="text-danger">{{ inputErrors.captcha }}</small> -->
-                          <!-- <div
+                       
+                          <div
                             class="slider-track"
                             ref="trackRef"
                             :class="{ completed: sliderCompleted, 'slider-locked': sliderCompleted }"
-                           >
+                          >
+                          
+ 
                             <div
                               class="slider-thumb"
                               ref="thumbRef"
                               :class="{ 'slider-locked': sliderCompleted }"
                               @mousedown="startSlide"
                               @touchstart="startSlide"
+                              @mouseup="finishSlide"
+                              @touchend="finishSlide"
                             >
-                              <i class="fa-solid fa-cart-flatbed"> </i>
+                              <i class="fa-solid fa-ship"></i>
                             </div>
+                            
 
                             <div class="slider-text">
-                              <span v-if="!sliderCompleted"> <small> Geser untuk verifikasi</small></span>
-                              <span v-else><i class="fa-solid fa-check-to-slot"> </i> <small> Verifikasi Berhasil</small> </span>
+                              <span v-if="!sliderCompleted">
+                                <small class="text-secondary">Swipe to verify</small>
+                              </span>
+                              <span v-else>
+                                <i class="fa-solid fa-check-to-slot"></i>
+                                <small class="text-secondary">Verification Successful</small>
+                              </span>
                             </div>
-                          </div> -->
 
 
-                          <div
-  class="slider-track"
-  ref="trackRef"
-  :class="{ completed: sliderCompleted, 'slider-locked': sliderCompleted }"
->
-  <div
-    class="slider-thumb"
-    ref="thumbRef"
-    :class="{ 'slider-locked': sliderCompleted }"
-    @mousedown="startSlide"
-    @touchstart="startSlide"
-
-    @mouseup="finishSlide"
-    @touchend="finishSlide"
-  >
-    <i class="fa-solid fa-cart-flatbed"></i>
-  </div>
-
-  <div class="slider-text">
-    <span v-if="!sliderCompleted">
-      <small>Geser untuk verifikasi</small>
-    </span>
-    <span v-else>
-      <i class="fa-solid fa-check-to-slot"></i>
-      <small>Verifikasi Berhasil</small>
-    </span>
-  </div>
-</div>
-
+                            
+                           
+                          </div>
 
                         </div>
                       </div>
@@ -432,7 +413,6 @@
                         v-if="currentStep === steps.length - 1"
                         style="background: linear-gradient(90deg, #007bff, #0056b3); border-radius: 12px; border: none;"
                       >
-                        <!-- <i class="fa fa-paper-plane"></i> Request Quotation -->
                         <span v-if="!isSubmitting">
                         <i class="fa fa-paper-plane"></i> {{ $t("quotationForm.buttons.submit") }} 
                       </span>
@@ -480,7 +460,7 @@
 
  <script setup>
 import FrontendLayout from "../../../layouts/FrontendLayout.vue";
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import { useQuotation } from '@/store/qoutation'
@@ -488,6 +468,7 @@ import { useToast } from 'vue-toastification'
 import axios from "axios";
 const toast = useToast();
 const quotationStore = useQuotation();
+
 
 // untuk bot trap time
 onMounted(() => {
@@ -526,7 +507,8 @@ const loadCaptchaToken = async () => {
       };
     }
   } catch (e) {
-    console.error("Failed to load captcha:", e);
+    // console.error("Failed to load captcha:", e);
+     toast.error("Failed to load captcha:", e);
   } finally {
     loadingCaptcha.value = false;
   }
@@ -545,13 +527,12 @@ const verifyCaptcha = async () => {
       return true;
     }
   } catch (err) {
-    alert("Verifikasi captcha gagal");
+    // alert("Verifikasi captcha gagal");
+    toast.error("Captcha verification failed");
     await loadCaptchaToken(); // Refresh token
     return false;
   }
 };
-
-
 
 
 /* ======= SLIDER STATE ======= */
@@ -607,7 +588,7 @@ const stopSlide = async () => {
   window.removeEventListener("touchmove", slideMove);
   window.removeEventListener("touchend", stopSlide);
 
-  await finishSlide(); // 🔥 WAJIB — panggil di sini
+  await finishSlide(); // WAJIB — panggil di sini
 };
 
 /* ======= FINISH / VERIFY ======= */
@@ -633,9 +614,6 @@ const resetSlider = () => {
   const thumb = thumbRef.value;
   thumb.style.transform = "translateX(0px)";
 };
-
-
-
 
 
 
@@ -754,21 +732,21 @@ const validateField = (name) => {
     }
     break;
     case 'qty':
-  if (!qty.value) errors.value.qty = 'Quantity is required';
-  else if (isNaN(qty.value)) errors.value.qty = 'Quantity must be a number';
-  else errors.value.qty = '';
-  break;
-case 'kgs_chg':
-  if (!kgs_chg.value) errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
-  else if (isNaN(kgs_chg.value)) errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
-  else errors.value.kgs_chg = '';
-  break;
-case 'kgs_wt':
-  if (!kgs_wt.value) errors.value.kgs_wt = 'Actual Weight (KGS) is required';
-  else if (isNaN(kgs_wt.value)) errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
-  else errors.value.kgs_wt = '';
-  break;
-case 'termsCondition':
+        if (!qty.value) errors.value.qty = 'Quantity is required';
+        else if (isNaN(qty.value)) errors.value.qty = 'Quantity must be a number';
+        else errors.value.qty = '';
+        break;
+      case 'kgs_chg':
+        if (!kgs_chg.value) errors.value.kgs_chg = 'Chargeable Weight (KGS) is required';
+        else if (isNaN(kgs_chg.value)) errors.value.kgs_chg = 'Chargeable Weight (KGS) must be a number';
+        else errors.value.kgs_chg = '';
+        break;
+      case 'kgs_wt':
+        if (!kgs_wt.value) errors.value.kgs_wt = 'Actual Weight (KGS) is required';
+        else if (isNaN(kgs_wt.value)) errors.value.kgs_wt = 'Actual Weight (KGS) must be a number';
+        else errors.value.kgs_wt = '';
+        break;
+      case 'termsCondition':
       if (!termsCondition.value || termsCondition.value.trim() === '') {
         errors.value.termsCondition = 'Other Notes cannot be empty';
       } else if (termsCondition.value.trim().length < 10) {
@@ -780,7 +758,7 @@ case 'termsCondition':
       }
       break;
 
-    
+  
     case 'selectedTransportation1':
       errors.value.selectedTransportation1 = selectedTransportation1.value ? '' : 'Required';
       break;
@@ -818,12 +796,6 @@ const phoneTypes = [
 const transportationMethods = [
   { value: "Air", label: "Air" },
   { value: "Ocean", label: "Ocean" }
-];
-
-// data sementara Uom
-const uomDataSelected = [
-  { value: "Days", label: "Days" },
-  { value: "Hour", label: "Hour" }
 ];
 
 const validateStep = (step) => {
@@ -925,10 +897,8 @@ watch(selectedTransportation2, (newVal) => {
 });
 
   
-
 const submitQuote = async () => {
 
-    // SIMULASI BOT
   if (!validateStep(2)) return;
 
    //  Cek slider dulu
@@ -976,7 +946,6 @@ const submitQuote = async () => {
         timestamp: captchaData.value.timestamp,
         signature: captchaData.value.signature,
       },
-
 
        //  anti-bot ke backend
       extra_field: quotationStore.honeypot,
@@ -1101,51 +1070,50 @@ input.is-invalid, .multiselect.is-invalid .multiselect__tags {
 }
 
 
-
-/* === SLIDER (GLOBAL DESKTOP + MOBILE) === */
-/* === SLIDER === */
 .slider-track {
-  width: 100%;
-  height: 45px;
-  background: #e3e3e3;
-  border-radius: 8px;
+  width: 260px;              /* Lebar slider */
+  height: 42px;              /* Tinggi slider dibuat pendek */
+  background: #eaeaea;
+  border-radius: 30px;
   position: relative;
-  overflow: hidden;
-  user-select: none;
-  touch-action: none;
-}
-
-.slider-track.completed {
-  background: #4caf50;
-  transition: background 0.3s ease;
-}
-
-/* BENAR-BENAR MATIKAN EVENT SETELAH COMPLETED */
-.slider-locked {
-  pointer-events: none !important;
-  touch-action: none !important;
-}
-
-.slider-thumb {
-  width: 45px;
-  height: 45px;
-  background: #007bff;
-  color: white;
+  margin: 0 auto;            /* <-- Biar selalu di tengah */
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  cursor: grab;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform 0.12s ease-out;
-  touch-action: none;
 }
 
-.slider-track.completed .slider-thumb {
-  background: #2e7d32;
+.slider-thumb {
+  width: 40px;               /* Ukuran thumb */
+  height: 40px;
+  background: #0d6efd;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: background 0.3s;
+  color: #fff;
+  font-size: 18px;
 }
+
+.slider-text {
+  font-size: 13px;           /* Tulisan kecil */
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.slider-track.completed {
+  background: #d1e7dd;
+}
+
+.slider-thumb.slider-locked {
+  background: #198754 !important;
+  cursor: default;
+}
+
 
 .slider-text {
   position: absolute;
@@ -1165,5 +1133,8 @@ input.is-invalid, .multiselect.is-invalid .multiselect__tags {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+
+
 
 </style>

@@ -9,6 +9,7 @@ import networkHighLevel from '../pages/Frontend/Network/networkHighLevel.vue';
 import dataTableSchedule from '../pages/Frontend/Schedule/dataTableSchedule.vue';
 import information from '../pages/Frontend/Information/information.vue';
 import support from '../pages/Frontend/Support/support.vue';
+import documentation from '../pages/Frontend/Documentation/documentation.vue';
 
 
 
@@ -42,6 +43,12 @@ const routes = [
   { 
     path: '/wpc-esys/schedule', 
      component: dataTableSchedule, 
+    // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
+  },
+
+   { 
+    path: '/wpc-esys/documentation', 
+     component: documentation, 
     // meta: { requiresAuth: true } // ✅ hanya bisa diakses jika login
   },
 

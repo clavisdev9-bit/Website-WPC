@@ -171,34 +171,7 @@ const formStartTime = ref(0); // default
     }
   };
 
-  // --- Create Quote ---
-  // const createQuote = async (payload) => {
-
-  //   // === Honeypot detection (frontend) ===
-  //   if (honeypot.value.length > 0) {
-  //     console.warn("BOT DETECTED: honeypot terisi");
-  //     throw new Error("Bot detected");
-  //   }
-
-  //   // === Timestamp trap: form disubmit < 1.2 detik = bot ===
-  //   const now = Date.now();
-  //   if (now - formStartTime.value < 1200) {
-  //     console.warn("BOT DETECTED: Form too fast");
-  //     throw new Error("Bot detected");
-  //   }
-
-
-  //   try {
-  //     const res = await axios.post("/api/quote/create", payload);
-  //     const data = res?.data;
-  //     if (data?.success) return data;
-  //     throw new Error(data?.message || "Failed to create quote");
-  //   } catch (err) {
-  //     const errorMessage = err?.response?.data?.message || err?.message || "Error while creating quote";
-  //     console.error("Error creating quote:", errorMessage);
-  //     throw new Error(errorMessage);
-  //   }
-  // };
+  
 
   const createQuote = async (payload) => {
 

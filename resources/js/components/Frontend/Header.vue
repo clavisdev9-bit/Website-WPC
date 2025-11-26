@@ -61,15 +61,18 @@
            
             <div class="nav-item dropdown">
 
-
-              <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-                  <img  :src="profileStatic" 
-                  class="avatar avatar-sm rounded-circle"  style="background-image" alt="">
-                      <div class="d-none d-xl-block ps-2">
-                        <div class="text-light"> {{ $t('navbar.userName') }} </div>
-                    <div class="mt-1 small text-light">xxxxx</div>
-                      </div>
-              </a>
+             <!-- hidden dulu belum ada implementasi SA-->
+              <!-- <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
+                   <img 
+                        src="https://api.dicebear.com/9.x/initials/svg?seed=Guest" 
+                        class="avatar avatar-sm rounded-circle"
+                        alt="User Avatar"
+                      >
+                      <div class="d-none d-xl-block ps-2"> -->
+                        <!-- <div class="text-light"> {{ $t('navbar.userName') }} </div>
+                        <div class="mt-1 small text-light">xxxxx</div> -->
+                      <!-- </div>
+              </a> -->
 
 
               <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -149,49 +152,17 @@
                   </li>
 
 
-
-
-
-
                 <li class="nav-item">
-                  <a 
-                    href="javascript:void(0)" 
-                    class="nav-link ripple"
-                    @click="$emit('openComingSoon')"
-                  >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                       <i class="nav-icon fa fa-money-bill-wave fa-lg"></i>
-                    </span>
-                    <span class="nav-link-title"> {{ $t('navbar.prices') }}</span>
-                  </a>
-                </li>
-
-
-                 <li class="nav-item">
-                   <a 
-                    href="javascript:void(0)" 
-                    class="nav-link ripple"
-                    @click="$emit('openComingSoon')"
-                  >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                        <i class="nav-icon fas fa-receipt fa-lg"></i>
-                    </span>
-                    <span class="nav-link-title"> {{ $t('navbar.booking') }}</span>
-                  </a>
-                </li>
-
-
-                 <li class="nav-item">
-                   <a 
-                    href="javascript:void(0)" 
-                    class="nav-link ripple"
-                    @click="$emit('openComingSoon')"
-                  >
+                   <RouterLink 
+                      to="/wpc-esys/documentation" 
+                      class="nav-link ripple" 
+                      active-class="active-link"
+                    >
                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <i class="nav-icon fas fa-book fa-lg"></i> 
                     </span>
                     <span class="nav-link-title"> {{ $t('navbar.documentation') }}</span>
-                  </a>
+                    </RouterLink>
                 </li>
   
 
@@ -221,6 +192,10 @@
 const LogoCompany = '/images/logox.png'
 const profileStatic = '/images/profile.png'
 import NavbarLanguage from './NavbarLanguage.vue';
+import BoringAvatar from "vue-boring-avatars"
+
+
+
 </script>
 
 <style scoped>

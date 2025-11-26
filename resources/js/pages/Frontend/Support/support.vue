@@ -54,12 +54,12 @@
 
     <div class="container py-5">
     <div class="row g-4">
-      <!-- 🧭 Left Card - User Guide Kirim Quotation -->
+      <!-- Left Card - User Guide Kirim Quotation -->
       <div class="col-12 col-md-6">
         <div class="card shadow-sm border-0 rounded-4 h-100">
           <div class="card-header bg-light border-0 py-3">
             <h4 class="fw-bold mb-0 text-primary">
-              <i class="fa-solid fa-paper-plane me-2"></i> User Guide — Kirim Quotation
+              <i class="fa-solid fa-paper-plane me-2"></i> User Guide — Send Quotation
             </h4>
           </div>
           <div class="card-body">
@@ -72,7 +72,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#guideOne"
                   >
-                    Step 1 — Masuk ke Halaman Quotation Request
+                   Step 1 — Go to the Quotation Request Page
                   </button>
                 </h2>
                 <div
@@ -81,8 +81,8 @@
                   data-bs-parent="#accordionQuotation"
                 >
                   <div class="accordion-body">
-                    Klik menu <strong>“Quotation Request”</strong> pada dashboard utama, lalu pilih opsi 
-                    <em>“Create New Quotation”</em> untuk memulai pengiriman penawaran baru.
+                    Click the <strong>“Quotation Request”</strong> menu on the main dashboard, then select the 
+                    <em>“Create New Quotation”</em> option to start sending a new quotation.
                   </div>
                 </div>
               </div>
@@ -95,7 +95,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#guideTwo"
                   >
-                    Step 2 — Lengkapi Detail Pengiriman
+                    Step 2 — Complete Shipping Details
                   </button>
                 </h2>
                 <div
@@ -104,8 +104,8 @@
                   data-bs-parent="#accordionQuotation"
                 >
                   <div class="accordion-body">
-                    Isi semua kolom wajib seperti <strong>asal, tujuan, jenis barang, berat, dan volume</strong>.
-                    Pastikan semua data sudah benar agar penawaran akurat.
+                    Fill in all required fields such as <strong>Personal information, origin, destination, item type, weight, and volume</strong>.
+                    Make sure all data is correct for an accurate quotation.
                   </div>
                 </div>
               </div>
@@ -118,7 +118,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#guideThree"
                   >
-                    Step 3 — Kirim dan Tunggu Konfirmasi
+                    Step 3 — Submit and Wait for Confirmation from WPC Logistics sales team
                   </button>
                 </h2>
                 <div
@@ -127,8 +127,8 @@
                   data-bs-parent="#accordionQuotation"
                 >
                   <div class="accordion-body">
-                    Setelah data lengkap, klik <strong>“Submit Quotation”</strong>.  
-                    Sistem akan memproses dan mengirimkan konfirmasi melalui email atau dashboard Anda.
+                    After completing the data, click <strong>“Submit Quotation”</strong>.  
+                    The system will process and send a confirmation via email or whatsapp number.
                   </div>
                 </div>
               </div>
@@ -155,7 +155,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#faqOne"
                   >
-                    Apakah saya bisa mengedit quotation setelah dikirim?
+                    Can I edit a quotation after it has been sent?
                   </button>
                 </h2>
                 <div
@@ -164,7 +164,7 @@
                   data-bs-parent="#accordionFAQ"
                 >
                   <div class="accordion-body">
-                    Tidak bisa langsung diedit, namun Anda dapat membuat revisi baru dengan menyalin data dari quotation sebelumnya.
+                    You cannot edit it directly, but you can create a new revision by copying data from the previous quotation.
                   </div>
                 </div>
               </div>
@@ -177,7 +177,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#faqTwo"
                   >
-                    Berapa lama proses konfirmasi quotation?
+                    How long does the quotation confirmation process take?
                   </button>
                 </h2>
                 <div
@@ -186,7 +186,7 @@
                   data-bs-parent="#accordionFAQ"
                 >
                   <div class="accordion-body">
-                    Biasanya memakan waktu kurang dari <strong>24 jam</strong>. Anda akan mendapat notifikasi otomatis begitu statusnya berubah.
+                    It usually takes less than <strong>24 hours</strong>. You will receive an automatic notification as soon as the status changes.
                   </div>
                 </div>
               </div>
@@ -199,7 +199,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#faqThree"
                   >
-                    Apakah saya bisa membatalkan quotation?
+                    Can I cancel a quotation?
                   </button>
                 </h2>
                 <div
@@ -208,7 +208,7 @@
                   data-bs-parent="#accordionFAQ"
                 >
                   <div class="accordion-body">
-                    Ya, Anda dapat membatalkan sebelum quotation dikonfirmasi oleh tim admin.
+                    Yes, you can cancel before the quotation is confirmed by the admin team.
                   </div>
                 </div>
               </div>

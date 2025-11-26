@@ -1011,7 +1011,7 @@ public function ChangeAccessSubMenu(Request $request)  {
 public function createDataAgentCountryNetwork()
 {
   
-  $response = Http::withoutVerifying()->get('https://0e3242f7df3f.ngrok-free.app/countries');
+  $response = Http::withoutVerifying()->get('https://c3818281865a.ngrok-free.app/countries');
     if ($response->successful()) {
         $json = $response->json();
         $countries = $json['data'] ?? []; // ambil isi 'data'
@@ -1059,7 +1059,7 @@ public function createDataAgentCountryNetwork()
 
 
     public function showDataAgentCountryNetwork($id) {
-        $response = Http::withoutVerifying()->get('https://0e3242f7df3f.ngrok-free.app/countries');
+        $response = Http::withoutVerifying()->get('https://c3818281865a.ngrok-free.app/countries');
             if ($response->successful()) {
                 $json = $response->json();
                 $countries = $json['data'] ?? []; // ambil isi 'data'
