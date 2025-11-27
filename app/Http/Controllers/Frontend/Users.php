@@ -494,22 +494,47 @@ class Users extends Controller
 
     
 
+            public function Contact_messages_store(FormMessagesContactValidation $request)
+        {
+            try {
+                $validated = $request->validated();
 
-    public function Contact_messages_store(FormMessagesContactValidation $request) {
-        try {
-        $this->ContactMessage->create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-            'interested_in' => $request->input('interested_in'),
-            'subject' => $request->input('subject'),
-            'message' => $request->input('message'),
-            'agree_privacy' => $request->input('agree_privacy'),
-        ]);
+                // Sanitasi khusus message (prevent stored XSS)
+                $validated['message'] = strip_tags($validated['message']);
+                
+                // Checkbox cast → boolean
+                $validated['agree_privacy'] = $request->boolean('agree_privacy');
+
+                $this->ContactMessage->create($validated);
+
+                return redirect()
+                    ->route('users.contact')
+                    ->with('success', 'Your contact request form has been successfully submitted. We will contact you soon.');
+
+            } catch (\Throwable $th) {
+                return redirect()
+                    ->route('users.contact')
+                    ->with('error', 'Failed to create data. Please try again.');
+            }
+        }
+
+
+
+    // public function Contact_messages_store(FormMessagesContactValidation $request) {
+    //     try {
+    //     $this->ContactMessage->create([
+    //         'name' => $request->input('name'),
+    //         'email' => $request->input('email'),
+    //         'phone' => $request->input('phone'),
+    //         'interested_in' => $request->input('interested_in'),
+    //         'subject' => $request->input('subject'),
+    //         'message' => $request->input('message'),
+    //         'agree_privacy' => $request->input('agree_privacy'),
+    //     ]);
         
-       return redirect()->route('users.contact')->with('success','Your contact request form has been successfully submitted. We will contact you soon.');
-       } catch (\Throwable $th) {
-           return redirect()->route('users.contact')->with('error','Failed to create data. Please try again.');
-       }
-    }
+    //    return redirect()->route('users.contact')->with('success','Your contact request form has been successfully submitted. We will contact you soon.');
+    //    } catch (\Throwable $th) {
+    //        return redirect()->route('users.contact')->with('error','Failed to create data. Please try again.');
+    //    }
+    // }
 }

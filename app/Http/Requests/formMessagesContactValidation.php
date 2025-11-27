@@ -34,23 +34,46 @@ class FormMessagesContactValidation extends FormRequest
     /**
      * Pesan error kustom (biar lebih ramah user).
      */
+    // public function messages(): array
+    // {
+    //     return [
+    //         'name.required' => 'Your name is required.',
+    //         'name.min' => 'Your name must be at least 3 characters.',
+    //         'email.required' => 'Email address is required.',
+    //         'email.email' => 'Please enter a valid email address.',
+    //         'phone.required' => 'Your phone number is required.',
+    //         'phone.regex' => 'Phone number format is invalid (use only digits, e.g. +62123456789).',
+    //         'subject.required' => 'Subject is required.',
+    //         'interested_in.required' => 'Please Select One Field',
+    //         'message.required' => 'Please enter your message.',
+    //         'message.min' => 'Message must be at least 5 characters.',
+    //         'message.max' => 'Message must be at least 800 characters.',
+    //         'agree_privacy.accepted' => 'You must agree with the privacy policy.',
+    //     ];
+    // }
     public function messages(): array
-    {
-        return [
-            'name.required' => 'Your name is required.',
-            'name.min' => 'Your name must be at least 3 characters.',
-            'email.required' => 'Email address is required.',
-            'email.email' => 'Please enter a valid email address.',
-            'phone.required' => 'Your phone number is required.',
-            'phone.regex' => 'Phone number format is invalid (use only digits, e.g. +62123456789).',
-            'subject.required' => 'Subject is required.',
-            'interested_in.required' => 'Please Select One Field',
-            'message.required' => 'Please enter your message.',
-            'message.min' => 'Message must be at least 5 characters.',
-            'message.max' => 'Message must be at least 800 characters.',
-            'agree_privacy.accepted' => 'You must agree with the privacy policy.',
-        ];
-    }
+        {
+            return [
+                'name.required' => 'Your name is required.',
+                'name.min' => 'Your name must be at least 3 characters.',
+
+                'email.required' => 'Email address is required.',
+                'email.email' => 'Please enter a valid email address.',
+
+                'phone.required' => 'Your phone number is required.',
+                'phone.regex' => 'Phone number format is invalid (use only digits, e.g. +62123456789).',
+
+                'subject.required' => 'Subject is required.',
+                'interested_in.required' => 'Please Select One Field',
+
+                'message.required' => 'Please enter your message.',
+                'message.min' => 'Message must be at least 5 characters.',
+                'message.max' => 'Message must not exceed 2000 characters.', // diperbaiki
+
+                'agree_privacy.accepted' => 'You must agree with the privacy policy.',
+            ];
+        }
+
 
     /**
      * Preprocessing (misalnya trimming input).

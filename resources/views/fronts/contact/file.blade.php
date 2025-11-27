@@ -29,7 +29,7 @@
                             <p class="mb-4"> Have questions about logistics, warehousing, or shipping solutions?  
                             Our expert team is ready to help you find the most efficient and reliable way to move your goods.  
                             Whether it’s storage, transportation, or end-to-end supply chain management — we’ve got you covered.  
-                            Reach out today and let’s optimize your logistics together. <a class="text-primary fw-bold" href="/wpc-esys/form-qoutation">Get Qoute</a>.
+                            Reach out today and let’s optimize your logistics together. <a class="text-primary fw-bold" href="/wpc-esys/qoutation-request">Get Qoute</a>.
                             </p>
                             <div class="row g-4">
                                 <div class="col-lg-6">
@@ -175,7 +175,8 @@
 
                         <div class="col-12">
                             <div class="form-check">
-                                <input class="form-check-input" name="agree_privacy" type="checkbox" value="1" id="flexCheck">
+                                <input class="form-check-input" name="agree_privacy"
+                                 type="checkbox" value="1" id="flexCheck" {{ old('agree_privacy') ? 'checked' : '' }}>
                                 <label class="form-check-label" for="flexCheck">
                                     I agree with the site privacy policy
                                 </label>

@@ -10,6 +10,7 @@ import dataTableSchedule from '../pages/Frontend/Schedule/dataTableSchedule.vue'
 import information from '../pages/Frontend/Information/information.vue';
 import support from '../pages/Frontend/Support/support.vue';
 import documentation from '../pages/Frontend/Documentation/documentation.vue';
+import NotFound from '../pages/Frontend/Errors/NotFound.vue';
 
 
 
@@ -68,7 +69,7 @@ const routes = [
 
 
 
- 
+ { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 
  
   
