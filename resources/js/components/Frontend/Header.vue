@@ -45,7 +45,6 @@
                   {{ $t('navbar.support') }}
                 </router-link>
 
-
                <RouterLink
                   to="/wpc-esys/informations-wpc"
                   class="btn btn-primary btn-6"

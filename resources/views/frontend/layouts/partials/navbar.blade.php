@@ -98,7 +98,7 @@
 
                                 <a href="/wpc-esys/qoutation-request" 
                                 class="nav-item nav-link {{ request()->is('wpc-esys/qoutation-request') ? 'active' : '' }}">
-                                Get Quote
+                                Get Quotation
                                 </a>
 
                                 <a href="{{ route('users.news') }}" 

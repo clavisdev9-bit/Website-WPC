@@ -82,62 +82,62 @@
                             <div class="row g-2">
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner2.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner2.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner2.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner2.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner1.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner1.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner1.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/Banner1.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/link_express-02.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/link_express-02.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/link_express-02.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="footer-item-img">
-                                        <a href="#"><img src="{{ asset('/images/footer_works.jpg') }}" class="img-fluid" alt=""></a>
+                                        <a href="#"><img src="{{ asset('/images/link_express-02.jpg') }}" class="img-fluid" alt=""></a>
                                     </div>
                                 </div>
                             </div>

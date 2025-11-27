@@ -8,7 +8,10 @@
         <p class="text-muted mb-0">
           A complete guide to creating and submitting a request for quotation in the ESYS WPC system. You can download this PDF file for reference, or read the rules below.
         </p>
-         <button class="btn btn-danger"> <i class="fa-solid fa-file-pdf"> </i> Download PDF Quotation Request</button>
+         <button class="btn btn-danger" @click="downloadPDF">
+  <i class="fa-solid fa-file-pdf"></i> Download PDF Quotation Request
+</button>
+
       </div>
     </div>
 
@@ -177,6 +180,10 @@
 
 <script setup>
 import FrontendLayout from "../../../layouts/FrontendLayout.vue";
+const downloadPDF = () => {
+  window.open(`${window.location.origin}/docs/quotation-request.pdf`, "_blank");
+};
+
 </script>
 
 <style scoped>

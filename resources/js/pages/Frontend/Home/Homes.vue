@@ -140,5 +140,5 @@
 
 <script setup>
 import FrontendLayout from "../../../layouts/FrontendLayout.vue";
-const bg = "/images/card_corousel.jpg";
+const bg = "/images/Banner1.jpg";
 </script>
