@@ -89,7 +89,7 @@
 
 <script setup>
 const LogoCompany = '/images/logox.png'
-const marker = '/images/banner2.jpg'
+const marker = '/images/Banner2.jpg'
 const logoCertifikat = '/images/certification-logo.png'
 </script>
 
