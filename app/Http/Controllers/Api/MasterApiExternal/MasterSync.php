@@ -39,7 +39,7 @@ class MasterSync extends Controller
     public function syncCommodities(Request $request)
     {
         try {
-            $url = "https://c3818281865a.ngrok-free.app/lookups/commodities";
+            $url = "https://1821986ae1e4.ngrok-free.app/lookups/commodities";
           $response = Http::withOptions(['verify' => false])
                         ->timeout(10)
                         ->get($url);
@@ -108,7 +108,7 @@ class MasterSync extends Controller
     try {
         $response = Http::withOptions(['verify' => false])
             ->timeout(10)
-            ->get('https://c3818281865a.ngrok-free.app/lookups/uoms');
+            ->get('https://1821986ae1e4.ngrok-free.app/lookups/uoms');
 
         if (!$response->successful()) {
             return response()->json([

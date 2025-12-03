@@ -15,7 +15,7 @@ class Master extends Controller
         // code get country dengan  code dan caching
         public function countries()
         {
-            $externalUrl = "https://c3818281865a.ngrok-free.app/countries";
+            $externalUrl = "https://1821986ae1e4.ngrok-free.app/countries";
             try {
                 // Ambil data dari cache dulu, kalau tidak ada baru fetch
                 $countries = Cache::remember('countries_data', 300, function() use ($externalUrl) { // cache 5 menit
@@ -67,7 +67,7 @@ class Master extends Controller
 
         public function statesByCountry($countryId)
             {
-                $externalUrlState = "https://c3818281865a.ngrok-free.app/states/country/{$countryId}";
+                $externalUrlState = "https://1821986ae1e4.ngrok-free.app/states/country/{$countryId}";
 
                 try {
                     // Gunakan cache berdasarkan countryId → contoh: states_data_3
@@ -125,7 +125,7 @@ class Master extends Controller
                 public function pickupOrigins(Request $request)
         {
             $transportation = $request->query('transportation'); 
-            $externalUrl = "https://c3818281865a.ngrok-free.app/lookups/pickup-origins";
+            $externalUrl = "https://1821986ae1e4.ngrok-free.app/lookups/pickup-origins";
 
             try {
                 // Cache per transportation (misal: air, sea, trucking)
@@ -215,7 +215,7 @@ class Master extends Controller
 
             $destinations = Cache::remember($cacheKey, 30 * 60, function () use ($transportation) {
 
-                $externalUrl = "https://c3818281865a.ngrok-free.app/lookups/pickup-destinations";
+                $externalUrl = "https://1821986ae1e4.ngrok-free.app/lookups/pickup-destinations";
 
                 $response = Http::withOptions([
                     'verify' => false,
@@ -271,7 +271,7 @@ class Master extends Controller
             
                 public function commodity()
             {
-                $externalUrl = "https://c3818281865a.ngrok-free.app/lookups/commodities";
+                $externalUrl = "https://1821986ae1e4.ngrok-free.app/lookups/commodities";
 
                 try {
                     $cacheKey = "commodity_data";
@@ -330,7 +330,7 @@ class Master extends Controller
         
             public function unitOfMeasure()
         {
-            $externalUrl = "https://c3818281865a.ngrok-free.app/lookups/uoms";
+            $externalUrl = "https://1821986ae1e4.ngrok-free.app/lookups/uoms";
 
             try {
                 $cacheKey = "uoms_data";

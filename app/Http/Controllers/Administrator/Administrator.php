@@ -1011,7 +1011,7 @@ public function ChangeAccessSubMenu(Request $request)  {
 public function createDataAgentCountryNetwork()
 {
   
-  $response = Http::withoutVerifying()->get('https://c3818281865a.ngrok-free.app/countries');
+  $response = Http::withoutVerifying()->get('https://1821986ae1e4.ngrok-free.app/countries');
     if ($response->successful()) {
         $json = $response->json();
         $countries = $json['data'] ?? []; // ambil isi 'data'

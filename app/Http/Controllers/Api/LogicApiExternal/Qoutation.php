@@ -185,7 +185,7 @@ public function createQuotation(Request $request)
     // -----------------------------------------------
     // 4. Jika semua lolos → lanjut kirim ke Odoo
     // -----------------------------------------------
-    $externalUrl = "https://c3818281865a.ngrok-free.app/quote/create";
+    $externalUrl = "https://1821986ae1e4.ngrok-free.app/quote/create";
 
     try {
         $response = Http::withOptions([
